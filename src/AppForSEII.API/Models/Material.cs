@@ -16,15 +16,15 @@ public class Material{
     public int Cantidad { get; set; }
     public int Precio { get; set; }
 
-    public override bool Equals(object? obj)
-    {
-        if (obj == null || GetType() != obj.GetType())
-        {
-            return false;
-        }
-        Material otroMaterial = (Material)obj;
-        return IdMaterial == otroMaterial.IdMaterial;
+   public override bool Equals(object otro)
+    { 
+        if (otro == null) return false;
+        if (otro.GetType() != this.GetType()) return false; 
+        
+        Material otro_material = (Material) otro;
 
+        if (otro_material.IdMaterial != this.IdMaterial) return false;
+        return true;
     }
 
     public override int GetHashCode()
