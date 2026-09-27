@@ -13,18 +13,19 @@ public class TipoMaterial
     public int IdTipoMaterial {get;set;}
     public string NombreTipoMaterial {get;set;}
 
-    public override bool Equals(object? obj)
-    {
-        if (obj == null || GetType() != obj.GetType())
-        {
-            return false;
-        }
-        TipoMaterial otroTipoMaterial = (TipoMaterial)obj;
-        return IdTipoMaterial == otroTipoMaterial.IdTipoMaterial;
+    public override bool Equals(object otro)
+    { 
+        if (otro == null) return false;
+        if (otro.GetType() != this.GetType()) return false; 
+        
+        TipoMaterial otro_tipo_material = (TipoMaterial) otro;
+
+        if (otro_tipo_material.IdTipoMaterial != this.IdTipoMaterial) return false;
+        return true;
     }
 
     public override int GetHashCode()
     {
-        return IdTipoMaterial.GetHashCode();
+        return Id.GetHashCode();
     }
 }
