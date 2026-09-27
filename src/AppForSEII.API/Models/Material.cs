@@ -12,7 +12,7 @@ public class Material{
         Precio = precio;
     }
     public int IdMaterial { get; set; }
-    public string? Nombre { get; set; }
+    public string Nombre { get; set; }
     public int Cantidad { get; set; }
     public int Precio { get; set; }
 
