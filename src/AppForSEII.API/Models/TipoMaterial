@@ -1,0 +1,30 @@
+namespace AppForSEII.API.Models;
+
+public class TipoMaterial
+{
+    public TipoMaterial(){}
+
+    public TipoMaterial(int idTipoMaterial, string nombreTipoMaterial)
+    {
+        IdTipoMaterial = idTipoMaterial;
+        NombreTipoMaterial = nombreTipoMaterial;
+    }
+
+    public int IdTipoMaterial {get;set;}
+    public string NombreTipoMaterial {get;set;}
+
+    public override bool Equals(object? obj)
+    {
+        if (obj == null || GetType() != obj.GetType())
+        {
+            return false;
+        }
+        TipoMaterial otroTipoMaterial = (TipoMaterial)obj;
+        return IdTipoMaterial == otroTipoMaterial.IdTipoMaterial;
+    }
+
+    public override int GetHashCode()
+    {
+        return IdTipoMaterial.GetHashCode();
+    }
+}
