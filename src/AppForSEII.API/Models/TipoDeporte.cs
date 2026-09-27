@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis.Scripting.Hosting;
 
 namespace AppForSEII.API.Models;
 
@@ -9,7 +10,7 @@ public class TipoDeporte
     
     //getters y setters
     public int Id { get; set; }
-    public string Nombre { get; set; }
+    public string? Nombre { get; set; }
 
     //Constructor vacio (lo hago, por si queremos hacer pruebas, pero creo que no será necesario)
     public TipoDeporte(){
@@ -27,7 +28,7 @@ public class TipoDeporte
     }
     
     //equals, q comprueba q el otro no sea null, que sea del mismo tipo, y q los ids sean los mismos
-    public override bool Equals(object otro)
+    public override bool Equals(object? otro)
     { 
         if (otro == null) return false;
         if (otro.GetType() != this.GetType()) return false; 
@@ -37,9 +38,9 @@ public class TipoDeporte
         if (otro_tipodeporte.Id != this.Id) return false;
         return true;
     }
-
     public override int GetHashCode()
     {
         return Id.GetHashCode();
     }
+    
 }
