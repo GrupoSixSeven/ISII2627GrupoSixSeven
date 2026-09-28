@@ -8,10 +8,13 @@ public class ClaseDeportiva
 {
     [Key]
     public int Id { get; set; }
+    [Required]
     public string? Descripcion { get; set; }
     public DateTime FechaHora { get; set; }
     public string? Lugar { get; set; }
+   [Required]
     public string? Monitor { get; set; }
+  [Required]
     public string? Nivel { get; set; }
     public int PlazasDisponibles { get; set; }
     public decimal PrecioUnitario { get; set; }
