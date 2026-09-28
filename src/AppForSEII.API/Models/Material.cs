@@ -2,7 +2,7 @@ namespace AppForSEII.API.Models;
 
 public class Material{
 
-    [Key] 
+    [Key]
 
     public int IdMaterial { get; set; }
     public string? Nombre { get; set; }
