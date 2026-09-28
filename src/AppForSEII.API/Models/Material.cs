@@ -1,9 +1,14 @@
 namespace AppForSEII.API.Models;
 
 public class Material{
-    public Material()
-    {
-    }
+
+    [Key] 
+
+    public int IdMaterial { get; set; }
+    public string? Nombre { get; set; }
+    public int Cantidad { get; set; }
+    public int Precio { get; set; }
+    public Material(){}
     public Material(int idMaterial, string nombre, int cantidad, int precio)
     {
         IdMaterial = idMaterial;
@@ -11,10 +16,7 @@ public class Material{
         Cantidad = cantidad;
         Precio = precio;
     }
-    public int IdMaterial { get; set; }
-    public string? Nombre { get; set; }
-    public int Cantidad { get; set; }
-    public int Precio { get; set; }
+
 
    public override bool Equals(object? otro)
     { 
