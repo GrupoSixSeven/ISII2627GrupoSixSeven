@@ -1,25 +1,73 @@
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppForSEII.API.Models;
 
-// Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser
 {
-    public ApplicationUser()
+    [Required]
+    public string? Name { get; set; }
+
+    [Required]
+    public string? Surname { get; set; }
+
+    [Required]
+    public string? DNI { get; set; }
+
+    public int Age { get; set; }
+
+    public string? Sex { get; set; }
+
+    // Relación con las inscripciones realizadas por el usuario 
+    // lo comento porque da error ya que no esta la enumeracion imple
+   // public IList<ClaseInscrita> ClasesInscritas { get; set; } = new List<ClaseInscrita>();
+
+    // Constructor vacío
+    public ApplicationUser() : base()
     {
     }
-    public ApplicationUser(string id, string name, string surname, string userName)
+
+    // Constructor con parámetros
+    public ApplicationUser(
+        string name, 
+        string surname, 
+        string dni, 
+        int age, 
+        string? sex, 
+        string userName, 
+        string email, 
+        string phoneNumber) : base()
     {
-        Id = id;
         Name = name;
         Surname = surname;
+        DNI = dni;
+        Age = age;
+        Sex = sex;
         UserName = userName;
-        Email = userName;
+        Email = email;
+        PhoneNumber = phoneNumber;
     }
 
-    [StringLength(50)]
-    public string? Name {get;set;}
+    // Comprueba igualdad comparando tipos e Ids no nulos
+    public override bool Equals(object? otro)
+    {
+        if (otro == null) return false;
+        if (otro.GetType() != this.GetType()) return false;
 
-    [StringLength(50)]
-    public string? Surname {get;set;}
+        ApplicationUser otro_usuario = (ApplicationUser)otro;
+
+        // Si alguna Id es nula (objeto aún no persistido), se comparan por referencia en memoria
+        if (this.Id == null || otro_usuario.Id == null)
+        {
+            return ReferenceEquals(this, otro_usuario);
+        }
+
+        return otro_usuario.Id == this.Id;
+    }
+
+    public override int GetHashCode()
+    {
+        return Id != null ? Id.GetHashCode() : base.GetHashCode();
+    }
 }
