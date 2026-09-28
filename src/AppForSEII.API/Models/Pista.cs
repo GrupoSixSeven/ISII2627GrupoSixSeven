@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppForSEII.API.Models;
 
@@ -7,28 +7,32 @@ public class Pista
 {
     [Key]
     public int IdPista { get; set; }
-    
+
+    [Required]
     public string? NombrePista { get; set; }
+
     public int NPersonas { get; set; }
+
     public double Precio { get; set; }
+
     public int Stock { get; set; }
 
+    // Constructor vacío
     public Pista()
     {
     }
 
-    public Pista(int IdPista, string? NombrePista, int NPersonas, double Precio, int Stock)
+    // Constructor con los atributos principales
+    public Pista(int idPista, string? nombrePista, int nPersonas, double precio, int stock)
     {
-        this.IdPista = IdPista;
-        if (NombrePista != null)
-        {
-            this.NombrePista = NombrePista;
-        }
-        this.NPersonas = NPersonas;
-        this.Precio = Precio;
-        this.Stock = Stock;
+        IdPista = idPista;
+        NombrePista = nombrePista;
+        NPersonas = nPersonas;
+        Precio = precio;
+        Stock = stock;
     }
 
+    // Comprueba que el otro objeto no sea null, que sea del mismo tipo y que sus Ids coincidan
     public override bool Equals(object? otro)
     {
         if (otro == null) return false;
@@ -36,8 +40,7 @@ public class Pista
 
         Pista otra_pista = (Pista)otro;
 
-        if (otra_pista.IdPista != this.IdPista) return false;
-        return true;
+        return otra_pista.IdPista == this.IdPista;
     }
 
     public override int GetHashCode()
