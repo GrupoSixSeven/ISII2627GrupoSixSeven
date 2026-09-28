@@ -14,6 +14,7 @@ public class PistaReservada
 
     public int IdReserva { get; set; }
 
+    [Required]
     public string? Observaciones { get; set; }
 
     public double Precio { get; set; }
