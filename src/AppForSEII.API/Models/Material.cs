@@ -12,11 +12,11 @@ public class Material{
         Precio = precio;
     }
     public int IdMaterial { get; set; }
-    public string Nombre { get; set; }
+    public string? Nombre { get; set; }
     public int Cantidad { get; set; }
     public int Precio { get; set; }
 
-   public override bool Equals(object otro)
+   public override bool Equals(object? otro)
     { 
         if (otro == null) return false;
         if (otro.GetType() != this.GetType()) return false; 
