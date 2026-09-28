@@ -1,25 +1,62 @@
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppForSEII.API.Models;
 
-// Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser
 {
-    public ApplicationUser()
+    [Required]
+    public string? Name { get; set; }
+
+    [Required]
+    public string? Surname { get; set; }
+
+    [Required]
+    public string? DNI { get; set; }
+
+    public int Age { get; set; }
+
+    public string? Sex { get; set; }
+
+    // Constructor vacío
+    public ApplicationUser() : base()
     {
     }
-    public ApplicationUser(string id, string name, string surname, string userName)
+
+    // Constructor con parámetros de la clase e Identity
+    public ApplicationUser(
+        string name, 
+        string surname, 
+        string dni, 
+        int age, 
+        string? sex, 
+        string userName, 
+        string email, 
+        string phoneNumber) : base()
     {
-        Id = id;
         Name = name;
         Surname = surname;
+        DNI = dni;
+        Age = age;
+        Sex = sex;
         UserName = userName;
-        Email = userName;
+        Email = email;
+        PhoneNumber = phoneNumber;
     }
 
-    [StringLength(50)]
-    public string? Name {get;set;}
+    // Comprueba que el otro objeto no sea null, que sea del mismo tipo y que las claves coincidan
+    public override bool Equals(object? otro)
+    {
+        if (otro == null) return false;
+        if (otro.GetType() != this.GetType()) return false;
 
-    [StringLength(50)]
-    public string? Surname {get;set;}
+        ApplicationUser otro_usuario = (ApplicationUser)otro;
+
+        return otro_usuario.Id == this.Id;
+    }
+
+    public override int GetHashCode()
+    {
+        return Id != null ? Id.GetHashCode() : 0;
+    }
 }
