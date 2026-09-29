@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppForSEII.API.Models;
 
@@ -7,8 +6,9 @@ public class TipoMaterial
 {
 
     [Key]
-
     public int IdTipoMaterial {get;set;}
+
+    [Required]
     public string? NombreTipoMaterial {get;set;}
     public TipoMaterial(){}
 
