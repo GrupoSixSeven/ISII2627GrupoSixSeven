@@ -29,8 +29,7 @@ public class MaterialAlquilado
     public MaterialAlquilado(){}
 
     //Constructor con parámetros
-    public MaterialAlquilado(int idMaterial, int idAlquiler, int cantidad, decimal precio, string? descripcion)
-    {
+    public MaterialAlquilado(int idMaterial, int idAlquiler, int cantidad, decimal precio, string? descripcion){
         this.IdMaterial = idMaterial;
         this.IdAlquiler = idAlquiler;
         this.Cantidad = cantidad;
