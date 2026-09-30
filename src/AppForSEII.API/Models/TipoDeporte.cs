@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis.Scripting.Hosting;
 
 namespace AppForSEII.API.Models;
 
@@ -10,9 +9,13 @@ public class TipoDeporte
     
     //getters y setters
     public int Id { get; set; }
-    public string? Nombre { get; set; }
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca el nombre de un tipo de deporte válido")]
+    public required string Nombre { get; set; }
 
-    //Constructor vacio (lo hago, por si queremos hacer pruebas, pero creo que no será necesario)
+    //RELACIONES CU-1
+    // Relación con Competicion (1 - N) (Un tipo de deporte puede tener muchas competiciones asociadas, pero una competición es solo de un deporte)
+    public ICollection<Competicion> Competiciones { get; set; } = new List<Competicion>();    
+    //Constructor vacio 
     public TipoDeporte(){
     
     }
@@ -21,10 +24,7 @@ public class TipoDeporte
     public TipoDeporte(int Id, string Nombre)
     {
         this.Id = Id;
-        if (Nombre != null)
-        {
-              this.Nombre = Nombre;
-        } 
+        this.Nombre = Nombre;
     }
     
     //equals, q comprueba q el otro no sea null, que sea del mismo tipo, y q los ids sean los mismos
