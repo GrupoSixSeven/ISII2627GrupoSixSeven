@@ -5,10 +5,11 @@ namespace AppForSEII.API.Models;
 public class TipoMaterial
 {
 
-    [Key]
+    [Key]//Clave primaria
     public int IdTipoMaterial {get;set;}
 
     [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre del tipo de material es obligatorio")]
+    [StringLength(50, ErrorMessage = "El nombre del tipo de material no puede superar los 50 caracteres")]
     public required string NombreTipoMaterial {get;set;}
 
     //Relación con Materiales (1-N), ya que un tipo de material puede estar asociado a varios materiales y un material solo puede estar asociado a un tipo de material
