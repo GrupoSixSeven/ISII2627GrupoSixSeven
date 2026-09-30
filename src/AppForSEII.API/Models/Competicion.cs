@@ -7,8 +7,8 @@ public class Competicion {
 [Key]
 public int Id { get; set; }
 
-[Required(AllowEmptyStrings = false, ErrorMessage = "Error, introduzca una fecha válida")]
-public required String Fecha {get; set;}
+[Required(ErrorMessage = "Error, introduzca una fecha válida")]
+public required DateTime Fecha {get; set;}
 
 [Required(AllowEmptyStrings = false, ErrorMessage = "Error, introduzca un lugar válido")]
 public required String Lugar {get; set;}
@@ -23,9 +23,11 @@ public decimal Precio {get; set;}
 
 //RELACIONES
 // Relación con TipoDeporte (1 - N) (Un Competición sólo puede ser de 1 deporte, pero un tipo de deporte puede tener más de 1 competición)
-public TipoDeporte? TipoDeporte { get; set; } //da error en la rama, pq no existe la clase TipoDeporte
+[Required(ErrorMessage = "Introduzca un tipo deporte válido")]
+public required TipoDeporte TipoDeporte { get; set; } //da error en la rama, pq no existe la clase TipoDeporte
 
 // Relación con CompeticiónInscripción (1 - N) (1 competición puede tener varias competiciones inscritas)
+
 public ICollection<CompeticionInscripcion> CompeticionInscripciones { get; set; } = new List<CompeticionInscripcion>(); //pasa lo mismo que con la otra relación
 
 //constructor vacío
@@ -33,7 +35,7 @@ public Competicion(){
         
     }
 //constructor con parámetros
-public Competicion (int id, String fecha, String lugar, String nombre, int plazas, decimal precio){
+public Competicion (int id, DateTime fecha, String lugar, String nombre, int plazas, decimal precio){
         this.Id = id;
         this.Fecha = fecha;
         this.Lugar = lugar;
