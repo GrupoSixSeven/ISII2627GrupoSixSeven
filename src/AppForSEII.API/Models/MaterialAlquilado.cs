@@ -8,7 +8,7 @@ namespace AppForSEII.API.Models;
 public class MaterialAlquilado
 {
 
-    // Relación con Alquiler (N-1)
+    // Relación con Alquiler (N-1).
     public int IdAlquiler { get; set; }
     public Alquiler? Alquiler { get; set; }
 
