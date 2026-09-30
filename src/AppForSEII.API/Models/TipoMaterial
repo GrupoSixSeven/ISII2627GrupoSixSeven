@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
 namespace AppForSEII.API.Models;
 
 public class TipoMaterial
@@ -8,18 +8,25 @@ public class TipoMaterial
     [Key]
     public int IdTipoMaterial {get;set;}
 
-    [Required]
-    public string? NombreTipoMaterial {get;set;}
+    [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre del tipo de material es obligatorio")]
+    public required string NombreTipoMaterial {get;set;}
+
+    //Relación con Materiales (1-N), ya que un tipo de material puede estar asociado a varios materiales y un material solo puede estar asociado a un tipo de material
+    public ICollection<Material> Materiales{get;set;} = new List<Material>();
+
+    //Constructor Vacio
     public TipoMaterial(){}
 
+
+    //Constructor con parámetros 
     public TipoMaterial(int idTipoMaterial, string nombreTipoMaterial)
     {
-        IdTipoMaterial = idTipoMaterial;
-        NombreTipoMaterial = nombreTipoMaterial;
+        this.IdTipoMaterial = idTipoMaterial;
+        this.NombreTipoMaterial = nombreTipoMaterial;
     }
 
 
-
+    //Metodo Equals y GetHashCode para comparar objetos de tipo TipoMaterial
     public override bool Equals(object? otro)
     { 
         if (otro == null) return false;
