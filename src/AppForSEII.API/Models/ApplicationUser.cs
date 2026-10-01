@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations; 
 
 namespace AppForSEII.API.Models;
 
@@ -8,9 +9,11 @@ public class ApplicationUser : IdentityUser
     public ApplicationUser()
     {
     }
-    public ApplicationUser(string id, string name, string surname, string userName)
+    
+    // AQUÍ ESTÁ EL CAMBIO: 'id' ha pasado a ser 'Id'
+    public ApplicationUser(string Id, string name, string surname, string userName)
     {
-        Id = id;
+        this.Id = Id; // Actualizado para usar el nuevo nombre con mayúscula
         Name = name;
         Surname = surname;
         UserName = userName;
