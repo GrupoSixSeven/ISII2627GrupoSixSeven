@@ -1,10 +1,11 @@
-namespace AppForSEII.API.Models;
-
-public enum MetodoPago
+namespace AppForSEII.API.Models
 {
-    Bizum,
-    Efectivo,
-    Tarjeta,
-    Transferencia,
-    Metalico
+    public enum MetodoPago
+    {
+        Bizum,
+        Efectivo,
+        Tarjeta,
+        Transferencia,
+        Metalico
+    }
 }

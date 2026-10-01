@@ -27,18 +27,29 @@ public class Inscripcion{
     [Phone(ErrorMessage = "El formato del teléfono no es correcto")]
     public required String Telefono {get; set;}
     
+    // --- AÑADIDO SEGÚN EL DIAGRAMA UML (Sin quitar nada de lo anterior) ---
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Los datos de pago son obligatorios")]
+    public required string DatosPago { get; set; }
+
+    // Relación con ApplicationUser (Cliente)
+    public string? ClienteId { get; set; } // Es string porque hereda de IdentityUser
+    public ApplicationUser? Cliente { get; set; }
+    
     //RELACIÓN
     //Relación con CompeticionInscripcion (1 - N), ya que podemos inscribirnos a varias competiciones, pero 1 CompeticionInscripcion solo pertenece a 1 inscripcion
     public ICollection<CompeticionInscripcion> CompeticionInscripciones { get; set; } = new List<CompeticionInscripcion>(); //da error, pq no existe la clase CompeticionInscripcion
 
+    // --- AÑADIDO SEGÚN EL DIAGRAMA UML ---
+    // Relación con ClaseInscrita (1 - N)
+    public ICollection<ClaseInscrita> ClasesInscritas { get; set; } = new List<ClaseInscrita>();
 
     //constructor vacio
     public Inscripcion(){
         
     }
 
-    //constructor con parámetros 
-    public Inscripcion (String apellidoUsuario, String dni, DateTime fechaInscripcion,int id, MetodoPago metodoPago, String nombreUsuario, decimal precioTotal, String telefono){
+    //constructor con parámetros (Actualizado con datosPago)
+    public Inscripcion (String apellidoUsuario, String dni, DateTime fechaInscripcion,int id, MetodoPago metodoPago, String nombreUsuario, decimal precioTotal, String telefono, string datosPago){
        this.ApellidosUsuario = apellidoUsuario;
        this.Dni = dni;
        this.FechaInscripcion = fechaInscripcion;
@@ -47,6 +58,9 @@ public class Inscripcion{
        this.NombreUsuario = nombreUsuario;
        this.PrecioTotal = precioTotal;
        this.Telefono = telefono;
+       
+       // Asignación de la propiedad añadida
+       this.DatosPago = datosPago;
     }
 
     public override bool Equals(object? otro){
