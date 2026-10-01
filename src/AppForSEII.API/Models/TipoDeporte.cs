@@ -16,10 +16,8 @@ public class TipoDeporte
     [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca el nombre de un tipo de deporte válido")] 
     public required string NombreTipoDeporte { get; set; }
 
-    // ==========================================
-    // ATRIBUTOS CU-2 (Clases Deportivas)
-    // ==========================================
-    public string? Descripcion { get; set; }
+ [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca la descripcion de un tipo de deporte válido")] 
+    public required string Descripcion { get; set; }
 
     //getters y setters de la CU-3
     [Required(ErrorMessage = "Introduzca una competición válida")]
@@ -52,7 +50,7 @@ public class TipoDeporte
     }
 
     // Contructor con los atributos de la clase, añadiendo descripcion como parametro opcional
-    public TipoDeporte(int Id, string Nombre, string nombreTipoDeporte, string? descripcion = null)
+    public TipoDeporte(int Id, string Nombre, string nombreTipoDeporte, string descripcion)
     {
         this.Id = Id;
         this.Nombre = Nombre;
