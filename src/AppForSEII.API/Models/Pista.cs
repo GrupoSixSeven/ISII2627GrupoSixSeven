@@ -34,7 +34,7 @@ public class Pista
     }
 
     // Constructor con los atributos principales
-    public Pista(int idPista, string? nombrePista, int nPersonas, double precio, int stock, int idTipoDeporte)
+    public Pista(int idPista, string? nombrePista, int nPersonas, decimal precio, int stock, int idTipoDeporte)
     {
         IdPista = idPista;
         NombrePista = nombrePista;
