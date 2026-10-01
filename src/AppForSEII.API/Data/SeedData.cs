@@ -40,7 +40,8 @@ namespace AppForSEII.API.Data {
         public static void SeedUsers(UserManager<ApplicationUser> userManager, List<string> roles) {
             //first, it checks the user does not already exist in the DB
             if (userManager.FindByNameAsync("elena@uclm.es").Result == null) {
-                ApplicationUser user = new ApplicationUser("1", "Elena", "Navarro Martínez", "elena@uclm.es");
+                ApplicationUser user = new ApplicationUser("Elena", "Navarro Martínez", "12345678Z", 30, "Femenino", "elena@uclm.es", "elena@uclm.es", "600123456");
+user.Id = "1"; // Mantenemos el ID que tenía originalmente
                 user.EmailConfirmed = true;
 
                 var result = userManager.CreateAsync(user, "Password1234%");
