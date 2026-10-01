@@ -10,19 +10,19 @@ public class Reserva
     public int Id { get; set; }
 
     [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca un nombre de cliente válido")]
-    public string? NombreCliente { get; set; }
+    public required string NombreCliente { get; set; }
 
     [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca los apellidos válidos")]
-    public string? Apellidos { get; set; }
+    public string Apellidos { get; set; }
 
     [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca un DNI válido")]
-    public string? Dni { get; set; }
+    public string Dni { get; set; }
 
     [Required(ErrorMessage = "Introduzca una fecha de reserva válida")]
     public DateTime FechaReserva { get; set; }
 
     [Required(ErrorMessage = "Introduzca un método de pago válido")]
-    public string? MetodoPago { get; set; }
+    public string MetodoPago { get; set; }
 
     [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio total válido")]
     public double PrecioTotal { get; set; }
@@ -37,7 +37,7 @@ public class Reserva
     }
 
     // Constructor con los atributos principales
-    public Reserva(int id, string? nombreCliente, string? apellidos, string? dni, DateTime fechaReserva, string? metodoPago, double precioTotal)
+    public Reserva(int id, string nombreCliente, string apellidos, string dni, DateTime fechaReserva, string metodoPago, double precioTotal)
     {
         Id = id;
         NombreCliente = nombreCliente;
