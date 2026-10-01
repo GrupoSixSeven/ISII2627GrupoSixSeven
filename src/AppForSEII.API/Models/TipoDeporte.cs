@@ -13,8 +13,15 @@ public class TipoDeporte
     [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca el nombre de un tipo de deporte válido")]
     public required string Nombre { get; set; }
 
-    public string? NombreTipoDeporte { get; set; }
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca el nombre de un tipo de deporte válido")] 
+    public required string NombreTipoDeporte { get; set; }
 
+    //getters y setters de la CU-3
+[Required(ErrorMessage = "Introduzca una competición válida")]
+public required Competicion Competicion { get; set; } 
+
+[Required(ErrorMessage = "Introduzca una pista válida")]
+public required Pista Pista { get; set; }
     
     //RELACIÓN CU-4
     //Relación con Pista (1 - N)
