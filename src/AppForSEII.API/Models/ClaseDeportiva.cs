@@ -7,6 +7,8 @@ namespace AppForSEII.API.Models
 {
     public class ClaseDeportiva
     {
+
+        // Únicamente constructor vacío
         public ClaseDeportiva()
         {
         }
