@@ -1,7 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations; 
 
 namespace AppForSEII.API.Models
 {
@@ -19,36 +18,32 @@ namespace AppForSEII.API.Models
             Age = age;
             Sex = sex;
             
-            // Estas propiedades se heredan de IdentityUser
             UserName = userName;
             Email = email;
             PhoneNumber = phoneNumber;
         }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre es obligatorio.")]
-        public required string Name { get; set; }
+        public string Name { get; set; } = string.Empty; // Sin required y con valor por defecto
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El apellido es obligatorio.")]
-        public required string Surname { get; set; }
+        public string Surname { get; set; } = string.Empty; // Sin required y con valor por defecto
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El DNI es obligatorio.")]
-        public required string DNI { get; set; }
+        public string DNI { get; set; } = string.Empty; // Sin required y con valor por defecto
 
         [Range(0, 120, ErrorMessage = "La edad debe ser un valor válido.")]
         public int Age { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El sexo es obligatorio.")]
-        public required string Sex { get; set; }
+        public string Sex { get; set; } = string.Empty; // Sin required y con valor por defecto
 
         public override bool Equals(object? otro)
         {
             if (otro == null) return false;
-            
             if (otro.GetType() != this.GetType()) return false;
 
             ApplicationUser otro_user = (ApplicationUser)otro;
-
-            // Al heredar de IdentityUser, el Id es de tipo string por defecto
             return otro_user.Id == this.Id;
         }
 
