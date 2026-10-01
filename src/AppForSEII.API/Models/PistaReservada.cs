@@ -12,7 +12,6 @@ public class PistaReservada
     public int Cantidad { get; set; }
 
 
-    [Required]
     public string? Observaciones { get; set; }
 
     [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio válido")]
