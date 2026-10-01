@@ -8,16 +8,23 @@ public class PistaReservada
     [Key]
     public int ID { get; set; }
 
+    [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe ser al menos 1")]
     public int Cantidad { get; set; }
 
-    public int IdPista { get; set; }
 
-    public int IdReserva { get; set; }
-
-    [Required]
     public string? Observaciones { get; set; }
 
-    public double Precio { get; set; }
+    [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio válido")]
+    public decimal Precio { get; set; }
+
+    //RELACIONES
+    //Relación con Pista (N - 1)
+    public int IdPista { get; set; }
+    public Pista? Pista { get; set; }
+
+    //Relación con Reserva (N - 1)
+    public int IdReserva { get; set; }
+    public Reserva? Reserva { get; set; }
 
     // Constructor vacío
     public PistaReservada()
@@ -25,14 +32,14 @@ public class PistaReservada
     }
 
     // Constructor con los atributos principales
-    public PistaReservada(int id, int cantidad, int idPista, int idReserva, string? observaciones, double precio)
+    public PistaReservada(int id, int cantidad, string? observaciones, decimal precio, int idPista, int idReserva)
     {
-        ID = id;
-        Cantidad = cantidad;
-        IdPista = idPista;
-        IdReserva = idReserva;
-        Observaciones = observaciones;
-        Precio = precio;
+        this.ID = id;
+        this.Cantidad = cantidad;
+        this.Observaciones = observaciones;
+        this.Precio = precio;
+        this.IdPista = idPista;
+        this.IdReserva = idReserva;
     }
 
     // Comprueba que el otro objeto no sea null, que sea del mismo tipo y que sus IDs coincidan
