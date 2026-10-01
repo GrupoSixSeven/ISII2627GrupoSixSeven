@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace AppForSEII.API.Models
 {
@@ -11,73 +9,71 @@ namespace AppForSEII.API.Models
     {
         public ClaseDeportiva()
         {
-            ClasesInscritas = new List<ClaseInscrita>();
         }
 
-        public ClaseDeportiva(string descripcion, DateTime fechaHora, string? lugar, string monitor, string nivel, int plazasDisponibles, decimal precioUnitario, TipoDeporte tipoDeporte)
+        public ClaseDeportiva(string descripcion, DateTime fechaHora, string lugar, string monitor, string nivel, int plazasDisponibles, decimal precioUnitario, TipoDeporte tipoDeporte)
         {
-            Descripcion = descripcion ?? throw new ArgumentNullException(nameof(descripcion));
+            Descripcion = descripcion;
             FechaHora = fechaHora;
             Lugar = lugar;
-            Monitor = monitor ?? throw new ArgumentNullException(nameof(monitor));
-            Nivel = nivel ?? throw new ArgumentNullException(nameof(nivel));
+            Monitor = monitor;
+            Nivel = nivel;
             PlazasDisponibles = plazasDisponibles;
             PrecioUnitario = precioUnitario;
             
-            TipoDeporte = tipoDeporte ?? throw new ArgumentNullException(nameof(tipoDeporte));
-            TipoDeporteId = tipoDeporte.Id;
-
-            ClasesInscritas = new List<ClaseInscrita>();
+            TipoDeporte = tipoDeporte;
+            if (tipoDeporte != null)
+            {
+                TipoDeporteId = tipoDeporte.Id;
+            }
         }
 
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "La descripción es obligatoria.")]
-        [StringLength(200)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "La descripción es obligatoria.")]
         [System.ComponentModel.DataAnnotations.Display(Name = "Descripción")]
-        public string Descripcion { get; set; } = null!;
+        public required string Descripcion { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "La fecha y hora son obligatorias.")]
         [System.ComponentModel.DataAnnotations.Display(Name = "Fecha y Hora")]
-        public DateTime FechaHora { get; set; }
+        public required DateTime FechaHora { get; set; }
 
-        [StringLength(100)]
-        public string? Lugar { get; set; }
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El lugar es obligatorio.")]
+        public required string Lugar { get; set; }
 
-        [Required(ErrorMessage = "El nombre del monitor es obligatorio.")]
-        [StringLength(100)]
-        public string Monitor { get; set; } = null!;
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre del monitor es obligatorio.")]
+        public required string Monitor { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Nivel { get; set; } = null!;
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El nivel es obligatorio.")]
+        public required string Nivel { get; set; }
 
         [Range(0, int.MaxValue, ErrorMessage = "Las plazas disponibles no pueden ser negativas.")]
         [System.ComponentModel.DataAnnotations.Display(Name = "Plazas Disponibles")]
         public int PlazasDisponibles { get; set; }
 
+        [Required(ErrorMessage = "El precio unitario es obligatorio.")]
         [Precision(10, 2)]
         [System.ComponentModel.DataAnnotations.Display(Name = "Precio Unitario")]
         public decimal PrecioUnitario { get; set; }
 
         // Relación N a 1 con TipoDeporte
         public int TipoDeporteId { get; set; }
-        
-        [ForeignKey(nameof(TipoDeporteId))]
-        public TipoDeporte? TipoDeporte { get; set; } // Corrección: añadido ? y eliminado = null!
+        public TipoDeporte? TipoDeporte { get; set; } 
 
         // Relación 1 a N con ClaseInscrita
-        public IList<ClaseInscrita> ClasesInscritas { get; set; }
+        public IList<ClaseInscrita> ClasesInscritas { get; set; } = new List<ClaseInscrita>();
 
-        // Corrección: añadidos Equals y GetHashCode
-        public override bool Equals(object? obj)
+        // Método Equals modificado según la corrección del PR
+        public override bool Equals(object? otro)
         {
-            if (obj is not ClaseDeportiva item)
-                return false;
+            if (otro == null) return false;
+            
+            if (otro.GetType() != this.GetType()) return false;
 
-            // En entidades de base de datos, la igualdad suele medirse por su Clave Primaria (Id)
-            return Id == item.Id;
+            ClaseDeportiva otra_clase = (ClaseDeportiva)otro;
+
+            return otra_clase.Id == this.Id;
         }
 
         public override int GetHashCode()
