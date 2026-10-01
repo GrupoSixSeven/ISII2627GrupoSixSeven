@@ -31,7 +31,7 @@ namespace AppForSEII.API.Models
         [Key]
         public int Id { get; set; }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "La descripción es obligatoria.")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "La descripción es obligatoria")]
         [System.ComponentModel.DataAnnotations.Display(Name = "Descripción")]
         public required string Descripcion { get; set; }
 
