@@ -13,7 +13,7 @@ public class TipoDeporte
     [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca el nombre de un tipo de deporte válido")]
     public required string Nombre { get; set; }
 
-    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca el nombre de un tipo de deporte válido")] 
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca el nombre de un tipo de deporte valido")] 
     public required string NombreTipoDeporte { get; set; }
 
     //getters y setters de la CU-3
