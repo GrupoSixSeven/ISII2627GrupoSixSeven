@@ -31,7 +31,7 @@ namespace AppForSEII.API.Models
         public Inscripcion? Inscripcion { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Debe reservar al menos 1 plaza.")]
-        public int PlazasReservadas { get; set; }
+        public int PlazasReservadas { get; set;}
 
         [Required(ErrorMessage = "El precio es obligatorio.")]
         [Precision(10, 2)]
