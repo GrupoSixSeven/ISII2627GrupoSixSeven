@@ -1,73 +1,66 @@
-using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity; // Necesario para IdentityUser
 
-namespace AppForSEII.API.Models;
-
-public class ApplicationUser : IdentityUser
+namespace AppForSEII.API.Models
 {
-    [Required]
-    public string? Name { get; set; }
-
-    [Required]
-    public string? Surname { get; set; }
-
-    [Required]
-    public string? DNI { get; set; }
-
-    public int Age { get; set; }
-
-    public string? Sex { get; set; }
-
-    // Relación con las inscripciones realizadas por el usuario 
-    // lo comento porque da error ya que no esta la enumeracion imple
-   // public IList<ClaseInscrita> ClasesInscritas { get; set; } = new List<ClaseInscrita>();
-
-    // Constructor vacío
-    public ApplicationUser() : base()
+    // La clase hereda de IdentityUser como marca el diagrama
+    public class ApplicationUser : IdentityUser
     {
-    }
-
-    // Constructor con parámetros
-    public ApplicationUser(
-        string name, 
-        string surname, 
-        string dni, 
-        int age, 
-        string? sex, 
-        string userName, 
-        string email, 
-        string phoneNumber) : base()
-    {
-        Name = name;
-        Surname = surname;
-        DNI = dni;
-        Age = age;
-        Sex = sex;
-        UserName = userName;
-        Email = email;
-        PhoneNumber = phoneNumber;
-    }
-
-    // Comprueba igualdad comparando tipos e Ids no nulos
-    public override bool Equals(object? otro)
-    {
-        if (otro == null) return false;
-        if (otro.GetType() != this.GetType()) return false;
-
-        ApplicationUser otro_usuario = (ApplicationUser)otro;
-
-        // Si alguna Id es nula (objeto aún no persistido), se comparan por referencia en memoria
-        if (this.Id == null || otro_usuario.Id == null)
+        // 1. Constructor vacío 
+        public ApplicationUser()
         {
-            return ReferenceEquals(this, otro_usuario);
         }
 
-        return otro_usuario.Id == this.Id;
-    }
+        // 2. Sobrecarga del constructor con los datos principales
+        public ApplicationUser(string name, string surname, string dni, int age, string sex, string userName, string email, string phoneNumber)
+        {
+            Name = name ?? throw new ArgumentNullException(nameof(name));
+            Surname = surname ?? throw new ArgumentNullException(nameof(surname));
+            DNI = dni ?? throw new ArgumentNullException(nameof(dni));
+            Age = age;
+            Sex = sex ?? throw new ArgumentNullException(nameof(sex));
+            
+            // Estas propiedades vienen heredadas de IdentityUser
+            UserName = userName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+        }
 
-    public override int GetHashCode()
-    {
-        return Id != null ? Id.GetHashCode() : base.GetHashCode();
+        // Propiedades específicas del modelo (las heredadas no se declaran de nuevo)
+        
+        [Required(ErrorMessage = "El nombre es obligatorio.")]
+        [StringLength(50)]
+        public string Name { get; set; } = null!;
+
+        [Required(ErrorMessage = "El apellido es obligatorio.")]
+        [StringLength(100)]
+        public string Surname { get; set; } = null!;
+
+        [Required(ErrorMessage = "El DNI es obligatorio.")]
+        [StringLength(20)]
+        public string DNI { get; set; } = null!;
+
+        [Range(0, 120, ErrorMessage = "La edad debe ser un valor válido.")]
+        public int Age { get; set; }
+
+        [Required]
+        [StringLength(20)]
+        public string Sex { get; set; } = null!;
+
+        // Métodos Equals y GetHashCode
+        public override bool Equals(object? obj)
+        {
+            if (obj is not ApplicationUser item)
+                return false;
+
+            // Al heredar de IdentityUser, el Id es de tipo string
+            return Id == item.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
+        }
     }
 }
