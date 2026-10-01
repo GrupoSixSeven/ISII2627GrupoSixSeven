@@ -19,10 +19,10 @@ public class Reserva
     public required string Dni { get; set; }
 
     [Required(ErrorMessage = "Introduzca una fecha de reserva válida")]
-    public DateTime FechaReserva { get; set; }
+    public required DateTime FechaReserva { get; set; }
 
     [Required(ErrorMessage = "Introduzca un método de pago válido")]
-    public MetodoPago MetodoPago { get; set; }
+    public required MetodoPago MetodoPago { get; set; }
 
     [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio total válido")]
     public decimal PrecioTotal { get; set; }
