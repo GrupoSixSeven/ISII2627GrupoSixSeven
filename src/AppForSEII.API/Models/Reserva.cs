@@ -9,20 +9,27 @@ public class Reserva
     [Key]
     public int Id { get; set; }
 
-    [Required]
-    public string? NombreCliente { get; set; }
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca un nombre de cliente válido")]
+    public required string NombreCliente { get; set; }
 
-    [Required]
-    public string? Apellidos { get; set; }
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca los apellidos válidos")]
+    public required string Apellidos { get; set; }
 
-    [Required]
-    public string? Dni { get; set; }
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca un DNI válido")]
+    public required string Dni { get; set; }
 
-    public DateTime FechaReserva { get; set; }
+    [Required(ErrorMessage = "Introduzca una fecha de reserva válida")]
+    public required DateTime FechaReserva { get; set; }
 
-    public string? MetodoPago { get; set; }
+    [Required(ErrorMessage = "Introduzca un método de pago válido")]
+    public required MetodoPago MetodoPago { get; set; }
 
-    public double PrecioTotal { get; set; }
+    [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio total válido")]
+    public decimal PrecioTotal { get; set; }
+ 
+    //RELACIÓN
+    //Relación con PistaReservada (1 - N)
+    public ICollection<PistaReservada> PistasReservadas { get; set; } = new List<PistaReservada>();
 
     // Constructor vacío
     public Reserva()
@@ -30,7 +37,7 @@ public class Reserva
     }
 
     // Constructor con los atributos principales
-    public Reserva(int id, string? nombreCliente, string? apellidos, string? dni, DateTime fechaReserva, string? metodoPago, double precioTotal)
+    public Reserva(int id, string nombreCliente, string apellidos, string dni, DateTime fechaReserva, MetodoPago metodoPago, decimal precioTotal)
     {
         Id = id;
         NombreCliente = nombreCliente;
