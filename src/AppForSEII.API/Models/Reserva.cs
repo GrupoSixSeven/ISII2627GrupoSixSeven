@@ -22,7 +22,7 @@ public class Reserva
     public DateTime FechaReserva { get; set; }
 
     [Required(ErrorMessage = "Introduzca un método de pago válido")]
-    public string MetodoPago { get; set; }
+    public MetodoPago MetodoPago { get; set; }
 
     [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio total válido")]
     public double PrecioTotal { get; set; }
@@ -37,7 +37,7 @@ public class Reserva
     }
 
     // Constructor con los atributos principales
-    public Reserva(int id, string nombreCliente, string apellidos, string dni, DateTime fechaReserva, string metodoPago, double precioTotal)
+    public Reserva(int id, string nombreCliente, string apellidos, string dni, DateTime fechaReserva, MetodoPago metodoPago, double precioTotal)
     {
         Id = id;
         NombreCliente = nombreCliente;
