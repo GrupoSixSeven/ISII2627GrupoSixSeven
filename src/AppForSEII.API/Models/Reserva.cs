@@ -9,20 +9,27 @@ public class Reserva
     [Key]
     public int Id { get; set; }
 
-    [Required]
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca un nombre de cliente válido")]
     public string? NombreCliente { get; set; }
 
-    [Required]
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca los apellidos válidos")]
     public string? Apellidos { get; set; }
 
-    [Required]
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca un DNI válido")]
     public string? Dni { get; set; }
 
+    [Required(ErrorMessage = "Introduzca una fecha de reserva válida")]
     public DateTime FechaReserva { get; set; }
 
+    [Required(ErrorMessage = "Introduzca un método de pago válido")]
     public string? MetodoPago { get; set; }
 
+    [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio total válido")]
     public double PrecioTotal { get; set; }
+ 
+    //RELACIÓN
+    //Relación con PistaReservada (1 - N)
+    public ICollection<PistaReservada> PistasReservadas { get; set; } = new List<PistaReservada>();
 
     // Constructor vacío
     public Reserva()
