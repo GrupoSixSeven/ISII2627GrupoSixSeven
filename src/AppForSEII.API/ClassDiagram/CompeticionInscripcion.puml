@@ -2,6 +2,9 @@
 class CompeticionInscripcion {
     + CompeticionId : int <<get>> <<set>>
     + InscripcionId : int <<get>> <<set>>
+    + ProblemasFisicos : String? <<get>> <<set>>
+    + Competicion : Competicion? <<get>> <<set>>
+    + Inscripcion : Inscripcion? <<get>> <<set>>
     + CompeticionInscripcion()
     + CompeticionInscripcion(competicionId:int, inscripcionId:int, problemasFisicos:String?)
     + <<override>> Equals(otro:object?) : bool

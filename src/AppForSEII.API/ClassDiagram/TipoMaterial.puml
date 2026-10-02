@@ -2,6 +2,7 @@
 class TipoMaterial {
     + IdTipoMaterial : int <<get>> <<set>>
     + <<required>> NombreTipoMaterial : string <<get>> <<set>>
+    + Materiales : ICollection<Material> <<get>> <<set>>
     + TipoMaterial()
     + TipoMaterial(idTipoMaterial:int, nombreTipoMaterial:string)
     + <<override>> Equals(otro:object?) : bool

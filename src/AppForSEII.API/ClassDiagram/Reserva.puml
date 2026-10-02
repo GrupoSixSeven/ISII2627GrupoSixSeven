@@ -4,7 +4,10 @@ class Reserva {
     + <<required>> NombreCliente : string <<get>> <<set>>
     + <<required>> Apellidos : string <<get>> <<set>>
     + <<required>> Dni : string <<get>> <<set>>
+    + <<required>> FechaReserva : DateTime <<get>> <<set>>
+    + <<required>> MetodoPago : MetodoPago <<get>> <<set>>
     + PrecioTotal : decimal <<get>> <<set>>
+    + PistasReservadas : ICollection<PistaReservada> <<get>> <<set>>
     + Reserva()
     + Reserva(id:int, nombreCliente:string, apellidos:string, dni:string, fechaReserva:DateTime, metodoPago:MetodoPago, precioTotal:decimal)
     + <<override>> Equals(otro:object?) : bool

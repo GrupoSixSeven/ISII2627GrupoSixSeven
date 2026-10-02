@@ -1,7 +1,9 @@
 @startuml
 class MaterialAlquilado {
     + IdAlquiler : int <<get>> <<set>>
+    + Alquiler : Alquiler? <<get>> <<set>>
     + IdMaterial : int <<get>> <<set>>
+    + Material : Material? <<get>> <<set>>
     + Cantidad : int <<get>> <<set>>
     + Precio : decimal <<get>> <<set>>
     + Descripcion : string? <<get>> <<set>>

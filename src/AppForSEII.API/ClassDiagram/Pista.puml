@@ -6,6 +6,8 @@ class Pista {
     + Precio : decimal <<get>> <<set>>
     + Stock : int <<get>> <<set>>
     + IdTipoDeporte : int <<get>> <<set>>
+    + TipoDeporte : TipoDeporte? <<get>> <<set>>
+    + PistasReservadas : ICollection<PistaReservada> <<get>> <<set>>
     + Pista()
     + Pista(idPista:int, nombrePista:string, nPersonas:int, precio:decimal, stock:int, idTipoDeporte:int)
     + <<override>> Equals(otro:object?) : bool

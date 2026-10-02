@@ -6,6 +6,9 @@ class PistaReservada {
     + Precio : decimal <<get>> <<set>>
     + IdPista : int <<get>> <<set>>
     + IdReserva : int <<get>> <<set>>
+    + Pista : Pista? <<get>> <<set>>
+    + IdReserva : int <<get>> <<set>>
+    + Reserva : Reserva? <<get>> <<set>>
     + PistaReservada()
     + PistaReservada(id:int, cantidad:int, observaciones:string?, precio:decimal, idPista:int, idReserva:int)
     + <<override>> Equals(otro:object?) : bool

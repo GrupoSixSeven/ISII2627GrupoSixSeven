@@ -1,11 +1,14 @@
-@startuml Alquiler
+@startuml
 class Alquiler {
     + IdAlquiler : int <<get>> <<set>>
     + <<required>> NombreUsuario : string <<get>> <<set>>
     + <<required>> ApellidosUsuario : string <<get>> <<set>>
     + <<required>> DNI : string <<get>> <<set>>
     + <<required>> NumeroTelefono : string <<get>> <<set>>
+    + <<required>> FechaAlquiler : DateTime <<get>> <<set>>
+    + <<required>> MetodoPago : MetodoPago <<get>> <<set>>
     + <<required>> PrecioTotal : double <<get>> <<set>>
+    + <<virtual>> MaterialesAlquilados : ICollection<MaterialAlquilado> <<get>> <<set>>
     + Alquiler()
     + Alquiler(idAlquiler:int, nombreUsuario:string, apellidosUsuario:string, dni:string, numeroTelefono:string, fechaAlquiler:DateTime, metodoPago:MetodoPago, precioTotal:double)
     + <<override>> Equals(otro:object?) : bool

@@ -1,0 +1,15 @@
+@startuml
+!include ClaseDeportiva.puml
+!include ClaseInscrita.puml
+!include Inscripcion.puml
+!include TipoDeporte.puml
+!include ApplicationUser.puml
+!include MetodoPago.puml
+
+' Relaciones
+ClaseDeportiva "1" <--> "*" ClaseInscrita : ClaseDeportiva / ClasesInscritas
+ClaseInscrita "*" <--> "1" Inscripcion : Inscripcion / ClasesInscritas
+ClaseDeportiva "*" <--> "1" TipoDeporte : TipoDeporte / ClasesDeportivas
+Inscripcion "*" --> "1" ApplicationUser : ApplicationUser
+
+@enduml
