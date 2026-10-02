@@ -14,7 +14,10 @@ public class Alquiler{
 
     public virtual ICollection<MaterialAlquilado> MaterialesAlquilados { get; set; } = new List<MaterialAlquilado>();
     //Constructor vacío
-    public Alquiler(){}    
+    public Alquiler()
+    {
+        
+    }    
     //Constructor con parámetros
     public Alquiler(int idAlquiler, string numeroTelefono, DateTime fechaAlquiler, MetodoPago metodoPago, double precioTotal){
         this.IdAlquiler = idAlquiler;
