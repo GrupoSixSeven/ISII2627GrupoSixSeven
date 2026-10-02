@@ -13,4 +13,6 @@ class ClaseInscrita {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+ClaseInscrita --> "ClaseDeportiva" ClaseDeportiva
+ClaseInscrita --> "Inscripcion" Inscripcion
 @enduml

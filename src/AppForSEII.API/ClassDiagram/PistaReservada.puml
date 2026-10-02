@@ -5,6 +5,7 @@ class PistaReservada {
     + Observaciones : string? <<get>> <<set>>
     + Precio : decimal <<get>> <<set>>
     + IdPista : int <<get>> <<set>>
+    + IdReserva : int <<get>> <<set>>
     + Pista : Pista? <<get>> <<set>>
     + IdReserva : int <<get>> <<set>>
     + Reserva : Reserva? <<get>> <<set>>
@@ -13,4 +14,6 @@ class PistaReservada {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+PistaReservada --> "Pista" Pista
+PistaReservada --> "Reserva" Reserva
 @enduml

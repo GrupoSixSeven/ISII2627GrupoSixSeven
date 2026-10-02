@@ -1,0 +1,13 @@
+@startuml
+hide methods
+!include Competicion.puml
+!include CompeticionInscripcion.puml
+!include Inscripcion.puml
+!include TipoDeporte.puml
+
+' Relaciones (1 a Muchos) inferidas de las colecciones
+TipoDeporte "1" -- "*" Competicion 
+Competicion "1" -- "*" CompeticionInscripcion 
+Inscripcion "1" -- "*" CompeticionInscripcion 
+
+@enduml

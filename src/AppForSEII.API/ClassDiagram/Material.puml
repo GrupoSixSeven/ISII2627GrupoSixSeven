@@ -14,4 +14,9 @@ class Material {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+class "ICollection`1"<T> {
+}
+Material --> "TipoMaterial" TipoMaterial
+Material --> "TipoDeporte" TipoDeporte
+Material o-> "MaterialAlquilados<MaterialAlquilado>" "ICollection`1"
 @enduml
