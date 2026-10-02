@@ -8,9 +8,7 @@ public class Material{
 
     public int IdMaterial { get; set; }
 
-    [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre es obligatorio")]
-    [StringLength(50, ErrorMessage = "El nombre no puede superar los 50 caracteres")]
-    public required string Nombre { get; set; }
+
     
     [Range(1, int.MaxValue, ErrorMessage = "La cantidad minima debe ser 1")]
     public int Cantidad { get; set; }
@@ -30,10 +28,9 @@ public class Material{
     //Relacion MaterialAlquilado (1-N)
     public ICollection<MaterialAlquilado> MaterialAlquilados { get; set; } = new List<MaterialAlquilado>();
     public Material(){}
-    public Material(int idMaterial, string nombre, int cantidad, decimal precio)
+    public Material(int idMaterial, int cantidad, decimal precio)
     {
         this.IdMaterial = idMaterial;
-        this.Nombre = nombre;
         this.Cantidad = cantidad;
         this.Precio = precio;
     }
