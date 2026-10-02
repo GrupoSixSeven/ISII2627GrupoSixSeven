@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AppForSEII.API.Models
 {
+    // Definimos la clave primaria compuesta como indica la guía del seminario
+    [PrimaryKey(nameof(ClaseDeportivaId), nameof(InscripcionId))]
     public class ClaseInscrita
     {
         public ClaseInscrita()
@@ -12,14 +14,12 @@ namespace AppForSEII.API.Models
 
         public ClaseInscrita(int claseDeportivaId, int inscripcionId, int plazasReservadas, decimal precio, string? observaciones)
         {
-            
+            ClaseDeportivaId = claseDeportivaId;
+            InscripcionId = inscripcionId;
             PlazasReservadas = plazasReservadas;
             Precio = precio;
             Observaciones = observaciones;
         }
-
-        [Key]
-        public int Id { get; set; } // Implementado tal y como marca el diagrama UML
 
         // Relación con ClaseDeportiva
         public int ClaseDeportivaId { get; set; }
@@ -47,14 +47,15 @@ namespace AppForSEII.API.Models
 
             ClaseInscrita otra_clase = (ClaseInscrita)otro;
 
-            return otra_clase.Id == this.Id;
+            // La igualdad ahora se basa en las dos claves foráneas
+            return otra_clase.ClaseDeportivaId == this.ClaseDeportivaId &&
+                   otra_clase.InscripcionId == this.InscripcionId;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Id);
+            // El hash se combina usando las dos claves foráneas
+            return HashCode.Combine(ClaseDeportivaId, InscripcionId);
         }
     }
-
-    
 }
