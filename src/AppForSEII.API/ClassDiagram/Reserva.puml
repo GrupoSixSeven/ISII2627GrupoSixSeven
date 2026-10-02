@@ -13,4 +13,9 @@ class Reserva {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+class "ICollection`1"<T> {
+}
+Reserva --> "FechaReserva" DateTime
+Reserva --> "MetodoPago" MetodoPago
+Reserva o-> "PistasReservadas<PistaReservada>" "ICollection`1"
 @enduml

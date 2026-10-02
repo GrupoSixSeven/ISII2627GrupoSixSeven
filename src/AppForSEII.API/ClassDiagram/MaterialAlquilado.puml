@@ -12,4 +12,6 @@ class MaterialAlquilado {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+MaterialAlquilado --> "Alquiler" Alquiler
+MaterialAlquilado --> "Material" Material
 @enduml

@@ -18,4 +18,15 @@ class Inscripcion {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+class "ICollection`1"<T> {
+}
+Inscripcion --> "ApellidosUsuario" String
+Inscripcion --> "Dni" String
+Inscripcion --> "FechaInscripcion" DateTime
+Inscripcion --> "MetodoPago" MetodoPago
+Inscripcion --> "NombreUsuario" String
+Inscripcion --> "Telefono" String
+Inscripcion --> "Cliente" ApplicationUser
+Inscripcion o-> "CompeticionInscripciones<CompeticionInscripcion>" "ICollection`1"
+Inscripcion o-> "ClasesInscritas<ClaseInscrita>" "ICollection`1"
 @enduml

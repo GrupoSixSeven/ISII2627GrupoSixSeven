@@ -13,4 +13,8 @@ class Pista {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+class "ICollection`1"<T> {
+}
+Pista --> "TipoDeporte" TipoDeporte
+Pista o-> "PistasReservadas<PistaReservada>" "ICollection`1"
 @enduml

@@ -10,4 +10,7 @@ class CompeticionInscripcion {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+CompeticionInscripcion --> "ProblemasFisicos" String
+CompeticionInscripcion --> "Competicion" Competicion
+CompeticionInscripcion --> "Inscripcion" Inscripcion
 @enduml

@@ -14,4 +14,9 @@ class Alquiler {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+class "ICollection`1"<T> {
+}
+Alquiler --> "FechaAlquiler" DateTime
+Alquiler --> "MetodoPago" MetodoPago
+Alquiler o-> "MaterialesAlquilados<MaterialAlquilado>" "ICollection`1"
 @enduml

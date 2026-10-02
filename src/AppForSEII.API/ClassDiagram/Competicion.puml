@@ -13,4 +13,11 @@ class Competicion {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+class "ICollection`1"<T> {
+}
+Competicion --> "Fecha" DateTime
+Competicion --> "Lugar" String
+Competicion --> "Nombre" String
+Competicion --> "TipoDeporte" TipoDeporte
+Competicion o-> "CompeticionInscripciones<CompeticionInscripcion>" "ICollection`1"
 @enduml

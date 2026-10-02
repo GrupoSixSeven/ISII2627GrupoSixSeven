@@ -15,4 +15,12 @@ class TipoDeporte {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+class "ICollection`1"<T> {
+}
+TipoDeporte --> "Competicion" Competicion
+TipoDeporte --> "Pista" Pista
+TipoDeporte o-> "Pistas<Pista>" "ICollection`1"
+TipoDeporte o-> "Competiciones<Competicion>" "ICollection`1"
+TipoDeporte o-> "Materiales<Material>" "ICollection`1"
+TipoDeporte o-> "ClasesDeportivas<ClaseDeportiva>" "ICollection`1"
 @enduml

@@ -8,4 +8,7 @@ class TipoMaterial {
     + <<override>> Equals(otro:object?) : bool
     + <<override>> GetHashCode() : int
 }
+class "ICollection`1"<T> {
+}
+TipoMaterial o-> "Materiales<Material>" "ICollection`1"
 @enduml
