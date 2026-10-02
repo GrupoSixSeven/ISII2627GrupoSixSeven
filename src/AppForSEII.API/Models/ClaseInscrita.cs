@@ -12,8 +12,7 @@ namespace AppForSEII.API.Models
 
         public ClaseInscrita(int claseDeportivaId, int inscripcionId, int plazasReservadas, decimal precio, string? observaciones)
         {
-            ClaseDeportivaId = claseDeportivaId;
-            InscripcionId = inscripcionId;
+            
             PlazasReservadas = plazasReservadas;
             Precio = precio;
             Observaciones = observaciones;

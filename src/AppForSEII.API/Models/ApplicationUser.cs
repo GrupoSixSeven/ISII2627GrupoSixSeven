@@ -23,7 +23,7 @@ namespace AppForSEII.API.Models
             PhoneNumber = phoneNumber;
         }
 
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre es obligatorio.")]
+            [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre es obligatorio.")]
         public string Name { get; set; } = string.Empty; // Sin required y con valor por defecto
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "El apellido es obligatorio.")]
