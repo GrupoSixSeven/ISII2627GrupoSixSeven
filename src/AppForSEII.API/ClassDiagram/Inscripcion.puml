@@ -1,0 +1,21 @@
+@startuml
+class Inscripcion {
+    + Id : int <<get>> <<set>>
+    + <<required>> ApellidosUsuario : String <<get>> <<set>>
+    + <<required>> Dni : String <<get>> <<set>>
+    + <<required>> FechaInscripcion : DateTime <<get>> <<set>>
+    + <<required>> MetodoPago : MetodoPago <<get>> <<set>>
+    + <<required>> NombreUsuario : String <<get>> <<set>>
+    + PrecioTotal : decimal <<get>> <<set>>
+    + <<required>> Telefono : String <<get>> <<set>>
+    + <<required>> DatosPago : string <<get>> <<set>>
+    + ClienteId : string? <<get>> <<set>>
+    + Cliente : ApplicationUser? <<get>> <<set>>
+    + CompeticionInscripciones : ICollection<CompeticionInscripcion> <<get>> <<set>>
+    + ClasesInscritas : ICollection<ClaseInscrita> <<get>> <<set>>
+    + Inscripcion()
+    + Inscripcion(apellidoUsuario:String, dni:String, fechaInscripcion:DateTime, id:int, metodoPago:MetodoPago, nombreUsuario:String, precioTotal:decimal, telefono:String, datosPago:string)
+    + <<override>> Equals(otro:object?) : bool
+    + <<override>> GetHashCode() : int
+}
+@enduml

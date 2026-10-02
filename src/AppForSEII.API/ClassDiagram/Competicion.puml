@@ -1,0 +1,16 @@
+@startuml 
+class Competicion {
+    + Id : int <<get>> <<set>>
+    + <<required>> Fecha : DateTime <<get>> <<set>>
+    + <<required>> Lugar : String <<get>> <<set>>
+    + <<required>> Nombre : String <<get>> <<set>>
+    + Plazas : int <<get>> <<set>>
+    + Precio : decimal <<get>> <<set>>
+    + <<required>> TipoDeporte : TipoDeporte <<get>> <<set>>
+    + CompeticionInscripciones : ICollection<CompeticionInscripcion> <<get>> <<set>>
+    + Competicion()
+    + Competicion(id:int, fecha:DateTime, lugar:String, nombre:String, plazas:int, precio:decimal)
+    + <<override>> Equals(otro:object?) : bool
+    + <<override>> GetHashCode() : int
+}
+@enduml
