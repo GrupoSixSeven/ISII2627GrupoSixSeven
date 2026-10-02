@@ -1,0 +1,15 @@
+@startuml
+
+hide methods
+
+!include TipoDeporte.puml
+!include Pista.puml
+!include PistaReservada.puml
+!include Reserva.puml
+
+' Relaciones
+TipoDeporte "1" <--> "*" Pista : TipoDeporte / Pistas
+Pista "1" <--> "*" PistaReservada : Pista / PistasReservadas
+PistaReservada "*" <--> "1" Reserva : Reserva / PistasReservadas
+
+@enduml

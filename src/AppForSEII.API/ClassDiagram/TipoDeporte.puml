@@ -1,0 +1,18 @@
+@startuml
+class TipoDeporte {
+    + Id : int <<get>> <<set>>
+    + <<required>> Nombre : string <<get>> <<set>>
+    + <<required>> NombreTipoDeporte : string <<get>> <<set>>
+    + <<required>> Descripcion : string <<get>> <<set>>
+    + <<required>> Competicion : Competicion <<get>> <<set>>
+    + <<required>> Pista : Pista <<get>> <<set>>
+    + Pistas : ICollection<Pista> <<get>> <<set>>
+    + Competiciones : ICollection<Competicion> <<get>> <<set>>
+    + Materiales : ICollection<Material> <<get>> <<set>>
+    + ClasesDeportivas : ICollection<ClaseDeportiva> <<get>> <<set>>
+    + TipoDeporte()
+    + TipoDeporte(Id:int, Nombre:string, nombreTipoDeporte:string, descripcion:string)
+    + <<override>> Equals(otro:object?) : bool
+    + <<override>> GetHashCode() : int
+}
+@enduml
