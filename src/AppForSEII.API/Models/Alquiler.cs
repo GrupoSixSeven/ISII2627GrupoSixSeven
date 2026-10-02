@@ -3,7 +3,6 @@ namespace AppForSEII.API.Models;
 public class Alquiler{
     [Key]
     public int IdAlquiler { get; set; }
-    public required string NumeroTelefono { get; set; }
     [Required(ErrorMessage = "Error, introduzca una fecha válida")]
     public required DateTime FechaAlquiler { get; set; }
     [Required(ErrorMessage = "Introduzca un método de pago válido")]
@@ -19,9 +18,8 @@ public class Alquiler{
         
     }    
     //Constructor con parámetros
-    public Alquiler(int idAlquiler, string numeroTelefono, DateTime fechaAlquiler, MetodoPago metodoPago, double precioTotal){
+    public Alquiler(int idAlquiler, DateTime fechaAlquiler, MetodoPago metodoPago, double precioTotal){
         this.IdAlquiler = idAlquiler;
-        this.NumeroTelefono = numeroTelefono;
         this.FechaAlquiler = fechaAlquiler;
         this.MetodoPago = metodoPago;
         this.PrecioTotal = precioTotal;
