@@ -3,15 +3,6 @@ namespace AppForSEII.API.Models;
 public class Alquiler{
     [Key]
     public int IdAlquiler { get; set; }
-
-    [Required(AllowEmptyStrings = false, ErrorMessage = "El Nombre del Usuario es obligatorio")]
-    public required string NombreUsuario { get; set; }
-    [Required(AllowEmptyStrings = false, ErrorMessage = "El Apellido del Usuario es obligatorio")]
-    public required string ApellidosUsuario { get; set; }
-    [Required(AllowEmptyStrings = false, ErrorMessage = "El DNI del Usuario es obligatorio")]
-    public required string DNI { get; set; }
-    [Required(AllowEmptyStrings = false, ErrorMessage = "El Número de Teléfono es obligatorio")]
-    public required string NumeroTelefono { get; set; }
     [Required(ErrorMessage = "Error, introduzca una fecha válida")]
     public required DateTime FechaAlquiler { get; set; }
     [Required(ErrorMessage = "Introduzca un método de pago válido")]
@@ -22,14 +13,13 @@ public class Alquiler{
 
     public virtual ICollection<MaterialAlquilado> MaterialesAlquilados { get; set; } = new List<MaterialAlquilado>();
     //Constructor vacío
-    public Alquiler(){}    
+    public Alquiler()
+    {
+        
+    }    
     //Constructor con parámetros
-    public Alquiler(int idAlquiler, string nombreUsuario, string apellidosUsuario, string dni, string numeroTelefono, DateTime fechaAlquiler, MetodoPago metodoPago, double precioTotal){
+    public Alquiler(int idAlquiler, DateTime fechaAlquiler, MetodoPago metodoPago, double precioTotal){
         this.IdAlquiler = idAlquiler;
-        this.NombreUsuario = nombreUsuario;
-        this.ApellidosUsuario = apellidosUsuario;
-        this.DNI = dni;
-        this.NumeroTelefono = numeroTelefono;
         this.FechaAlquiler = fechaAlquiler;
         this.MetodoPago = metodoPago;
         this.PrecioTotal = precioTotal;
