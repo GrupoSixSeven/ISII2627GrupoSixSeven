@@ -1,0 +1,18 @@
+@startuml
+class Reserva {
+    + Id : int <<get>> <<set>>
+    + <<required>> NombreCliente : string <<get>> <<set>>
+    + <<required>> Apellidos : string <<get>> <<set>>
+    + <<required>> Dni : string <<get>> <<set>>
+    + PrecioTotal : decimal <<get>> <<set>>
+    + Reserva()
+    + Reserva(id:int, nombreCliente:string, apellidos:string, dni:string, fechaReserva:DateTime, metodoPago:MetodoPago, precioTotal:decimal)
+    + <<override>> Equals(otro:object?) : bool
+    + <<override>> GetHashCode() : int
+}
+class "ICollection`1"<T> {
+}
+Reserva --> "FechaReserva" DateTime
+Reserva --> "MetodoPago" MetodoPago
+Reserva o-> "PistasReservadas<PistaReservada>" "ICollection`1"
+@enduml

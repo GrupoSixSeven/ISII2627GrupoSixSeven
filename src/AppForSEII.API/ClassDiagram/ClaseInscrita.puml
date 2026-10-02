@@ -1,0 +1,16 @@
+@startuml
+class ClaseInscrita {
+    + ClaseInscrita()
+    + ClaseInscrita(claseDeportivaId:int, inscripcionId:int, plazasReservadas:int, precio:decimal, observaciones:string?)
+    + Id : int <<get>> <<set>>
+    + ClaseDeportivaId : int <<get>> <<set>>
+    + InscripcionId : int <<get>> <<set>>
+    + PlazasReservadas : int <<get>> <<set>>
+    + Precio : decimal <<get>> <<set>>
+    + Observaciones : string? <<get>> <<set>>
+    + <<override>> Equals(otro:object?) : bool
+    + <<override>> GetHashCode() : int
+}
+ClaseInscrita --> "ClaseDeportiva" ClaseDeportiva
+ClaseInscrita --> "Inscripcion" Inscripcion
+@enduml

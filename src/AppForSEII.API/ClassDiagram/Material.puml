@@ -1,0 +1,19 @@
+@startuml
+class Material {
+    + IdMaterial : int <<get>> <<set>>
+    + <<required>> Nombre : string <<get>> <<set>>
+    + Cantidad : int <<get>> <<set>>
+    + Precio : decimal <<get>> <<set>>
+    + IdTipoMaterial : int <<get>> <<set>>
+    + IdTipoDeporte : int <<get>> <<set>>
+    + Material()
+    + Material(idMaterial:int, nombre:string, cantidad:int, precio:decimal)
+    + <<override>> Equals(otro:object?) : bool
+    + <<override>> GetHashCode() : int
+}
+class "ICollection`1"<T> {
+}
+Material --> "TipoMaterial" TipoMaterial
+Material --> "TipoDeporte" TipoDeporte
+Material o-> "MaterialAlquilados<MaterialAlquilado>" "ICollection`1"
+@enduml

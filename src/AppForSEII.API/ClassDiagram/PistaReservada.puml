@@ -1,0 +1,16 @@
+@startuml
+class PistaReservada {
+    + ID : int <<get>> <<set>>
+    + Cantidad : int <<get>> <<set>>
+    + Observaciones : string? <<get>> <<set>>
+    + Precio : decimal <<get>> <<set>>
+    + IdPista : int <<get>> <<set>>
+    + IdReserva : int <<get>> <<set>>
+    + PistaReservada()
+    + PistaReservada(id:int, cantidad:int, observaciones:string?, precio:decimal, idPista:int, idReserva:int)
+    + <<override>> Equals(otro:object?) : bool
+    + <<override>> GetHashCode() : int
+}
+PistaReservada --> "Pista" Pista
+PistaReservada --> "Reserva" Reserva
+@enduml

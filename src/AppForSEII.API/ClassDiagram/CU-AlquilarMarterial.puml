@@ -1,0 +1,14 @@
+@startuml CU-AlquilarMarterial
+!include TipoDeporte.puml
+!include Material.puml
+!include TipoMaterial.puml
+!include MaterialAlquilado.puml
+!include Alquiler.puml
+
+' Relaciones
+TipoDeporte "1" <--> "*" Material : TipoDeporte / Materiales
+Material "*" <--> "1" TipoMaterial : Materiales / TipoMaterial
+Material "1" <--> "*" MaterialAlquilado : Material / MaterialAl...
+MaterialAlquilado "*" --> "1" Alquiler : Alquiler
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml
+class ClaseDeportiva {
+    + ClaseDeportiva()
+    + ClaseDeportiva(descripcion:string, fechaHora:DateTime, lugar:string, monitor:string, nivel:string, plazasDisponibles:int, precioUnitario:decimal, tipoDeporte:TipoDeporte)
+    + Id : int <<get>> <<set>>
+    + <<required>> Descripcion : string <<get>> <<set>>
+    + <<required>> Lugar : string <<get>> <<set>>
+    + <<required>> Monitor : string <<get>> <<set>>
+    + <<required>> Nivel : string <<get>> <<set>>
+    + PlazasDisponibles : int <<get>> <<set>>
+    + PrecioUnitario : decimal <<get>> <<set>>
+    + TipoDeporteId : int <<get>> <<set>>
+    + <<override>> Equals(otro:object?) : bool
+    + <<override>> GetHashCode() : int
+}
+class "IList`1"<T> {
+}
+ClaseDeportiva --> "FechaHora" DateTime
+ClaseDeportiva --> "TipoDeporte" TipoDeporte
+ClaseDeportiva o-> "ClasesInscritas<ClaseInscrita>" "IList`1"
+@enduml
