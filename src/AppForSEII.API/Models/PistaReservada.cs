@@ -1,28 +1,31 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppForSEII.API.Models;
 
+[PrimaryKey(nameof(IdPista), nameof(IdReserva))]
 public class PistaReservada
 {
-    [Key]
-    public int ID { get; set; }
-
+    [Required(ErrorMessage = "El campo es obligatorio, introduzca un valor")]
     [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe ser al menos 1")]
     public int Cantidad { get; set; }
 
-
     public string? Observaciones { get; set; }
 
+    [Required(ErrorMessage = "El campo es obligatorio, introduzca un valor")]
     [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio válido")]
     public decimal Precio { get; set; }
 
-    //RELACIONES
-    //Relación con Pista (N - 1)
+    // RELACIONES / CLAVES FORÁNEAS (Clave primaria compuesta)
+    [Required(ErrorMessage = "El campo es obligatorio, introduzca un valor")]
+    [Range(0, int.MaxValue, ErrorMessage = "Introduzca un valor válido para el id de pista")]
     public int IdPista { get; set; }
     public Pista? Pista { get; set; }
 
-    //Relación con Reserva (N - 1)
+    [Required(ErrorMessage = "El campo es obligatorio, introduzca un valor")]
+    [Range(0, int.MaxValue, ErrorMessage = "Introduzca un valor válido para el id de reserva")]
     public int IdReserva { get; set; }
     public Reserva? Reserva { get; set; }
 
@@ -31,10 +34,9 @@ public class PistaReservada
     {
     }
 
-    // Constructor con los atributos principales
-    public PistaReservada(int id, int cantidad, string? observaciones, decimal precio, int idPista, int idReserva)
+    // Constructor con los atributos principales (sin ID individual)
+    public PistaReservada(int cantidad, string? observaciones, decimal precio, int idPista, int idReserva)
     {
-        this.ID = id;
         this.Cantidad = cantidad;
         this.Observaciones = observaciones;
         this.Precio = precio;
@@ -42,7 +44,7 @@ public class PistaReservada
         this.IdReserva = idReserva;
     }
 
-    // Comprueba que el otro objeto no sea null, que sea del mismo tipo y que sus IDs coincidan
+    // Comprueba igualdad basándose en la clave compuesta
     public override bool Equals(object? otro)
     {
         if (otro == null) return false;
@@ -50,11 +52,14 @@ public class PistaReservada
 
         PistaReservada otra_pistaReservada = (PistaReservada)otro;
 
-        return otra_pistaReservada.ID == this.ID;
+        if (otra_pistaReservada.IdPista != this.IdPista || otra_pistaReservada.IdReserva != this.IdReserva) 
+            return false;
+
+        return true;
     }
 
     public override int GetHashCode()
     {
-        return ID.GetHashCode();
+        return HashCode.Combine(IdPista, IdReserva);
     }
 }
