@@ -399,26 +399,17 @@ namespace AppForSEII.API.Migrations
 
             modelBuilder.Entity("AppForSEII.API.Models.PistaReservada", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("Cantidad")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdPista")
                         .HasColumnType("int");
 
                     b.Property<int>("IdReserva")
                         .HasColumnType("int");
 
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
                     b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PistaIdPista")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(18,2)");
@@ -426,9 +417,7 @@ namespace AppForSEII.API.Migrations
                     b.Property<int?>("ReservaId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
-
-                    b.HasIndex("PistaIdPista");
+                    b.HasKey("IdPista", "IdReserva");
 
                     b.HasIndex("ReservaId");
 
@@ -761,7 +750,9 @@ namespace AppForSEII.API.Migrations
                 {
                     b.HasOne("AppForSEII.API.Models.Pista", "Pista")
                         .WithMany("PistasReservadas")
-                        .HasForeignKey("PistaIdPista");
+                        .HasForeignKey("IdPista")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AppForSEII.API.Models.Reserva", "Reserva")
                         .WithMany("PistasReservadas")
