@@ -5,7 +5,7 @@ namespace AppForSEII.API.DTOs.AlquilerDTOs
     {
         public AlquilerDetailDTO(int idAlquiler, DateTime fechaAlquiler, MetodoPago metodoPago, 
             IList<AlquilerItemDTO> materiales)
-            : base(idAlquiler, fechaAlquiler, metodoPago, materiales)
+            : base(metodoPago, fechaAlquiler, 0, materiales)
         {
             IdAlquiler = idAlquiler;
             FechaAlquiler = fechaAlquiler;
