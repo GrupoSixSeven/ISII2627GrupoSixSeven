@@ -35,7 +35,7 @@ namespace AppForSEII.API.Controllers
                 
                 .Where(m => 
                     (precioMaximo == null || m.Precio <= precioMaximo) 
-                    && (idTipoMaterial == null || m.TipoMaterial.IdTipoMaterial == idTipoMaterial)
+                    && (idTipoMaterial == null || m.IdTipoMaterial == idTipoMaterial)
                 )
                 
                 
