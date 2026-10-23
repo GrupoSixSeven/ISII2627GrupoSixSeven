@@ -39,6 +39,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Inscripcion> Inscripciones { get; set; }
     
     // Tablas intermedias para las inscripciones
-    public DbSet<CompeticionInscripcion> CompeticionesInscripciones { get; set; } 
+    public DbSet<CompeticionInscrita> CompeticionesInscritas { get; set; } 
     public DbSet<ClaseInscrita> ClasesInscritas { get; set; }
 }
