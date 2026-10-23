@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace AppForSEII.API.DTOs
+namespace AppForSEII.API.DTOs.ReservaDetailDTOs
 {
     public class ReservaDetailDTO : ReservaForCreateDTO
     {
+        public ReservaDetailDTO() : base()
+        {
+        }
+
         public ReservaDetailDTO(int idReserva, string nombreCliente, string apellidos, string dni, 
             string metodoPago, DateTime fechaReserva, decimal precioTotal, IList<ReservaItemDTO> pistas)
             : base(nombreCliente, apellidos, dni, metodoPago, fechaReserva, precioTotal, pistas)
