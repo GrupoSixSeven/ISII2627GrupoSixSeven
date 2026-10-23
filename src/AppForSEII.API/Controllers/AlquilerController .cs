@@ -22,7 +22,7 @@ namespace AppForSEII.API.Controllers
 
 
         [HttpGet]
-        [Route("[action]/{id}")] // Nota: Es mejor dejar el /{id} en la ruta para que sea un endpoint REST válido (api/Alquiler/GetAlquiler/5)
+        [Route("[action]")] // Nota: Es mejor dejar el /{id} en la ruta para que sea un endpoint REST válido (api/Alquiler/GetAlquiler/5)
         [ProducesResponseType(typeof(AlquilerDetailDTO), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetAlquiler(int id)
