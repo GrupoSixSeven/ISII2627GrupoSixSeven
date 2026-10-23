@@ -37,7 +37,7 @@ public class Inscripcion{
     
     //RELACIÓN
     //Relación con CompeticionInscripcion (1 - N), ya que podemos inscribirnos a varias competiciones, pero 1 CompeticionInscripcion solo pertenece a 1 inscripcion
-    public ICollection<CompeticionInscripcion> CompeticionInscripciones { get; set; } = new List<CompeticionInscripcion>(); //da error, pq no existe la clase CompeticionInscripcion
+    public ICollection<CompeticionInscrita> CompeticionInscrita { get; set; } = new List<CompeticionInscrita>(); //da error, pq no existe la clase CompeticionInscripcion
 
     // --- AÑADIDO SEGÚN EL DIAGRAMA UML ---
     // Relación con ClaseInscrita (1 - N)
