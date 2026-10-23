@@ -24,14 +24,28 @@ namespace AppForSEII.API.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<ClaseDeportivaParaReservarDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> GetClasesDeportivas(int? idTipoDeporte, string? monitor)
+        public async Task<ActionResult> GetClasesDeportivas(int? idTipoDeporte, string? monitor, DateTime? fecha)
         {
-            IList<ClaseDeportivaParaReservarDTO> selectClases = await _context.ClasesDeportivas
+            var query = _context.ClasesDeportivas
                 .Include(c => c.TipoDeporte)
-                .Where(c => 
-                    (idTipoDeporte == null || c.TipoDeporteId == idTipoDeporte)
-                    && (string.IsNullOrEmpty(monitor) || c.Monitor.Contains(monitor))
-                )
+                .AsQueryable();
+
+            if (idTipoDeporte.HasValue)
+            {
+                query = query.Where(c => c.TipoDeporteId == idTipoDeporte.Value);
+            }
+
+            if (!string.IsNullOrEmpty(monitor))
+            {
+                query = query.Where(c => c.Monitor != null && c.Monitor.Contains(monitor));
+            }
+
+            if (fecha.HasValue)
+            {
+                query = query.Where(c => c.FechaHora.Date == fecha.Value.Date);
+            }
+
+            var selectClases = await query
                 .OrderBy(c => c.FechaHora)
                 .Select(c => new ClaseDeportivaParaReservarDTO
                 {
@@ -43,7 +57,7 @@ namespace AppForSEII.API.Controllers
                     Nivel = c.Nivel,
                     PlazasDisponibles = c.PlazasDisponibles,
                     PrecioUnitario = c.PrecioUnitario,
-                    TipoDeporte = c.TipoDeporte!.Nombre
+                    TipoDeporte = c.TipoDeporte != null ? c.TipoDeporte.Nombre : string.Empty
                 })
                 .ToListAsync();
 

@@ -65,19 +65,12 @@ namespace AppForSEII.API.DTOs
                    TipoDeporte == dTO.TipoDeporte;
         }
 
-        public override int GetHashCode()
+       public override int GetHashCode()
         {
-            HashCode hash = new HashCode();
-            hash.Add(Id);
-            hash.Add(Descripcion);
-            hash.Add(FechaHora);
-            hash.Add(Lugar);
-            hash.Add(Monitor);
-            hash.Add(Nivel);
-            hash.Add(PlazasDisponibles);
-            hash.Add(PrecioUnitario);
-            hash.Add(TipoDeporte);
-            return hash.ToHashCode();
+            return HashCode.Combine(
+                HashCode.Combine(Id, Descripcion, FechaHora, Lugar, Monitor, Nivel, PlazasDisponibles, PrecioUnitario),
+                TipoDeporte
+            );
         }
     }
 }
