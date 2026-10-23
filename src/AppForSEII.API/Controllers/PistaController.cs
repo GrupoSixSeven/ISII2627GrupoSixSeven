@@ -24,14 +24,22 @@ namespace AppForSEII.API.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<PistaParaAlquilarDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult> GetPistasParaAlquilar(string? tipoDeporte, int? nPersonas)
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<ActionResult> GetPistasParaAlquilar(string? tipoDeporte, DateTime? fecha)
         {
-            IList<PistaParaAlquilarDTO> selectPistas = await _context.Pistas
+            DateTime fechaFiltro = fecha ?? DateTime.Today;
+
+            if (fechaFiltro.Date < DateTime.Today)
+            {
+                ModelState.AddModelError("Fecha", "¡Error! La fecha de consulta no puede ser anterior a la fecha actual.");
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
+
+            var pistas = await _context.Pistas
                 .Include(p => p.TipoDeporte)
-                .Where(p => 
-                    (tipoDeporte == null || p.TipoDeporte!.Nombre == tipoDeporte) 
-                    && (nPersonas == null || p.NPersonas >= nPersonas)
-                )
+                .Include(p => p.PistasReservadas)
+                    .ThenInclude(pr => pr.Reserva)
+                .Where(p => tipoDeporte == null || p.TipoDeporte!.Nombre == tipoDeporte)
                 .OrderBy(p => p.NombrePista)
                 .Select(p => new PistaParaAlquilarDTO
                 {
@@ -39,12 +47,19 @@ namespace AppForSEII.API.Controllers
                     NombrePista = p.NombrePista,
                     NPersonas = p.NPersonas,
                     Precio = p.Precio,
-                    Stock = p.Stock,
+                    Stock = p.Stock - p.PistasReservadas
+                        .Where(pr => pr.Reserva != null && pr.Reserva.FechaReserva.Date == fechaFiltro.Date)
+                        .Sum(pr => pr.Cantidad),
                     NombreTipoDeporte = p.TipoDeporte!.Nombre
                 })
                 .ToListAsync();
 
-            return Ok(selectPistas);
+            if (pistas == null || pistas.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(pistas);
         }
     }
 }

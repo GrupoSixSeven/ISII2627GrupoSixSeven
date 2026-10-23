@@ -29,8 +29,9 @@ namespace AppForSEII.API.DTOs
         public int NPersonas { get; set; } = 1;
 
         [Required]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         [Range(0, (double)decimal.MaxValue, ErrorMessage = "El precio no puede ser negativo")]
-        public decimal Precio { get; set; } = 1m;
+        public decimal Precio { get; set; } = 1;
 
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo")]
