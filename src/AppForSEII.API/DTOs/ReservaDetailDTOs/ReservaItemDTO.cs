@@ -1,7 +1,11 @@
-namespace AppForSEII.API.DTOs
+namespace AppForSEII.API.DTOs.ReservaDetailDTOs
 {
     public class ReservaItemDTO
     {
+        public ReservaItemDTO()
+        {
+        }
+
         public ReservaItemDTO(int idPista, string nombrePista, string nombreTipoDeporte, int nPersonas, int cantidad, decimal precio, string? observaciones = "")
         {
             IdPista = idPista;
@@ -14,12 +18,12 @@ namespace AppForSEII.API.DTOs
         }
 
         public int IdPista { get; set; }
-        public string NombrePista { get; set; }
-        public string NombreTipoDeporte { get; set; }
+        public string NombrePista { get; set; } = "";
+        public string NombreTipoDeporte { get; set; } = "";
         public int NPersonas { get; set; }
         public int Cantidad { get; set; }
         public decimal Precio { get; set; }
-        public string? Observaciones { get; set; }
+        public string? Observaciones { get; set; } = "";
 
         public override bool Equals(object? obj)
         {
