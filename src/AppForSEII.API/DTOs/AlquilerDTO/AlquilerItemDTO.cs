@@ -13,12 +13,12 @@ namespace AppForSEII.API.DTOs.AlquilerDTOs
             Descripcion = descripcion;
         }
 
-        public int IdMaterial { get; set; }
-        public string NombreMaterial { get; set; }
-        public string TipoMaterial { get; set; }
-        public string TipoDeporte { get; set; }
-        public int Cantidad { get; set; }
-        public decimal Precio { get; set; }
+        public  int IdMaterial { get; set; }
+        public  string NombreMaterial { get; set; }= "NombreMaterial";
+        public  string TipoMaterial { get; set; }= "TipoMaterial";
+        public string TipoDeporte { get; set; }= "TipoDeporte";
+        public int Cantidad { get; set; }=1;
+        public decimal Precio { get; set; }=1;
         public string? Descripcion { get; set; }
 
         public override bool Equals(object? obj)

@@ -20,7 +20,7 @@ namespace AppForSEII.API.Controllers
             _logger = logger;
         }
 
-        [HttpPost]
+
         [Route("[action]")]
         [ProducesResponseType(typeof(AlquilerDetailDTO), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]

@@ -22,7 +22,13 @@ public class AlquilerForCreateDTO
 
     public MetodoPago MetodoPago { get; set; }
     public DateTime FechaAlquiler { get; set; }
+
+    [Required(ErrorMessage = "El precio total es obligatorio.")]
+    [Range(0, (double)decimal.MaxValue, ErrorMessage = "El precio total no puede ser negativo.")]
     public decimal PrecioTotal { get; set; }
+
+    [Required(ErrorMessage = "Los materiales son obligatorios.")]
+    [StringLength(500, ErrorMessage = "Los materiales no pueden exceder los 500 caracteres.")]
     public IList<AlquilerItemDTO> Materiales { get; set; }
 
     public override bool Equals(object? obj)

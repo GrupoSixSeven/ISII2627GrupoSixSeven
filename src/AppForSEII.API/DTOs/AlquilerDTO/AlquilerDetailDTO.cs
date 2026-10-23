@@ -14,7 +14,7 @@ namespace AppForSEII.API.DTOs.AlquilerDTOs
         public int IdAlquiler { get; set; }
 
         [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
-        public DateTime fechaAlquiler { get; set; }
+        public DateTime FechaAlquiler { get; set; }
 
         public override bool Equals(object? obj)
         {
