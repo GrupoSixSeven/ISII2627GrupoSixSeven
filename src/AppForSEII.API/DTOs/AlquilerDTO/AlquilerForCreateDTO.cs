@@ -1,48 +1,67 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
 namespace AppForSEII.API.DTOs.AlquilerDTOs;
 
 public class AlquilerForCreateDTO
 {
-    public AlquilerForCreateDTO(MetodoPago metodoPago, decimal precioTotal, IList<AlquilerItemDTO> materiales)
+    public AlquilerForCreateDTO()
     {
-
-        MetodoPago = metodoPago;
-        PrecioTotal = precioTotal;
-        Materiales = materiales;
+        Materiales = new List<AlquilerItemDTO>();
     }
 
-    public AlquilerForCreateDTO(MetodoPago metodoPago, DateTime fechaAlquiler, decimal precioTotal, IList<AlquilerItemDTO> materiales)
+    public AlquilerForCreateDTO(string nombreUsuario, string apellidosUsuario, string dni, string telefono, MetodoPago metodoPago, IList<AlquilerItemDTO> materiales)
     {
-
+        NombreUsuario = nombreUsuario;
+        ApellidosUsuario = apellidosUsuario;
+        DNI = dni;
+        Telefono = telefono;
         MetodoPago = metodoPago;
-        FechaAlquiler = fechaAlquiler;
-        PrecioTotal = precioTotal;
         Materiales = materiales;
+        
     }
 
+        [Required(ErrorMessage = "El nombre es obligatorio")]
+        [StringLength(50, ErrorMessage = "El nombre de usuario no puede superar los 50 caracteres")]
+        public string NombreUsuario { get; set; } = "Alejandro";
+        
+        [Required(ErrorMessage = "Los apellidos son obligatorios")]
+        [StringLength(100, ErrorMessage = "Los apellidos no pueden superar los 100 caracteres")]
+        public string ApellidosUsuario { get; set; } = "Gonzalez";
+        
+        [Required(ErrorMessage = "El DNI es obligatorio")]
+        [StringLength(9,ErrorMessage = "el DNI tiene que tener una longitud de 9 caracteres")]
+        public string DNI { get; set; } = "12345678A";
 
-    public MetodoPago MetodoPago { get; set; }= MetodoPago.Efectivo;
-    public DateTime FechaAlquiler { get; set; } = DateTime.Now;
+        [Required]
+        [Phone]
+        public string Telefono { get; set; } = "600000000";
 
-    [Required(ErrorMessage = "El precio total es obligatorio.")]
-    [Range(0, (double)decimal.MaxValue, ErrorMessage = "El precio total no puede ser negativo.")]
-    public decimal PrecioTotal { get; set; }= 1;
+        [Required(ErrorMessage = "El método de pago es obligatorio")]
+        public MetodoPago MetodoPago { get; set; } = MetodoPago.Tarjeta;
+        
+        [Required]
+        [Range(0, (double)decimal.MaxValue)]
+        public decimal PrecioTotal { get; set; } = 0;
 
-    [Required(ErrorMessage = "Los materiales son obligatorios.")]
-    [StringLength(500, ErrorMessage = "Los materiales no pueden exceder los 500 caracteres.")]
-    public IList<AlquilerItemDTO> Materiales { get; set; } = new List<AlquilerItemDTO>();
+        [Required]
+        public IList<AlquilerItemDTO> Materiales { get; set; }
 
     public override bool Equals(object? obj)
     {
         return obj is AlquilerForCreateDTO dTO &&
 
-               MetodoPago == dTO.MetodoPago &&
-               FechaAlquiler == dTO.FechaAlquiler &&
-               PrecioTotal == dTO.PrecioTotal &&
-               EqualityComparer<IList<AlquilerItemDTO>>.Default.Equals(Materiales, dTO.Materiales);
+               NombreUsuario == dTO.NombreUsuario &&
+                ApellidosUsuario == dTO.ApellidosUsuario &&
+                DNI == dTO.DNI &&
+                Telefono == dTO.Telefono &&
+                MetodoPago == dTO.MetodoPago &&
+                PrecioTotal == dTO.PrecioTotal;
     }
 
     public override int GetHashCode()
     {
-        return HashCode.Combine( MetodoPago, FechaAlquiler, PrecioTotal, Materiales);
+        return HashCode.Combine( NombreUsuario, ApellidosUsuario, DNI, Telefono, MetodoPago, PrecioTotal);
     }
 }

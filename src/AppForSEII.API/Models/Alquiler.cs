@@ -3,6 +3,21 @@ namespace AppForSEII.API.Models;
 public class Alquiler{
     [Key]
     public int IdAlquiler { get; set; }
+
+    public required String NombreUsuario {get; set;}
+    [Range (typeof(decimal), "0", "500", ErrorMessage = "Introduzca un precio total válido")]
+
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca apellidos del usuario que sean válidos")]
+    public required String ApellidosUsuario {get;set;}
+
+    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca un DNI válido")]
+    public required String Dni {get; set;}
+
+    [Required (ErrorMessage = "El campo de teléfono es obligatorio")]
+    [Phone(ErrorMessage = "El formato del teléfono no es correcto")]
+    public required String Telefono {get; set;}
+
+    
     [Required(ErrorMessage = "Error, introduzca una fecha válida")]
     public required DateTime FechaAlquiler { get; set; }
     [Required(ErrorMessage = "Introduzca un método de pago válido")]
