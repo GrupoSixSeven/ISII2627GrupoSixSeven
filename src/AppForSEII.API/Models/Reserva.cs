@@ -9,14 +9,7 @@ public class Reserva
     [Key]
     public int Id { get; set; }
 
-    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca un nombre de cliente válido")]
-    public required string NombreCliente { get; set; }
 
-    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca los apellidos válidos")]
-    public required string Apellidos { get; set; }
-
-    [Required(AllowEmptyStrings = false, ErrorMessage = "Introduzca un DNI válido")]
-    public required string Dni { get; set; }
 
     [Required(ErrorMessage = "Introduzca una fecha de reserva válida")]
     public required DateTime FechaReserva { get; set; }
@@ -37,18 +30,14 @@ public class Reserva
     }
 
     // Constructor con los atributos principales
-    public Reserva(int id, string nombreCliente, string apellidos, string dni, DateTime fechaReserva, MetodoPago metodoPago, decimal precioTotal)
+    public Reserva(int id, DateTime fechaReserva, MetodoPago metodoPago, decimal precioTotal)
     {
         Id = id;
-        NombreCliente = nombreCliente;
-        Apellidos = apellidos;
-        Dni = dni;
         FechaReserva = fechaReserva;
         MetodoPago = metodoPago;
         PrecioTotal = precioTotal;
     }
 
-    // Comprueba que el otro objeto no sea null, que sea del mismo tipo y que sus Ids coincidan
     public override bool Equals(object? otro)
     {
         if (otro == null) return false;

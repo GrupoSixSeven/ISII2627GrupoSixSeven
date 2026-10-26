@@ -36,7 +36,6 @@ public class TipoDeporte
     
     }
 
-    // Contructor con los atributos de la clase, añadiendo descripcion como parametro opcional
     public TipoDeporte(int Id, string Nombre, string nombreTipoDeporte, string descripcion)
     {
         this.Id = Id;

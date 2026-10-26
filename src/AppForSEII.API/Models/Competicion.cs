@@ -30,11 +30,9 @@ public required TipoDeporte TipoDeporte { get; set; } //da error en la rama, pq 
 
 public ICollection<CompeticionInscrita> CompeticionInscrita { get; set; } = new List<CompeticionInscrita>(); //pasa lo mismo que con la otra relación
 
-//constructor vacío
 public Competicion(){
         
     }
-//constructor con parámetros
 public Competicion (int id, DateTime fecha, String lugar, String nombre, int plazas, decimal precio){
         this.Id = id;
         this.Fecha = fecha;
