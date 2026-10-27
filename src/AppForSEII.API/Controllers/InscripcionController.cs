@@ -34,30 +34,37 @@ namespace AppForSEII.API.Controllers
 
             var inscripcion = await _context.Inscripciones
                 .Where(i => i.Id == id)
+                .Include(i => i.Cliente) // join table ApplicationUser (Cliente)
+                .Include(i => i.CompeticionInscrita) // join table CompeticionInscrita
+                    .ThenInclude(ci => ci.Competicion) // then join table Competicion
+                        .ThenInclude(competicion => competicion.TipoDeporte) // then join table TipoDeporte
                 .Select(i => new InscripcionDetailDTO(
                     i.Id, 
-                    i.NombreUsuario, 
-                    i.ApellidosUsuario,
-                    i.Dni, 
-                    i.Telefono,
-                    i.MetodoPago,
+                    i.MetodoPago, 
                     i.FechaInscripcion, 
                     i.PrecioTotal,
                     i.CompeticionInscrita
                         .Select(ci => new CompeticionItemDTO(
-                            ci.Competicion!.Id,
+                            ci.Competicion.Id,
                             ci.Competicion.Nombre, 
-                            ci.Competicion.TipoDeporte!.Nombre,
+                            ci.Competicion.TipoDeporte.Nombre,
                             ci.Competicion.Fecha, 
                             ci.Competicion.Precio, 
-                            ci.ProblemasFisicos)).ToList<CompeticionItemDTO>()))
+                            ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
+                    "", /* i.DatosPago // descomentalo cuando necesites jm */
+                    i.Cliente.Name,
+                    i.Cliente.Surname,
+                    i.Cliente.PhoneNumber,
+                    i.Cliente.DNI))
                 .FirstOrDefaultAsync();
+
 
             if (inscripcion == null)
             {
                 _logger.LogError($"Error: La inscripción con id {id} no existe");
                 return NotFound();
             }
+
 
             return Ok(inscripcion);
         }

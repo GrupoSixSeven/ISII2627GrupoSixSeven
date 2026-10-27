@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using AppForSEII.API.Models;
+using Humanizer;
 
 namespace AppForSEII.API.DTOs.CompeticionDTOs
 {
@@ -13,32 +14,15 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
             Competiciones = new List<CompeticionItemDTO>();
         }
 
-        public InscripcionForCreateDTO(string nombreUsuario, string apellidosUsuario, string dni, string telefono, MetodoPago metodoPago, decimal precioTotal, IList<CompeticionItemDTO> competiciones)
+        public InscripcionForCreateDTO(MetodoPago metodoPago, decimal precioTotal, IList<CompeticionItemDTO> competiciones, string datosPago, DateTime fechaInscripcion)
         {
-            NombreUsuario = nombreUsuario;
-            ApellidosUsuario = apellidosUsuario;
-            DNI = dni;
-            Telefono = telefono;
             MetodoPago = metodoPago;
             PrecioTotal = precioTotal;
             Competiciones = competiciones;
+            DatosPago = datosPago;
+            FechaInscripcion = fechaInscripcion;
         }
 
-        [Required(ErrorMessage = "El nombre es obligatorio")]
-        [StringLength(50, ErrorMessage = "El nombre de usuario no puede superar los 50 caracteres")]
-        public string NombreUsuario { get; set; } = "Alejandro";
-        
-        [Required(ErrorMessage = "Los apellidos son obligatorios")]
-        [StringLength(100, ErrorMessage = "Los apellidos no pueden superar los 100 caracteres")]
-        public string ApellidosUsuario { get; set; } = "Gonzalez";
-        
-        [Required(ErrorMessage = "El DNI es obligatorio")]
-        [StringLength(9,ErrorMessage = "el DNI tiene que tener una longitud de 9 caracteres")]
-        public string DNI { get; set; } = "12345678A";
-
-        [Required]
-        [Phone]
-        public string Telefono { get; set; } = "600000000";
 
         [Required(ErrorMessage = "El método de pago es obligatorio")]
         public MetodoPago MetodoPago { get; set; } = MetodoPago.Tarjeta;
@@ -47,24 +31,29 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
         [Range(0, (double)decimal.MaxValue)]
         public decimal PrecioTotal { get; set; } = 0;
 
+        [Required (ErrorMessage = "El campo DatosPago es obligatorio")]
+        public string DatosPago {get; set; }
+
+        [Required (ErrorMessage = "El campo fecha de inscripcion es obligatorio")]
+        public DateTime FechaInscripcion {get; set;}
+
+
         [Required]
         public IList<CompeticionItemDTO> Competiciones { get; set; }
 
         public override bool Equals(object? obj)
         {
             return obj is InscripcionForCreateDTO dTO &&
-                   NombreUsuario == dTO.NombreUsuario &&
-                   ApellidosUsuario == dTO.ApellidosUsuario &&
-                   DNI == dTO.DNI &&
-                   Telefono == dTO.Telefono &&
                    MetodoPago == dTO.MetodoPago &&
-                   PrecioTotal == dTO.PrecioTotal;
+                   PrecioTotal == dTO.PrecioTotal &&
+                   FechaInscripcion == dTO.FechaInscripcion &&
+                   DatosPago == dTO.DatosPago;
                    
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(NombreUsuario, ApellidosUsuario, DNI, Telefono, MetodoPago, PrecioTotal);
+            return HashCode.Combine(FechaInscripcion,DatosPago, MetodoPago, PrecioTotal);
         }
     }
 }
