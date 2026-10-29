@@ -33,6 +33,7 @@ public class AlquilerForCreateDTO
         [Required (ErrorMessage = "La fecha de alquiler es obligatoria")]
         public DateTime FechaAlquiler { get; set; }
 
+        [Required]
         [MinLength(1)]
         public IList<AlquilerItemDTO> Materiales { get; set; }
 
