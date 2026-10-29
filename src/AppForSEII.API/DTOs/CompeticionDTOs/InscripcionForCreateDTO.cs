@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using AppForSEII.API.Models;
-using Humanizer;
 
 namespace AppForSEII.API.DTOs.CompeticionDTOs
 {

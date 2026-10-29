@@ -34,10 +34,10 @@ namespace AppForSEII.API.Controllers
 
             var inscripcion = await _context.Inscripciones
                 .Where(i => i.Id == id)
-                .Include(i => i.Cliente) // join table ApplicationUser (Cliente)
-                .Include(i => i.CompeticionInscrita) // join table CompeticionInscrita
-                    .ThenInclude(ci => ci.Competicion) // then join table Competicion
-                        .ThenInclude(competicion => competicion.TipoDeporte) // then join table TipoDeporte
+                .Include(i => i.Cliente) 
+                .Include(i => i.CompeticionInscrita) 
+                    .ThenInclude(ci => ci.Competicion) 
+                        .ThenInclude(competicion => competicion!.TipoDeporte) 
                 .Select(i => new InscripcionDetailDTO(
                     i.Id, 
                     i.MetodoPago, 
@@ -45,26 +45,25 @@ namespace AppForSEII.API.Controllers
                     i.PrecioTotal,
                     i.CompeticionInscrita
                         .Select(ci => new CompeticionItemDTO(
-                            ci.Competicion.Id,
+                            ci.Competicion!.Id, //EL ! SIRVE PARA DECIR AL PROGRAMA QUE NO ENTRA NULL 100%, AL HACER INCLUDE NUNCA LLEGARA NULL
                             ci.Competicion.Nombre, 
-                            ci.Competicion.TipoDeporte.Nombre,
+                            ci.Competicion.TipoDeporte!.Nombre,
                             ci.Competicion.Fecha, 
                             ci.Competicion.Precio, 
                             ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
                     "", /* i.DatosPago // descomentalo cuando necesites jm */
-                    i.Cliente.Name,
-                    i.Cliente.Surname,
-                    i.Cliente.PhoneNumber,
-                    i.Cliente.DNI))
+                    i.Cliente!.Name ?? "",
+                    i.Cliente.Surname ?? "",
+                    i.Cliente.PhoneNumber ?? "",
+                    i.Cliente.DNI ?? "",
+                    i.Cliente.Email ?? ""))
                 .FirstOrDefaultAsync();
-
 
             if (inscripcion == null)
             {
                 _logger.LogError($"Error: La inscripción con id {id} no existe");
                 return NotFound();
             }
-
 
             return Ok(inscripcion);
         }
