@@ -34,23 +34,29 @@ namespace AppForSEII.API.Controllers
 
             var inscripcion = await _context.Inscripciones
                 .Where(i => i.Id == id)
+                .Include(i => i.Cliente) 
+                .Include(i => i.CompeticionInscrita) 
+                    .ThenInclude(ci => ci.Competicion) 
+                        .ThenInclude(competicion => competicion!.TipoDeporte) 
                 .Select(i => new InscripcionDetailDTO(
                     i.Id, 
-                    i.NombreUsuario, 
-                    i.ApellidosUsuario,
-                    i.Dni, 
-                    i.Telefono,
-                    i.MetodoPago,
+                    i.MetodoPago, 
                     i.FechaInscripcion, 
                     i.PrecioTotal,
                     i.CompeticionInscrita
                         .Select(ci => new CompeticionItemDTO(
-                            ci.Competicion!.Id,
+                            ci.Competicion!.Id, //EL ! SIRVE PARA DECIR AL PROGRAMA QUE NO ENTRA NULL 100%, AL HACER INCLUDE NUNCA LLEGARA NULL
                             ci.Competicion.Nombre, 
                             ci.Competicion.TipoDeporte!.Nombre,
                             ci.Competicion.Fecha, 
                             ci.Competicion.Precio, 
-                            ci.ProblemasFisicos)).ToList<CompeticionItemDTO>()))
+                            ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
+                    "", /* i.DatosPago // descomentalo cuando necesites jm */
+                    i.Cliente!.Name ?? "",
+                    i.Cliente.Surname ?? "",
+                    i.Cliente.PhoneNumber ?? "",
+                    i.Cliente.DNI ?? "",
+                    i.Cliente.Email ?? ""))
                 .FirstOrDefaultAsync();
 
             if (inscripcion == null)
