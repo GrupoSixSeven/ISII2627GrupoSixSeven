@@ -51,7 +51,7 @@ namespace AppForSEII.API.Controllers
                             ci.Competicion.Fecha, 
                             ci.Competicion.Precio, 
                             ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
-                    "", /* i.DatosPago // descomentalo cuando necesites jm */
+                    "", /* i.DatosPago // descomentalo cuando necesites jm, quita el "" */
                     i.Cliente!.Name ?? "",
                     i.Cliente.Surname ?? "",
                     i.Cliente.PhoneNumber ?? "",

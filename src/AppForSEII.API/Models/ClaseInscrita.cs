@@ -35,8 +35,6 @@ namespace AppForSEII.API.Models
         [Required(ErrorMessage = "El precio es obligatorio.")]
         [Precision(10, 2)]
         public decimal Precio { get; set; }
-
-        // Es nullable (?), por lo que no lleva 'required' ni validaciones de AllowEmptyStrings
         public string? Observaciones { get; set; }
 
         public override bool Equals(object? otro)
@@ -47,14 +45,12 @@ namespace AppForSEII.API.Models
 
             ClaseInscrita otra_clase = (ClaseInscrita)otro;
 
-            // La igualdad ahora se basa en las dos claves foráneas
             return otra_clase.ClaseDeportivaId == this.ClaseDeportivaId &&
                    otra_clase.InscripcionId == this.InscripcionId;
         }
 
         public override int GetHashCode()
         {
-            // El hash se combina usando las dos claves foráneas
             return HashCode.Combine(ClaseDeportivaId, InscripcionId);
         }
     }

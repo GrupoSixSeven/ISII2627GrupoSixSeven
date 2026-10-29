@@ -34,7 +34,6 @@ public class PistaReservada
     {
     }
 
-    // Constructor con los atributos principales (sin ID individual)
     public PistaReservada(int cantidad, string? observaciones, decimal precio, int idPista, int idReserva)
     {
         this.Cantidad = cantidad;
@@ -44,7 +43,6 @@ public class PistaReservada
         this.IdReserva = idReserva;
     }
 
-    // Comprueba igualdad basándose en la clave compuesta
     public override bool Equals(object? otro)
     {
         if (otro == null) return false;
