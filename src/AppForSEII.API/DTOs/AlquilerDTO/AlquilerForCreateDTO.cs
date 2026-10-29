@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using AppForSEII.API.Models;
 
 namespace AppForSEII.API.DTOs.AlquilerDTOs;
@@ -28,10 +29,10 @@ public class AlquilerForCreateDTO
         
         [Required]
         [Range(0, (double)decimal.MaxValue, ErrorMessage = "El precio total debe ser un número positivo")]
-        public decimal PrecioTotal { get; set; } = 1;
+        public decimal PrecioTotal { get; set; } = 0;
 
         [Required (ErrorMessage = "La fecha de alquiler es obligatoria")]
-        public DateTime FechaAlquiler { get; set; }
+        public DateTime FechaAlquiler { get; set; } = DateTime.Now;
 
         [Required]
         [MinLength(1)]

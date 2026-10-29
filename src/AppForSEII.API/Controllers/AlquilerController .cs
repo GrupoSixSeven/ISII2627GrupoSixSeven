@@ -24,7 +24,7 @@ namespace AppForSEII.API.Controllers
 
         [HttpGet]
         [Route("[action]")] 
-        [ProducesResponseType(typeof(IList<AlquilerDetailDTO>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(AlquilerDetailDTO), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetAlquiler(int id)
         {
@@ -70,6 +70,6 @@ namespace AppForSEII.API.Controllers
 
             return Ok(alquiler);
         }
-        }
+    }    
         
 }
