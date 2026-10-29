@@ -6,27 +6,34 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
 {
     public class InscripcionDetailDTO : InscripcionForCreateDTO
     {
-        public InscripcionDetailDTO(int idInscripcion, string nombreUsuario, string apellidosUsuario, string dni, string telefono, MetodoPago metodoPago, DateTime fechaInscripcion, decimal precioTotal, IList<CompeticionItemDTO> competiciones)
-            : base(nombreUsuario, apellidosUsuario, dni, telefono, metodoPago, precioTotal, competiciones)
+        public InscripcionDetailDTO(int idInscripcion, MetodoPago metodoPago, DateTime fechaInscripcion, decimal precioTotal, IList<CompeticionItemDTO> competiciones, string datosPago, string nombreUsuario, string apellidosUsuario, string telefono, string dni, string correo)
+            : base(metodoPago, precioTotal, competiciones, datosPago, fechaInscripcion)
         {
             IdInscripcion = idInscripcion;
-            FechaInscripcion = fechaInscripcion;
+            NombreUsuario = nombreUsuario;
+            ApellidosUsuario = apellidosUsuario;
+            Telefono = telefono;
+            Dni = dni;
+            Correo = correo;
         }
 
         public int IdInscripcion { get; set; }
-        public DateTime FechaInscripcion { get; set; }
+        public string NombreUsuario { get; set; }
+        public string ApellidosUsuario { get; set; }
+        public string Telefono { get; set; }
+        public string Dni { get; set; }
+        public string Correo { get; set; }
 
         public override bool Equals(object? obj)
         {
             return obj is InscripcionDetailDTO dTO &&
                    base.Equals(obj) && 
-                   IdInscripcion == dTO.IdInscripcion &&
-                   FechaInscripcion == dTO.FechaInscripcion;
+                   IdInscripcion == dTO.IdInscripcion;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), IdInscripcion, FechaInscripcion);
+            return HashCode.Combine(base.GetHashCode(), IdInscripcion);
         }
     }
 }
