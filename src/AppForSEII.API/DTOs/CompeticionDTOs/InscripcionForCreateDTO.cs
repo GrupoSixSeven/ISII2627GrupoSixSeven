@@ -21,7 +21,6 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
             FechaInscripcion = fechaInscripcion;
         }
 
-
         [Required(ErrorMessage = "El método de pago es obligatorio")]
         public MetodoPago MetodoPago { get; set; } = MetodoPago.Tarjeta;
         
@@ -29,15 +28,15 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
         [Range(0, (double)decimal.MaxValue)]
         public decimal PrecioTotal { get; set; } = 0;
 
-        [Required (ErrorMessage = "El campo DatosPago es obligatorio")]
-        public string DatosPago {get; set; }
+        [Required(ErrorMessage = "El campo DatosPago es obligatorio")]
+        public string DatosPago { get; set; } = "";
 
-        [Required (ErrorMessage = "El campo fecha de inscripcion es obligatorio")]
-        public DateTime FechaInscripcion {get; set;}
-
+        [Required(ErrorMessage = "El campo fecha de inscripcion es obligatorio")]
+        public DateTime FechaInscripcion { get; set; } = DateTime.Now;
 
         [Required]
-        public IList<CompeticionItemDTO> Competiciones { get; set; }
+        [MinLength(1, ErrorMessage = "Debe haber al menos 1 competición inscrita")]
+        public IList<CompeticionItemDTO> Competiciones { get; set; } = new List<CompeticionItemDTO>();
 
         public override bool Equals(object? obj)
         {
@@ -46,12 +45,11 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
                    PrecioTotal == dTO.PrecioTotal &&
                    FechaInscripcion == dTO.FechaInscripcion &&
                    DatosPago == dTO.DatosPago;
-                   
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(FechaInscripcion,DatosPago, MetodoPago, PrecioTotal);
+            return HashCode.Combine(FechaInscripcion, DatosPago, MetodoPago, PrecioTotal);
         }
     }
 }
