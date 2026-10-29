@@ -2,6 +2,7 @@ using System.Net;
 using AppForSEII.API.Data;
 using AppForSEII.API.DTOs.AlquilerDTOs;
 using AppForSEII.API.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,7 @@ namespace AppForSEII.API.Controllers
 
         [HttpGet]
         [Route("[action]")] 
-        [ProducesResponseType(typeof(AlquilerDetailDTO), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(IList<AlquilerDetailDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetAlquiler(int id)
         {
@@ -35,24 +36,31 @@ namespace AppForSEII.API.Controllers
 
             var alquiler = await _context.Alquileres
                 .Where(a => a.IdAlquiler == id)
-                .Select(a => new AlquilerDetailDTO(
-                    a.IdAlquiler,
-                    a.NombreUsuario,
-                    a.ApellidosUsuario,
-                    a.Dni,
-                    a.Telefono,
-                    a.FechaAlquiler,
-                    a.MetodoPago,
-                    a.MaterialesAlquilados
-                        .Select(ma => new AlquilerItemDTO(
+                    .Include(a => a.Cliente)
+                    .Include(a => a.MaterialesAlquilados)
+                        .ThenInclude(ma => ma.Material)
+                            .ThenInclude(material => material!.TipoMaterial)
+                    .Select(i => new AlquilerDetailDTO(
+                        i.IdAlquiler,
+                        i.FechaAlquiler,
+                        i.PrecioTotal,
+                        i.MetodoPago,
+                        i.MaterialesAlquilados.Select(ma => new AlquilerItemDTO(
                             ma.Material!.IdMaterial,
                             ma.Material.Nombre,
                             ma.Material.TipoMaterial!.NombreTipoMaterial,
                             ma.Material.TipoDeporte!.Nombre,
-                            ma.Cantidad,
-                            ma.Precio,
-                            ma.Descripcion)).ToList<AlquilerItemDTO>()))
-                .FirstOrDefaultAsync();
+                            ma.Material.Cantidad,
+                            ma.Material.Precio,
+                            ma.Descripcion
+                        )).ToList<AlquilerItemDTO>(),
+                        i.Cliente!.Name?? "",
+                        i.Cliente!.Surname?? "",
+                        i.Cliente.Email ?? "",
+                        i.Cliente.PhoneNumber ?? "",
+                        i.Cliente.DNI?? ""
+                    ))
+                    .FirstOrDefaultAsync();
 
             if (alquiler == null)
             {

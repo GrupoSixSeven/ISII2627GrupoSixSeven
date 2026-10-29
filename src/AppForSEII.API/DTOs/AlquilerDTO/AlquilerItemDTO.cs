@@ -5,7 +5,7 @@ namespace AppForSEII.API.DTOs.AlquilerDTOs
 {
     public class AlquilerItemDTO
     {
-        public AlquilerItemDTO(int idMaterial, string nombreMaterial, string tipoMaterial, string tipoDeporte, int cantidad, decimal precio, string? descripcion = null)
+        public AlquilerItemDTO(int idMaterial, string nombreMaterial, string tipoMaterial, string tipoDeporte, int cantidad, decimal precio, string? descripcion = "")
         {
             IdMaterial = idMaterial;
             NombreMaterial = nombreMaterial;
