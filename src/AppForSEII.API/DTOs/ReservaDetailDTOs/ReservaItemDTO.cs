@@ -1,45 +1,53 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+ 
 namespace AppForSEII.API.DTOs.ReservaDetailDTOs
 {
+    // Pista dentro de una reserva (paso 7: nombre, deporte, nº de personas y observaciones)
     public class ReservaItemDTO
     {
         public ReservaItemDTO()
         {
+            NombrePista = string.Empty;
+            TipoDeporte = string.Empty;
         }
-
-        public ReservaItemDTO(int idPista, string nombrePista, string nombreTipoDeporte, int nPersonas, int cantidad, decimal precio, string? observaciones = "")
+ 
+        public ReservaItemDTO(int idPista, string nombrePista, string tipoDeporte, int nPersonas, decimal precio, string? observaciones)
         {
             IdPista = idPista;
             NombrePista = nombrePista;
-            NombreTipoDeporte = nombreTipoDeporte;
+            TipoDeporte = tipoDeporte;
             NPersonas = nPersonas;
-            Cantidad = cantidad;
             Precio = precio;
             Observaciones = observaciones;
         }
-
+ 
         public int IdPista { get; set; }
-        public string NombrePista { get; set; } = "";
-        public string NombreTipoDeporte { get; set; } = "";
+        public string NombrePista { get; set; }
+        public string TipoDeporte { get; set; }
         public int NPersonas { get; set; }
-        public int Cantidad { get; set; }
+ 
+        [Range(0, (double)decimal.MaxValue)]
         public decimal Precio { get; set; }
-        public string? Observaciones { get; set; } = "";
-
+ 
+        // Opcional, una por pista (paso 5)
+        [StringLength(500, ErrorMessage = "Las observaciones no pueden superar los 500 caracteres")]
+        public string? Observaciones { get; set; }
+ 
         public override bool Equals(object? obj)
         {
-            return obj is ReservaItemDTO dTO &&
-                   IdPista == dTO.IdPista &&
-                   NombrePista == dTO.NombrePista &&
-                   NombreTipoDeporte == dTO.NombreTipoDeporte &&
-                   NPersonas == dTO.NPersonas &&
-                   Cantidad == dTO.Cantidad &&
-                   Precio == dTO.Precio &&
-                   Observaciones == dTO.Observaciones;
+            return obj is ReservaItemDTO dto &&
+                   IdPista == dto.IdPista &&
+                   NombrePista == dto.NombrePista &&
+                   TipoDeporte == dto.TipoDeporte &&
+                   NPersonas == dto.NPersonas &&
+                   Precio == dto.Precio &&
+                   Observaciones == dto.Observaciones;
         }
-
+ 
         public override int GetHashCode()
         {
-            return HashCode.Combine(IdPista, NombrePista, NombreTipoDeporte, NPersonas, Cantidad, Precio, Observaciones);
+            return HashCode.Combine(IdPista, NombrePista, TipoDeporte, NPersonas, Precio, Observaciones);
         }
     }
 }
