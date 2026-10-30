@@ -66,7 +66,6 @@ namespace AppForSEII.API.Models
         // Relación 1 a N con ClaseInscrita
         public IList<ClaseInscrita> ClasesInscritas { get; set; } = new List<ClaseInscrita>();
 
-        // Método Equals modificado según la corrección del PR
         public override bool Equals(object? otro)
         {
             if (otro == null) return false;
