@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using AppForSEII.API.Models;
 using AppForSEII.API.DTOs.ClaseDeportivaDTO;
 using AppForSEII.API.DTOs.CompeticionDTOs;
@@ -22,33 +21,29 @@ namespace AppForSEII.API.DTOs.InscripcionDTO
             string dni,
             string correo,
             IList<InscripcionItemDTO> clasesInscritas)
-            : base(metodoPago, precioTotal, competiciones, datosPago, fechaInscripcion, nombreUsuario, apellidosUsuario, dni, telefono, clasesInscritas)
+            : base(metodoPago, precioTotal, competiciones, datosPago, fechaInscripcion,
+                   nombreUsuario, apellidosUsuario, dni, telefono, clasesInscritas)
         {
+            // Solo lo que el padre NO inicializa
             IdInscripcion = idInscripcion;
-            FechaInscripcion = fechaInscripcion;
-            NombreUsuario = nombreUsuario;
-            ApellidosUsuario = apellidosUsuario;
-            Telefono = telefono;
-            Dni = dni;
-            correo = correo;
+            Correo = correo;
         }
 
         public int IdInscripcion { get; set; }
 
-       [System.ComponentModel.DataAnnotations.DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
-        public new DateTime FechaInscripcion { get; set; }
+        public string Correo { get; set; } = "";
 
         public override bool Equals(object? obj)
         {
             return obj is InscripcionDetailDTO dTO &&
                    base.Equals(obj) &&
                    IdInscripcion == dTO.IdInscripcion &&
-                   FechaInscripcion == dTO.FechaInscripcion;
+                   Correo == dTO.Correo;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(base.GetHashCode(), IdInscripcion, FechaInscripcion);
+            return HashCode.Combine(base.GetHashCode(), IdInscripcion, Correo);
         }
     }
 }

@@ -15,37 +15,8 @@ namespace AppForSEII.API.DTOs.InscripcionDTO
             ClasesInscritas = new List<InscripcionItemDTO>();
         }
 
-        // Constructor versión Competiciones
-        public InscripcionForCreateDTO(MetodoPago metodoPago, decimal precioTotal, IList<CompeticionItemDTO> competiciones, string datosPago, DateTime fechaInscripcion)
-        {
-            MetodoPago = metodoPago;
-            PrecioTotal = precioTotal;
-            Competiciones = competiciones;
-            DatosPago = datosPago;
-            FechaInscripcion = fechaInscripcion;
-            ClasesInscritas = new List<InscripcionItemDTO>();
-        }
-
-        // Constructor versión Clases Deportivas / Usuario
-        public InscripcionForCreateDTO(MetodoPago metodoPago, DateTime fechaInscripcion, decimal precioTotal, 
-            string nombreUsuario, string apellidosUsuario, string dni, string telefono, string datosPago, 
-            IList<InscripcionItemDTO> clasesInscritas)
-        {
-            MetodoPago = metodoPago;
-            FechaInscripcion = fechaInscripcion;
-            PrecioTotal = precioTotal;
-            NombreUsuario = nombreUsuario;
-            ApellidosUsuario = apellidosUsuario;
-            Dni = dni;
-            Telefono = telefono;
-            DatosPago = datosPago;
-            ClasesInscritas = clasesInscritas;
-            Competiciones = new List<CompeticionItemDTO>();
-        }
-
-        // Constructor completo con todos los datos
-        public InscripcionForCreateDTO(MetodoPago metodoPago, decimal precioTotal, IList<CompeticionItemDTO> competiciones, 
-            string datosPago, DateTime fechaInscripcion, string nombreUsuario, string apellidosUsuario, 
+        public InscripcionForCreateDTO(MetodoPago metodoPago, decimal precioTotal, IList<CompeticionItemDTO> competiciones,
+            string datosPago, DateTime fechaInscripcion, string nombreUsuario, string apellidosUsuario,
             string dni, string telefono, IList<InscripcionItemDTO> clasesInscritas)
         {
             MetodoPago = metodoPago;
