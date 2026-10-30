@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AppForSEII.API.DTOs.ClaseDeportivaDTO;
 using AppForSEII.API.DTOs.InscripcionDTO;
+using AppForSEII.API.DTOs;
 
 namespace AppForSEII.API.Controllers
 {
@@ -53,12 +54,12 @@ namespace AppForSEII.API.Controllers
                                 ci.Competicion.Fecha, 
                                 ci.Competicion.Precio, 
                                 ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
-                        
-                        i.Cliente!.Name ?? "",
-                        i.Cliente.Surname ?? "",
-                        i.Cliente.PhoneNumber ?? "",
-                        i.Cliente.DNI ?? "",
-                        i.Cliente.Email ?? "",
+                        i.MetodoPago.ToString(),
+                        i.Cliente!.Name,
+                        i.Cliente.Surname,
+                        i.Cliente.PhoneNumber,
+                        i.Cliente.DNI,
+                        i.Cliente.Email,
                         i.ClasesInscritas
                             .Select(ci => new InscripcionItemDTO(
                                 ci.ClaseDeportivaId,
@@ -98,36 +99,36 @@ public async Task<ActionResult> GetInscripciones()
         .Include(i => i.CompeticionInscrita) 
             .ThenInclude(ci => ci.Competicion) 
                 .ThenInclude(competicion => competicion!.TipoDeporte) 
-        .Select(i => new InscripcionDetailDTO(
-            i.Id, 
-            i.MetodoPago, 
-            i.FechaInscripcion, 
-            i.PrecioTotal,
-            i.CompeticionInscrita
-                .Select(ci => new CompeticionItemDTO(
-                    ci.Competicion!.Id, 
-                    ci.Competicion.Nombre, 
-                    ci.Competicion.TipoDeporte!.Nombre,
-                    ci.Competicion.Fecha, 
-                    ci.Competicion.Precio, 
-                    ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
-            
-            i.Cliente!.Name ?? "",
-            i.Cliente.Surname ?? "",
-            i.Cliente.PhoneNumber ?? "",
-            i.Cliente.DNI ?? "",
-            i.Cliente.Email ?? "",
-            i.ClasesInscritas
-                .Select(ci => new InscripcionItemDTO(
-                    ci.ClaseDeportivaId,
-                    ci.ClaseDeportiva.Descripcion,
-                    ci.ClaseDeportiva.TipoDeporte!.Nombre,
-                    ci.ClaseDeportiva.Monitor,
-                    ci.ClaseDeportiva.FechaHora,
-                    ci.PlazasReservadas,
-                    ci.Precio,
-                    ci.Observaciones)).ToList<InscripcionItemDTO>()
-        ))
+       .Select(i => new InscripcionDetailDTO(
+                    i.Id, 
+                    i.MetodoPago, 
+                    i.FechaInscripcion, 
+                    i.PrecioTotal,
+                    i.CompeticionInscrita
+                        .Select(ci => new CompeticionItemDTO(
+                            ci.Competicion!.Id, 
+                            ci.Competicion.Nombre, 
+                            ci.Competicion.TipoDeporte!.Nombre,
+                            ci.Competicion.Fecha, 
+                            ci.Competicion.Precio, 
+                            ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(), // 6. Datos de pago
+                    i.MetodoPago.ToString(),
+                    i.Cliente!.Name , // 7. Nombre
+                    i.Cliente.Surname , // 8. Apellidos
+                    i.Cliente.PhoneNumber, // 9. Teléfono
+                    i.Cliente.DNI , // 10. DNI
+                    i.Cliente.Email , // 11. Correo
+                    i.ClasesInscritas
+                        .Select(ci => new InscripcionItemDTO(
+                            ci.ClaseDeportivaId,
+                            ci.ClaseDeportiva.Descripcion,
+                            ci.ClaseDeportiva.TipoDeporte!.Nombre,
+                            ci.ClaseDeportiva.Monitor,
+                            ci.ClaseDeportiva.FechaHora,
+                            ci.PlazasReservadas,
+                            ci.Precio,
+                            ci.Observaciones ?? "")).ToList<InscripcionItemDTO>()
+                ))
         .ToListAsync();
 
     return Ok(inscripciones);

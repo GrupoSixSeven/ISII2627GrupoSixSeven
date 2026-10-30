@@ -1,11 +1,13 @@
-namespace AppForSEII.API.DTOs.ClaseDeportivaDTO;
+using System;
 
+namespace AppForSEII.API.DTOs.ClaseDeportivaDTO
+{
     public class InscripcionItemDTO
     {
-        public InscripcionItemDTO(int claseDeportivaId, string Descripcion, string tipoDeporte, string monitor, DateTime fechaHora, int plazasReservadas, decimal precio, string? observaciones = null)
+        public InscripcionItemDTO(int claseDeportivaId, string descripcion, string tipoDeporte, string monitor, DateTime fechaHora, int plazasReservadas, decimal precio, string? observaciones = null)
         {
             ClaseDeportivaId = claseDeportivaId;
-            Descripcion = Descripcion;
+            Descripcion = descripcion;
             TipoDeporte = tipoDeporte;
             Monitor = monitor;
             FechaHora = fechaHora;
@@ -27,7 +29,7 @@ namespace AppForSEII.API.DTOs.ClaseDeportivaDTO;
         {
             return obj is InscripcionItemDTO dTO &&
                    ClaseDeportivaId == dTO.ClaseDeportivaId &&
-                   Descripcion== dTO.Descripcion &&
+                   Descripcion == dTO.Descripcion &&
                    TipoDeporte == dTO.TipoDeporte &&
                    Monitor == dTO.Monitor &&
                    FechaHora == dTO.FechaHora &&
@@ -41,3 +43,4 @@ namespace AppForSEII.API.DTOs.ClaseDeportivaDTO;
             return HashCode.Combine(ClaseDeportivaId, Descripcion, TipoDeporte, Monitor, FechaHora, PlazasReservadas, Precio, Observaciones);
         }
     }
+}
