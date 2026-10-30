@@ -4,6 +4,7 @@ using AppForSEII.API.DTOs.CompeticionDTOs;
 using AppForSEII.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using AppForSEII.API.DTOs.ClaseDeportivaDTO;
 
 namespace AppForSEII.API.Controllers
 {
@@ -51,12 +52,23 @@ namespace AppForSEII.API.Controllers
                             ci.Competicion.Fecha, 
                             ci.Competicion.Precio, 
                             ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
-                    i.DatosPago ?? "",
+                    "", /* i.DatosPago // descomentalo cuando necesites jm, quita el "" */
                     i.Cliente!.Name ?? "",
                     i.Cliente.Surname ?? "",
                     i.Cliente.PhoneNumber ?? "",
                     i.Cliente.DNI ?? "",
-                    i.Cliente.Email ?? ""))
+                    i.Cliente.Email ?? "",
+                    i.ClasesInscritas
+                        .Select(ci => new InscripcionItemDTO(
+                            ci.ClaseDeportivaId,
+                            ci.ClaseDeportiva.Descripcion,
+                           ci.ClaseDeportiva.TipoDeporte!.Nombre,
+                            ci.ClaseDeportiva.Monitor,
+                           ci.ClaseDeportiva.FechaHora,
+                            ci.PlazasReservadas,
+                            ci.Precio,
+                            ci.Observaciones)).ToList<InscripcionItemDTO>()
+                ))
                 .FirstOrDefaultAsync();
 
             if (inscripcion == null)

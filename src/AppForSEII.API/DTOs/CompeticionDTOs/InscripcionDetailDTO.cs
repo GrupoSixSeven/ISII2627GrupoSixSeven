@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using AppForSEII.API.Models;
+using AppForSEII.API.DTOs.ClaseDeportivaDTO;
 
 namespace AppForSEII.API.DTOs.CompeticionDTOs
 {
     public class InscripcionDetailDTO : InscripcionForCreateDTO
     {
-        public InscripcionDetailDTO(int idInscripcion, MetodoPago metodoPago, DateTime fechaInscripcion, decimal precioTotal, IList<CompeticionItemDTO> competiciones, string datosPago, string nombreUsuario, string apellidosUsuario, string telefono, string dni, string correo)
-            : base(metodoPago, precioTotal, competiciones, datosPago, fechaInscripcion)
+       public InscripcionDetailDTO(int idInscripcion, MetodoPago metodoPago, DateTime fechaInscripcion, decimal precioTotal, IList<CompeticionItemDTO> competiciones, string datosPago, string nombreUsuario, string apellidosUsuario, string telefono, string dni, string correo, IList<InscripcionItemDTO> clasesInscritas)
+                   : base(metodoPago, precioTotal, competiciones, datosPago, fechaInscripcion,clasesInscritas)
         {
             IdInscripcion = idInscripcion;
             NombreUsuario = nombreUsuario;
