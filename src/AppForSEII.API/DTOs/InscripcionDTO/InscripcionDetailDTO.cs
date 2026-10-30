@@ -1,18 +1,19 @@
 using System.ComponentModel.DataAnnotations;
 using AppForSEII.API.Models;
+using AppForSEII.API.DTOs.ClaseDeportivaDTO;
+using AppForSEII.API.DTOs.CompeticionDTOs;
 
 namespace AppForSEII.API.DTOs.InscripcionDTO
 {
     public class InscripcionDetailDTO : InscripcionForCreateDTO
     {
-public InscripcionDetailDTO(int idInscripcion, DateTime fechaInscripcion, MetodoPago metodoPago, decimal precioTotal,
-    string nombreUsuario, string apellidosUsuario, string dni, string telefono, string datosPago,
-    IList<InscripcionItemDTO> clasesInscritas)
-    : base(metodoPago, fechaInscripcion, precioTotal, nombreUsuario, apellidosUsuario, dni, telefono, datosPago, clasesInscritas)
-{
-    IdInscripcion = idInscripcion;
-    FechaInscripcion = fechaInscripcion;
-}
+        public InscripcionDetailDTO(int idInscripcion, MetodoPago metodoPago, DateTime fechaInscripcion, decimal precioTotal, IList<CompeticionItemDTO> competiciones, string nombreUsuario, string apellidosUsuario, string telefono, string dni, string correo, IList<InscripcionItemDTO> clasesInscritas)
+            : base(metodoPago, fechaInscripcion, precioTotal, nombreUsuario, apellidosUsuario, dni, telefono, "", clasesInscritas)
+        {
+            IdInscripcion = idInscripcion;
+            FechaInscripcion = fechaInscripcion;
+            // Opcional: Si necesitas guardar el correo o las competiciones, deberías crear sus propiedades (get; set;) y asignarlas aquí.
+        }
 
         public int IdInscripcion { get; set; }
 

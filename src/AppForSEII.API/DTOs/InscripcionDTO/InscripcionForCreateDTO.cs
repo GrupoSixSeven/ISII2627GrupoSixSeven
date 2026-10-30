@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using AppForSEII.API.Models;
-
+using AppForSEII.API.DTOs.ClaseDeportivaDTO;
 namespace AppForSEII.API.DTOs.InscripcionDTO
 {
     public class InscripcionForCreateDTO
