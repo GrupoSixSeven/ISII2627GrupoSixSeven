@@ -28,13 +28,11 @@ public required TipoDeporte TipoDeporte { get; set; } //da error en la rama, pq 
 
 // Relación con CompeticiónInscripción (1 - N) (1 competición puede tener varias competiciones inscritas)
 
-public ICollection<CompeticionInscripcion> CompeticionInscripciones { get; set; } = new List<CompeticionInscripcion>(); //pasa lo mismo que con la otra relación
+public ICollection<CompeticionInscrita> CompeticionInscrita { get; set; } = new List<CompeticionInscrita>(); //pasa lo mismo que con la otra relación
 
-//constructor vacío
 public Competicion(){
         
     }
-//constructor con parámetros
 public Competicion (int id, DateTime fecha, String lugar, String nombre, int plazas, decimal precio){
         this.Id = id;
         this.Fecha = fecha;
