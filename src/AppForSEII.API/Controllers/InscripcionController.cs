@@ -80,5 +80,57 @@ namespace AppForSEII.API.Controllers
 
             return Ok(inscripcion);
         }
+    
+    [HttpGet]
+[Route("[action]")]
+[ProducesResponseType(typeof(IEnumerable<InscripcionDetailDTO>), (int)HttpStatusCode.OK)]
+[ProducesResponseType((int)HttpStatusCode.NotFound)]
+public async Task<ActionResult> GetInscripciones()
+{
+    if (_context.Inscripciones == null)
+    {
+        _logger.LogError("Error: La tabla Inscripciones no existe");
+        return NotFound();
     }
+
+    var inscripciones = await _context.Inscripciones
+        .Include(i => i.Cliente) 
+        .Include(i => i.CompeticionInscrita) 
+            .ThenInclude(ci => ci.Competicion) 
+                .ThenInclude(competicion => competicion!.TipoDeporte) 
+        .Select(i => new InscripcionDetailDTO(
+            i.Id, 
+            i.MetodoPago, 
+            i.FechaInscripcion, 
+            i.PrecioTotal,
+            i.CompeticionInscrita
+                .Select(ci => new CompeticionItemDTO(
+                    ci.Competicion!.Id, 
+                    ci.Competicion.Nombre, 
+                    ci.Competicion.TipoDeporte!.Nombre,
+                    ci.Competicion.Fecha, 
+                    ci.Competicion.Precio, 
+                    ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
+            
+            i.Cliente!.Name ?? "",
+            i.Cliente.Surname ?? "",
+            i.Cliente.PhoneNumber ?? "",
+            i.Cliente.DNI ?? "",
+            i.Cliente.Email ?? "",
+            i.ClasesInscritas
+                .Select(ci => new InscripcionItemDTO(
+                    ci.ClaseDeportivaId,
+                    ci.ClaseDeportiva.Descripcion,
+                    ci.ClaseDeportiva.TipoDeporte!.Nombre,
+                    ci.ClaseDeportiva.Monitor,
+                    ci.ClaseDeportiva.FechaHora,
+                    ci.PlazasReservadas,
+                    ci.Precio,
+                    ci.Observaciones)).ToList<InscripcionItemDTO>()
+        ))
+        .ToListAsync();
+
+    return Ok(inscripciones);
+}
+}
 }
