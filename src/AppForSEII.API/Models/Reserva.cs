@@ -20,6 +20,9 @@ public class Reserva
     [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio total válido")]
     public decimal PrecioTotal { get; set; }
  
+    // Relación con ApplicationUser (Cliente)
+    public string? ClienteId { get; set; } // Es string porque hereda de IdentityUser
+    public ApplicationUser? Cliente { get; set; }
     //RELACIÓN
     //Relación con PistaReservada (1 - N)
     public ICollection<PistaReservada> PistasReservadas { get; set; } = new List<PistaReservada>();
