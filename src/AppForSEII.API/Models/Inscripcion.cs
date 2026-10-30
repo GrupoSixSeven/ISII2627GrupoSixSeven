@@ -14,8 +14,8 @@ public class Inscripcion{
     [Required(ErrorMessage = "Introduzca un método de pago válido")]
     public required MetodoPago MetodoPago {get;set;} // da error ya que no está subida la enumeración MetodoPsgo, pero lo estará
 
-    [Required(ErrorMessage = "Introduzca los datos del pago")] // NUEVO
-    public string DatosPago { get; set; } = "";                // NUEVO
+    [Required(ErrorMessage = "Introduzca los datos del pago")] 
+    public required string DatosPago { get; set; }                
 
     [Range (typeof(decimal), "0", "500", ErrorMessage = "Introduzca un precio total válido")] //he puesto de maximo 500€, para hacerlo realista
     public decimal PrecioTotal {get; set;}
