@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using AppForSEII.API.Models;
 
 namespace AppForSEII.API.DTOs.ClaseDeportivaDTO
@@ -44,12 +45,20 @@ namespace AppForSEII.API.DTOs.ClaseDeportivaDTO
                    MetodoPago == dTO.MetodoPago &&
                    PrecioTotal == dTO.PrecioTotal &&
                    FechaInscripcion == dTO.FechaInscripcion &&
-                   DatosPago == dTO.DatosPago;
+                   DatosPago == dTO.DatosPago &&
+                   ClasesInscritas.SequenceEqual(dTO.ClasesInscritas);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(FechaInscripcion, DatosPago, MetodoPago, PrecioTotal);
+            var hash = new HashCode();
+            hash.Add(FechaInscripcion);
+            hash.Add(DatosPago);
+            hash.Add(MetodoPago);
+            hash.Add(PrecioTotal);
+            foreach (var clase in ClasesInscritas)
+                hash.Add(clase);
+            return hash.ToHashCode();
         }
     }
 }
