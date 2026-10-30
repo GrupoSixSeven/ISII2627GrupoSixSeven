@@ -8,12 +8,12 @@ namespace AppForSEII.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GetReservaController : ControllerBase
+    public class ReservaController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<GetReservaController> _logger;
+        private readonly ILogger<ReservaController> _logger;
  
-        public GetReservaController(ApplicationDbContext context, ILogger<GetReservaController> logger)
+        public ReservaController(ApplicationDbContext context, ILogger<ReservaController> logger)
         {
             _context = context;
             _logger = logger;
