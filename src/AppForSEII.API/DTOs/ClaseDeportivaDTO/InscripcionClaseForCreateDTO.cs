@@ -39,14 +39,14 @@ namespace AppForSEII.API.DTOs.ClaseDeportivaDTO
         [MinLength(1, ErrorMessage = "Debe haber al menos 1 clase deportiva inscrita")]
         public IList<InscripcionItemDTO> ClasesInscritas { get; set; } = new List<InscripcionItemDTO>();
 
-        public override bool Equals(object? obj)
+      public override bool Equals(object? obj)
         {
             return obj is InscripcionClaseForCreateDTO dTO &&
                    MetodoPago == dTO.MetodoPago &&
                    PrecioTotal == dTO.PrecioTotal &&
                    FechaInscripcion == dTO.FechaInscripcion &&
                    DatosPago == dTO.DatosPago &&
-                   ClasesInscritas.SequenceEqual(dTO.ClasesInscritas);
+                   EqualityComparer<IList<InscripcionItemDTO>>.Default.Equals(ClasesInscritas, dTO.ClasesInscritas);
         }
 
         public override int GetHashCode()

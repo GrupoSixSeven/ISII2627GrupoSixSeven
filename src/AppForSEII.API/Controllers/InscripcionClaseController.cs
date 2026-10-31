@@ -46,7 +46,7 @@ namespace AppForSEII.API.Controllers
                     i.PrecioTotal,
                     i.ClasesInscritas
                         .Select(ci => new InscripcionItemDTO(
-                            ci.ClaseDeportiva!.Id, //EL ! SIRVE PARA DECIR AL PROGRAMA QUE NO ENTRA NULL 100%, AL HACER INCLUDE NUNCA LLEGARA NULL
+                            ci.ClaseDeportiva!.Id, 
                             ci.ClaseDeportiva.Descripcion,
                             ci.ClaseDeportiva.TipoDeporte!.Nombre,
                             ci.ClaseDeportiva.Monitor,
@@ -54,7 +54,7 @@ namespace AppForSEII.API.Controllers
                             ci.PlazasReservadas,
                             ci.Precio,
                             ci.Observaciones)).ToList<InscripcionItemDTO>(),
-                    i.DatosPago, 
+                    i.DatosPago ?? "",
                     i.Cliente!.Name ?? "",
                     i.Cliente.Surname ?? "",
                     i.Cliente.PhoneNumber ?? "",
@@ -97,12 +97,11 @@ namespace AppForSEII.API.Controllers
                     c.TipoDeporte!.Nombre,
                     c.Monitor,
                     c.FechaHora,
-                    c.PlazasDisponibles, // aquí van las plazas libres de la clase
+                    c.PlazasDisponibles, 
                     c.PrecioUnitario,
                     null))
                 .ToListAsync();
 
-            // Flujo alternativo 0: si la lista viene vacía, no hay clases con plazas disponibles
             return Ok(clases);
         }
     }
