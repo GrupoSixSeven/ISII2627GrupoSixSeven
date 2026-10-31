@@ -54,7 +54,7 @@ namespace AppForSEII.API.Controllers
                             ci.PlazasReservadas,
                             ci.Precio,
                             ci.Observaciones)).ToList<InscripcionItemDTO>(),
-                    "", 
+                    i.DatosPago, 
                     i.Cliente!.Name ?? "",
                     i.Cliente.Surname ?? "",
                     i.Cliente.PhoneNumber ?? "",
