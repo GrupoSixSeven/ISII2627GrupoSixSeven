@@ -81,7 +81,7 @@ namespace AppForSEII.API.Controllers
             if (alquilerForCreate.Materiales.GroupBy(m => m.IdMaterial).Any(g => g.Count() > 1))
                 ModelState.AddModelError("Materiales", "Error! Hay materiales repetidos en el carrito");
  
-            var user = _context.ApplicationUsers.FirstOrDefault(au => au.Email == alquilerForCreate.Email);
+            var user = await _context.ApplicationUsers.FirstOrDefaultAsync(au => au.Email == alquilerForCreate.Email);
             if (user == null)
                 ModelState.AddModelError("AlquilerApplicationUser", "Error! No hay ningún usuario registrado con ese email");
  
