@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AppForSEII.API.Models;
 
@@ -20,6 +21,9 @@ public class Reserva
     [Range(typeof(decimal), "0", "1000", ErrorMessage = "Introduzca un precio total válido")]
     public decimal PrecioTotal { get; set; }
  
+    // Relación con ApplicationUser (Cliente)
+    public string? ClienteId { get; set; } // Es string porque hereda de IdentityUser
+    public ApplicationUser? Cliente { get; set; }
     //RELACIÓN
     //Relación con PistaReservada (1 - N)
     public ICollection<PistaReservada> PistasReservadas { get; set; } = new List<PistaReservada>();
@@ -36,6 +40,16 @@ public class Reserva
         FechaReserva = fechaReserva;
         MetodoPago = metodoPago;
         PrecioTotal = precioTotal;
+    }
+
+    // Constructor con cliente y pistas reservadas (el que usa el POST al crear una reserva)
+    [SetsRequiredMembers]
+    public Reserva(ApplicationUser? cliente, DateTime fechaReserva, MetodoPago metodoPago, ICollection<PistaReservada> pistasReservadas)
+    {
+        Cliente = cliente;
+        FechaReserva = fechaReserva;
+        MetodoPago = metodoPago;
+        PistasReservadas = pistasReservadas;
     }
 
     public override bool Equals(object? otro)
