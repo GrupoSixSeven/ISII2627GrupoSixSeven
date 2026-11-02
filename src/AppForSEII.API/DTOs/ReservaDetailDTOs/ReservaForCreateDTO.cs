@@ -7,7 +7,7 @@ using AppForSEII.API.Models;
 namespace AppForSEII.API.DTOs.ReservaDetailDTOs
 {
     public class ReservaForCreateDTO
-    {   
+    {
         public ReservaForCreateDTO()
         {
             Pistas = new List<ReservaItemDTO>();
@@ -22,7 +22,7 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
             Telefono = telefono;
             MetodoPago = metodoPago;
             PrecioTotal = precioTotal;
-            Pistas = pistas;
+            Pistas = pistas;    
             DatosPago = datosPago;
             FechaReserva = fechaReserva;
         }
@@ -49,8 +49,7 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         public decimal PrecioTotal { get; set; } = 0;
 
         [Required(ErrorMessage = "Debe seleccionar al menos una pista")]
-        [MinLength(1, ErrorMessage = "Debe haber al menos 1 pista reservada")]
-        public IList<ReservaItemDTO> Pistas { get; set; } = new List<ReservaItemDTO>();
+        public IList<ReservaItemDTO> Pistas { get; set; }
 
         [Required(ErrorMessage = "Los datos de pago son obligatorios")]
         public string DatosPago { get; set; } = "";
@@ -85,8 +84,8 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
             hash.Add(DatosPago);
             hash.Add(MetodoPago);
             hash.Add(PrecioTotal);
-            hash.Add(Pistas);
-            return hash.ToHashCode();
+            hash.Add(Pistas); 
+    return hash.ToHashCode();
         }
     }
 }
