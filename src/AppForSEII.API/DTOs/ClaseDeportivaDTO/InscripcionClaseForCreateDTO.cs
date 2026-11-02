@@ -21,7 +21,8 @@ namespace AppForSEII.API.DTOs.ClaseDeportivaDTO
             DatosPago = datosPago;
             FechaInscripcion = fechaInscripcion;
         }
-         [Required(ErrorMessage = "El email es obligatorio")]
+
+        [Required(ErrorMessage = "El email es obligatorio")]
         public string Email { get; set; } = "";
 
         [Required(ErrorMessage = "El método de pago es obligatorio")]
@@ -41,7 +42,7 @@ namespace AppForSEII.API.DTOs.ClaseDeportivaDTO
         [MinLength(1, ErrorMessage = "Debe haber al menos 1 clase deportiva inscrita")]
         public IList<InscripcionItemDTO> ClasesInscritas { get; set; } = new List<InscripcionItemDTO>();
 
-      public override bool Equals(object? obj)
+        public override bool Equals(object? obj)
         {
             return obj is InscripcionClaseForCreateDTO dTO &&
                    Email == dTO.Email &&
@@ -49,12 +50,12 @@ namespace AppForSEII.API.DTOs.ClaseDeportivaDTO
                    PrecioTotal == dTO.PrecioTotal &&
                    FechaInscripcion == dTO.FechaInscripcion &&
                    DatosPago == dTO.DatosPago &&
-                   EqualityComparer<IList<InscripcionItemDTO>>.Default.Equals(ClasesInscritas, dTO.ClasesInscritas);
+                   ClasesInscritas.SequenceEqual(dTO.ClasesInscritas);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Email, FechaInscripcion, DatosPago, MetodoPago, PrecioTotal, ClasesInscritas);
+            return HashCode.Combine(Email, FechaInscripcion, DatosPago, MetodoPago, PrecioTotal);
         }
     }
 }
