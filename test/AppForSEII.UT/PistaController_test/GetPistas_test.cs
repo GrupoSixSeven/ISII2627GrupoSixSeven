@@ -54,8 +54,8 @@ namespace AppForSEII.UT.PistasController_test
 
             var allTests = new List<object?[]>
             {
-                new object?[] { null, null, pistaDTOsTC1 },
-                new object?[] { null, DateTime.Today.AddDays(1), pistaDTOsTC2 },
+                new object?[] { (string?)null, (DateTime?)null, pistaDTOsTC1 },
+                new object?[] { (string?)null, DateTime.Today.AddDays(1), pistaDTOsTC2 },
                 new object?[] { "Fútbol", DateTime.Today, pistaDTOsTC3 },
                 new object?[] { "Badminton", DateTime.Today, pistaDTOsTC4 },
             };
