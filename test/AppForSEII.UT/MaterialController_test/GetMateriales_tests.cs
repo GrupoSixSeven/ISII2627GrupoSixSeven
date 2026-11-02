@@ -66,11 +66,11 @@ namespace AppForSEII.UT.MaterialController_test
             var allTests = new List<object?[]>
             {               
 
-                new object?[] { (decimal?)null, (int?)null, materialDTOsTC1 },
-                new object?[] { 12m, (int?)null, materialDTOsTC2 },
-                new object?[] { 1m, (int?)null, materialDTOsTC3 },
-                new object?[] { (decimal?)null, 2, materialDTOsTC4 },
-                new object?[] { (decimal?)null, 9999, materialDTOsTC5 },
+                new object?[] { null, null, materialDTOsTC1 },
+                new object?[] { 12m, null, materialDTOsTC2 },
+                new object?[] { 1m, null, materialDTOsTC3 },
+                new object?[] { null, 2, materialDTOsTC4 },
+                new object?[] { null, 9999, materialDTOsTC5 },
             };
 
             return allTests;
