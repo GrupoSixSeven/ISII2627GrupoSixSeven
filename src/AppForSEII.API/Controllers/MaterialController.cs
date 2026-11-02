@@ -27,6 +27,11 @@ namespace AppForSEII.API.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult> GetMaterialesParaAlquilar(decimal? precioMaximo, int? idTipoMaterial)
         {
+            if (precioMaximo < 0)
+            {
+                ModelState.AddModelError("precioMaximo", "El precio máximo no puede ser negativo");
+                return BadRequest(new ValidationProblemDetails(ModelState));
+            }
             IList<MaterialParaAlquilarDTO> selectMateriales = await _context.Materiales
                 
                 .Include(m => m.TipoMaterial)
