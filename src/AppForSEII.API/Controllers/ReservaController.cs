@@ -1,9 +1,10 @@
 using System.Net;
 using AppForSEII.API.Data;
 using AppForSEII.API.DTOs.ReservaDetailDTOs;
+using AppForSEII.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
- 
+
 namespace AppForSEII.API.Controllers
 {
     [Route("api/[controller]")]
@@ -12,13 +13,13 @@ namespace AppForSEII.API.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<ReservaController> _logger;
- 
+
         public ReservaController(ApplicationDbContext context, ILogger<ReservaController> logger)
         {
             _context = context;
             _logger = logger;
         }
- 
+
         [HttpGet]
         [Route("[action]")]
         [ProducesResponseType(typeof(ReservaDetailDTO), (int)HttpStatusCode.OK)]
@@ -30,7 +31,7 @@ namespace AppForSEII.API.Controllers
                 _logger.LogError("Error: La tabla Reservas no existe");
                 return NotFound();
             }
- 
+
             var reserva = await _context.Reservas
                 .Where(r => r.Id == id)
                 .Include(r => r.Cliente)
@@ -39,8 +40,12 @@ namespace AppForSEII.API.Controllers
                         .ThenInclude(p => p!.TipoDeporte)
                 .Select(r => new ReservaDetailDTO(
                     r.Id,
+                    r.Cliente!.Name ?? "",
+                    r.Cliente.Surname ?? "",
+                    r.Cliente.DNI ?? "",
+                    r.Cliente.Email ?? "",
+                    r.Cliente.PhoneNumber ?? "",
                     r.MetodoPago,
-                    r.FechaReserva,
                     r.PrecioTotal,
                     r.PistasReservadas
                         .Select(pr => new ReservaItemDTO(
@@ -51,17 +56,16 @@ namespace AppForSEII.API.Controllers
                             pr.Precio,
                             pr.Observaciones))
                         .ToList<ReservaItemDTO>(),
-                    r.Cliente!.Name ?? "",
-                    r.Cliente.Surname ?? "",
-                    r.Cliente.DNI ?? ""))
+                    "", 
+                    r.FechaReserva))
                 .FirstOrDefaultAsync();
- 
+
             if (reserva == null)
             {
                 _logger.LogError($"Error: La reserva con id {id} no existe");
                 return NotFound();
             }
- 
+
             return Ok(reserva);
         }
     }
