@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 namespace AppForSEII.UT.AlquilerController_test
 {
     public class GetAlquiler_test : AppForSEII4SqliteUT
-    {public GetAlquiler_test()
+    {
+        public GetAlquiler_test()
         {
             var tiposMaterial = new List<TipoMaterial>() {
                 new TipoMaterial { IdTipoMaterial = 1, NombreTipoMaterial = "Balones" },
@@ -85,7 +86,7 @@ namespace AppForSEII.UT.AlquilerController_test
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             var alquilerDTOActual = Assert.IsType<AlquilerDetailDTO>(okResult.Value);
-            var eq = expectedAlquiler.Equals(alquilerDTOActual);
+            
 
             Assert.Equal(expectedAlquiler, alquilerDTOActual);
 
