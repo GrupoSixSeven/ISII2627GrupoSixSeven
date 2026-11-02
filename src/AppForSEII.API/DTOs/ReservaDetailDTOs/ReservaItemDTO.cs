@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppForSEII.API.DTOs.ReservaDetailDTOs
 {
-    // Pista dentro de una reserva (paso 7: nombre, deporte, nº de personas y observaciones)
     public class ReservaItemDTO
     {
         public ReservaItemDTO()
         {
-            NombrePista = string.Empty;
-            TipoDeporte = string.Empty;
+            NombrePista = "";
+            TipoDeporte = "";
         }
 
         public ReservaItemDTO(int idPista, string nombrePista, string tipoDeporte, int nPersonas, decimal precio, string? observaciones)
@@ -30,7 +29,6 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         [Range(0, (double)decimal.MaxValue)]
         public decimal Precio { get; set; }
 
-        // Opcional, una por pista (paso 5)
         [StringLength(500, ErrorMessage = "Las observaciones no pueden superar los 500 caracteres")]
         public string? Observaciones { get; set; }
 
