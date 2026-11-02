@@ -14,7 +14,7 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
         }
 
         public InscripcionForCreateDTO(string nombreUsuario, string apellidosUsuario, string dni, string correo,
-            string telefono, MetodoPago metodoPago, IList<CompeticionItemDTO> competiciones, DateTime fechaInscripcion)
+            string telefono, MetodoPago metodoPago, IList<CompeticionItemDTO> competiciones, string datosPago, DateTime fechaInscripcion)
         {
             NombreUsuario = nombreUsuario;
             ApellidosUsuario = apellidosUsuario;
@@ -23,6 +23,7 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
             Telefono = telefono;
             MetodoPago = metodoPago;
             Competiciones = competiciones;
+            DatosPago = datosPago;
             FechaInscripcion = fechaInscripcion;
         }
 
@@ -33,11 +34,14 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
         public string Dni { get; set; } = "";
 
         public string Telefono { get; set; } = "";
-        
+
         public string Correo { get; set; } = "";
 
         [Required(ErrorMessage = "El método de pago es obligatorio")]
         public MetodoPago MetodoPago { get; set; } = MetodoPago.Tarjeta;
+
+        [Required(ErrorMessage = "El campo DatosPago es obligatorio")]
+        public string DatosPago { get; set; } = "";
 
         [Required(ErrorMessage = "El campo fecha de inscripcion es obligatorio")]
         public DateTime FechaInscripcion { get; set; } = DateTime.Now;
@@ -68,6 +72,7 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
                    Dni == dTO.Dni &&
                    Correo == dTO.Correo &&
                    Telefono == dTO.Telefono &&
+                   DatosPago == dTO.DatosPago &&
                    MetodoPago == dTO.MetodoPago &&
                    Competiciones.SequenceEqual(dTO.Competiciones) &&
                    PrecioTotal == dTO.PrecioTotal;
@@ -75,7 +80,7 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(FechaInscripcion, Dni, Correo, MetodoPago);
+            return HashCode.Combine(FechaInscripcion, Dni, Correo, MetodoPago, DatosPago);
         }
     }
 }
