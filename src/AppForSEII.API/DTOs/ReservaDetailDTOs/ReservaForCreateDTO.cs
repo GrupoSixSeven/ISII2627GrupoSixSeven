@@ -49,7 +49,7 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         public decimal PrecioTotal { get; set; } = 0;
 
         [Required(ErrorMessage = "Debe seleccionar al menos una pista")]
-        public IList<ReservaItemDTO> Pistas { get; set; }
+        public IList<ReservaItemDTO> Pistas { get; set; } = new List<ReservaItemDTO>();
 
         [Required(ErrorMessage = "Los datos de pago son obligatorios")]
         public string DatosPago { get; set; } = "";
@@ -68,7 +68,8 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
                    MetodoPago == dTO.MetodoPago &&
                    PrecioTotal == dTO.PrecioTotal &&
                    FechaReserva == dTO.FechaReserva &&
-                   DatosPago == dTO.DatosPago;
+                   DatosPago == dTO.DatosPago &&
+                   Pistas.SequenceEqual(dTO.Pistas);
         }
 
         public override int GetHashCode()
@@ -78,12 +79,12 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
             hash.Add(ApellidosUsuario);
             hash.Add(Dni);
             hash.Add(Email);
+            hash.Add(Telefono);
             hash.Add(FechaReserva);
             hash.Add(DatosPago);
             hash.Add(MetodoPago);
             hash.Add(PrecioTotal);
-            foreach (var pista in Pistas)
-                hash.Add(pista);
+            hash.Add(Pistas);
             return hash.ToHashCode();
         }
     }

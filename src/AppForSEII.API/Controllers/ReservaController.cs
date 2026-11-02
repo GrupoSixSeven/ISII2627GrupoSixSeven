@@ -46,6 +46,7 @@ namespace AppForSEII.API.Controllers
                     r.Cliente.Email ?? "",
                     r.Cliente.PhoneNumber ?? "",
                     r.MetodoPago,
+                    r.PrecioTotal,
                     r.PistasReservadas
                         .Select(pr => new ReservaItemDTO(
                             pr.IdPista,
@@ -55,7 +56,7 @@ namespace AppForSEII.API.Controllers
                             pr.Precio,
                             pr.Observaciones))
                         .ToList<ReservaItemDTO>(),
-                    "", /* r.DatosPago // descomentar cuando Reserva tenga DatosPago */
+                    "", 
                     r.FechaReserva))
                 .FirstOrDefaultAsync();
 

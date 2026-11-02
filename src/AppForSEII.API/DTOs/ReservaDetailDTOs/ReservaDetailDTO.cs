@@ -7,8 +7,8 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
     public class ReservaDetailDTO : ReservaForCreateDTO
     {
         public ReservaDetailDTO(int idReserva, string nombreUsuario, string apellidosUsuario, string dni, string email,
-            string telefono, MetodoPago metodoPago, IList<ReservaItemDTO> pistas, string datosPago, DateTime fechaReserva)
-            : base(nombreUsuario, apellidosUsuario, dni, email, telefono, metodoPago, pistas, datosPago, fechaReserva)
+            string telefono, MetodoPago metodoPago, decimal precioTotal, IList<ReservaItemDTO> pistas, string datosPago, DateTime fechaReserva)
+            : base(nombreUsuario, apellidosUsuario, dni, email, telefono, metodoPago, precioTotal, pistas, datosPago, fechaReserva)
         {
             IdReserva = idReserva;
         }
