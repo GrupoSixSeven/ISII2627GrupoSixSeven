@@ -7,9 +7,17 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
     public class InscripcionDetailDTO : InscripcionForCreateDTO
     {
         public InscripcionDetailDTO(int idInscripcion, string nombreUsuario, string apellidosUsuario, string dni, 
-            string correo, string telefono, MetodoPago metodoPago, IList<CompeticionItemDTO> competiciones, DateTime fechaInscripcion)
+            string correo, string telefono, MetodoPago metodoPago, IList<CompeticionItemDTO> competiciones, 
+            string datosPago, DateTime fechaInscripcion)
             : base(nombreUsuario,
-                   apellidosUsuario,dni,correo,telefono, metodoPago,competiciones,fechaInscripcion)
+                   apellidosUsuario,
+                   dni,
+                   correo,
+                   telefono,
+                   metodoPago,
+                   competiciones,
+                   datosPago,
+                   fechaInscripcion)
         {
             IdInscripcion = idInscripcion;
         }
