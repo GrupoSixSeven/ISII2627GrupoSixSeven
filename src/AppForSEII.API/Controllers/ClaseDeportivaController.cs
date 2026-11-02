@@ -31,6 +31,9 @@ namespace AppForSEII.API.Controllers
                 .Include(c => c.TipoDeporte)
                 .AsQueryable();
 
+
+            query = query.Where(c => c.PlazasDisponibles > 0); 
+
             if (idTipoDeporte.HasValue)
             {
                 query = query.Where(c => c.TipoDeporteId == idTipoDeporte.Value);
@@ -75,7 +78,6 @@ namespace AppForSEII.API.Controllers
             if (inscripcionForCreate.ClasesInscritas.Count == 0)
                 ModelState.AddModelError("ClasesInscritas", "Error! Debe incluir al menos una clase deportiva");
 
-            // Paso 3: plaza del cliente + 2 acompañantes como máximo
             if (inscripcionForCreate.ClasesInscritas.Any(c => c.PlazasReservadas < 1 || c.PlazasReservadas > 3))
                 ModelState.AddModelError("ClasesInscritas", "Error! Puede reservar entre 1 y 3 plazas por clase (usted y 2 acompañantes como máximo)");
 
@@ -91,7 +93,6 @@ namespace AppForSEII.API.Controllers
 
             var clasesIds = inscripcionForCreate.ClasesInscritas.Select(c => c.ClaseDeportivaId).ToList<int>();
 
-            // Necesitamos las entidades para poder descontar las plazas disponibles
             var clases = await _context.ClasesDeportivas
                 .Include(c => c.TipoDeporte)
                 .Where(c => clasesIds.Contains(c.Id))
@@ -126,7 +127,6 @@ namespace AppForSEII.API.Controllers
                         Observaciones = item.Observaciones
                     });
 
-                    // Paso 7: se descuentan las plazas reservadas
                     clase.PlazasDisponibles -= item.PlazasReservadas;
 
                     item.Descripcion = clase.Descripcion;
@@ -156,14 +156,14 @@ namespace AppForSEII.API.Controllers
                 return Conflict("Error" + ex.Message);
             }
 
-            // Los datos del cliente se recuperan de su perfil (paso 5 del caso de uso)
+            
             var inscripcionDetail = new InscripcionClaseDetailDTO(inscripcion.Id,
                 inscripcion.MetodoPago, inscripcion.FechaInscripcion, inscripcion.PrecioTotal,
                 inscripcionForCreate.ClasesInscritas, inscripcion.DatosPago,
                 user.Name ?? "", user.Surname ?? "", user.PhoneNumber ?? "",
                 user.DNI ?? "", user.Email ?? "");
 
-            // El GET del details está en InscripcionClaseController
+            
             return CreatedAtAction("GetInscripcion", "InscripcionClase", new { id = inscripcion.Id }, inscripcionDetail);
         }
     }
