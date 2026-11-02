@@ -1,138 +1,115 @@
 using AppForSEII.API.Controllers;
 using AppForSEII.API.Data;
-using AppForSEII.API.DTOs.AlquilerDTOs;
+using AppForSEII.API.DTOs;
+using AppForSEII.API.DTOs.AlquilerDTOs; // Asumo que MaterialParaAlquilarDTO está aquí
 using AppForSEII.API.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Moq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
- 
-namespace AppForSEII.UT.MaterialController_test{
 
-public class GetMateriales_tests :AppForSEII4SqliteUT
+namespace AppForSEII.UT.MaterialController_test
 {
- public GetMateriales_tests()
+    public class GetMaterialesParaAlquilar_test : AppForSEII4SqliteUT
+    {
+        public GetMaterialesParaAlquilar_test()
         {
-
-            var genres = new List<Genre>() {
-                new Genre("Sci - Fi"),
-                new Genre("Drama"),
-                new Genre("Comedy"),
-                new Genre("Soap opera")
+            var tiposMaterial = new List<TipoMaterial>() {
+                new TipoMaterial { IdTipoMaterial = 1, NombreTipoMaterial = "Balones" },
+                new TipoMaterial { IdTipoMaterial = 2, NombreTipoMaterial = "Raquetas" },
+                new TipoMaterial { IdTipoMaterial = 3, NombreTipoMaterial = "Redes" }
             };
 
-            var movies = new List<Movie>(){
-                new Movie("The lord of the rings", genres[0],new DateTime(2011, 10, 20),10.0m, 5,1.0,1),
-                new Movie("The mechanic orange", genres[0],new DateTime(1988, 02, 23),15.0m, 10,2.0,2),
-                new Movie("The flying castle", genres[1],new DateTime(2007, 04, 04),20.0m, 15,3.0,10),
-                //this movie has quantityforpurchase=0 and quantityforrenting=0 so it shouldn't be returned when 
-                //quering for movies for being purchased or rented
-                new Movie("The man in the high castle", genres[2],new DateTime(2015, 01, 01),10.0m,0, 4.0,0),
+            var tiposDeporte = new List<TipoDeporte>() {
+                new TipoDeporte { Id = 1, Nombre = "Fútbol", NombreTipoDeporte = "Liga Local", Descripcion = "" },
+                new TipoDeporte { Id = 2, Nombre = "Tenis", NombreTipoDeporte = "Liga Local", Descripcion = "" },
+                new TipoDeporte { Id = 3, Nombre = "Voleibol", NombreTipoDeporte = "Liga Local", Descripcion = "" }
             };
-            ApplicationUser user = new ApplicationUser("1", "Elena", "Navarro Martínez", "elena@uclm.es");
 
+            var materiales = new List<Material>() {
+                new Material { IdMaterial = 1, MaterialAlquilados = new List<MaterialAlquilado>(), Nombre = "Balón", Precio = 5m, Cantidad = 10, TipoMaterial = tiposMaterial[0], TipoDeporte = tiposDeporte[0], IdTipoMaterial = 1 },
+                new Material { IdMaterial = 2, MaterialAlquilados = new List<MaterialAlquilado>(), Nombre = "Raqueta", Precio = 12m, Cantidad = 4, TipoMaterial = tiposMaterial[1], TipoDeporte = tiposDeporte[1], IdTipoMaterial = 2 },
+                new Material { IdMaterial = 3, MaterialAlquilados = new List<MaterialAlquilado>(), Nombre = "Red", Precio = 20m, Cantidad = 2, TipoMaterial = tiposMaterial[2], TipoDeporte = tiposDeporte[2], IdTipoMaterial = 3 },
+            };
 
-            var purchase = new Purchase("elena.navarro@uclm.es", "Elena Navarro", user,
-                "Avda. España s/n, Albacete", DateTime.Today, new List<PurchaseItem>(), PaymentMethodTypes.CreditCard);
-
-            var purchaseItem = new PurchaseItem(movies[movies.Count - 1], 1, purchase);
-            purchase.PurchaseItems.Add(purchaseItem);
-
-            var rental = new Rental("elena.navarro@uclm.es", "Elena Navarro", user,
-                "Avda. España s/n, Albacete 02071", DateTime.Now,
-                PaymentMethodTypes.CreditCard, DateTime.Today.AddDays(2), DateTime.Today.AddDays(5),
-                     new List<RentalItem>());
-
-
-            rental.RentalItems.Add(new RentalItem(movies[0], rental));
-
-            _context.Add(user);
-            _context.AddRange(genres);
-            _context.AddRange(movies);
-            _context.Add(purchase); //
-            _context.Add(rental); //
+            _context.AddRange(tiposMaterial);
+            _context.AddRange(tiposDeporte);
+            _context.AddRange(materiales);
             _context.SaveChanges();
         }
 
-
-        public static IEnumerable<object[]> TestCasesFor_GetMoviesForRental_OK()
+        public static IEnumerable<object?[]> TestCasesFor_GetMaterialesParaAlquilar_OK()
         {
 
-            var movieDTOs = new List<MovieForRentalDTO>() {
-                new MovieForRentalDTO(1,"The lord of the rings","Sci - Fi",new DateTime(2011, 10, 20),1),
-                new MovieForRentalDTO(2,"The mechanic orange","Sci - Fi" , new DateTime(1988, 02, 23),2),
-                new MovieForRentalDTO(3, "The flying castle", "Drama", new DateTime(2007, 04, 04), 3),
+            var materialDTOs = new List<MaterialParaAlquilarDTO>() {
+                new MaterialParaAlquilarDTO(1, "Balón", 5m, 10, "Balones", "Fútbol"),
+                new MaterialParaAlquilarDTO(2, "Raqueta", 12m, 4, "Raquetas", "Tenis"),
+                new MaterialParaAlquilarDTO(3, "Red", 20m, 2, "Redes", "Voleibol"),
             };
 
-            var movieDTOsTC1 = new List<MovieForRentalDTO>() { movieDTOs[1], movieDTOs[2] }
-                    //the GetMoviesForPurchase method returns the movies ordered by title
-                    .OrderBy(m => m.Title).ToList();
+            var materialDTOsTC1 = new List<MaterialParaAlquilarDTO>() { materialDTOs[0], materialDTOs[1], materialDTOs[2] }
+                    .OrderBy(m => m.Nombre).ToList();
 
+            var materialDTOsTC2 = new List<MaterialParaAlquilarDTO>() { materialDTOs[0], materialDTOs[1] }
+                    .OrderBy(m => m.Nombre).ToList();
 
-            var movieDTOsTC2 = new List<MovieForRentalDTO>() { movieDTOs[1] };
-            var movieDTOsTC3 = new List<MovieForRentalDTO>() { movieDTOs[2] };
+            var materialDTOsTC3 = new List<MaterialParaAlquilarDTO>();
 
-            var movieDTOsTC4 = new List<MovieForRentalDTO>() { movieDTOs[0], movieDTOs[1], movieDTOs[2] }
-                //the GetMoviesForPurchase method returns the movies ordered by title
-                .OrderBy(m => m.Title).ToList();
+            var materialDTOsTC4 = new List<MaterialParaAlquilarDTO>() { materialDTOs[1] };
 
-            var allTests = new List<object[]>
-            {             //filters to apply - expected movies
-                                          //by default datefrom=today +1, dateto=today+2, thus movieDTOs[0] cannot be returned
-                new object[] { null, null, null, null, movieDTOsTC1,  },
-                new object[] { "mechanic", null, null, null, movieDTOsTC2, },
-                new object[] { null, "Drama", null, null, movieDTOsTC3, },
-                new object[] { null, null, DateTime.Today.AddDays(6), DateTime.Today.AddDays(8), movieDTOsTC4, },
+            var materialDTOsTC5 = new List<MaterialParaAlquilarDTO>();
+
+            var allTests = new List<object?[]>
+            {               
+
+                new object?[] { null, null, materialDTOsTC1 },
+                new object?[] { 12m, null, materialDTOsTC2 },
+                new object?[] { 1m, null, materialDTOsTC3 },
+                new object?[] { null, 2, materialDTOsTC4 },
+                new object?[] { null, 9999, materialDTOsTC5 },
             };
 
             return allTests;
         }
 
         [Theory]
-        [MemberData(nameof(TestCasesFor_GetMoviesForRental_OK))]
+        [MemberData(nameof(TestCasesFor_GetMaterialesParaAlquilar_OK))]
         [Trait("Database", "WithoutFixture")]
         [Trait("LevelTesting", "Unit Testing")]
-        public async Task GetMoviesForRental_OK_test(string? filterTitle, string? filterGenre, DateTime? fromDate, DateTime? toDate,
-            IList<MovieForRentalDTO> expectedMovies)
+        public async Task GetMaterialesParaAlquilar_OK_test(decimal? precioMaximo, int? tipoMaterialId, IList<MaterialParaAlquilarDTO> expectedMateriales)
         {
-            // Arrange
-            var controller = new MoviesController(_context, null);
 
-            // Act
-            var result = await controller.GetMoviesForRental(filterTitle, filterGenre, fromDate, toDate);
+            var mockLogger = new Mock<ILogger<MaterialController>>();
+            var controller = new MaterialController(_context, mockLogger.Object);
 
-            //Assert
-            //we check that the response type is OK 
+            var result = await controller.GetMaterialesParaAlquilar(precioMaximo, tipoMaterialId);
+
             var okResult = Assert.IsType<OkObjectResult>(result);
-            //and obtain the list of movies
-            var movieDTOsActual = Assert.IsType<List<MovieForRentalDTO>>(okResult.Value);
-            Assert.Equal(expectedMovies, movieDTOsActual);
 
+            var materialDTOsActual = Assert.IsType<List<MaterialParaAlquilarDTO>>(okResult.Value);
+            
+            Assert.Equal(expectedMateriales, materialDTOsActual);
         }
-
-
         [Fact]
         [Trait("LevelTesting", "Unit Testing")]
         [Trait("Database", "WithoutFixture")]
-        public async Task GetMoviesForRental_badrequest_test()
+        public async Task GetMaterialesParaAlquilar_badrequest_test()
         {
-            // Arrange
-            var mock = new Mock<ILogger<MoviesController>>();
-            ILogger<MoviesController> logger = mock.Object;
-            var controller = new MoviesController(_context, logger);
 
-            // Act
-            var result = await controller.GetMoviesForRental(null, null, DateTime.Today.AddDays(5), DateTime.Today.AddDays(1));
+            var mockLogger = new Mock<ILogger<MaterialController>>();
+            var controller = new MaterialController(_context, mockLogger.Object);
 
-            //Assert
-            //we check that the response type is OK and obtain the list of movies
+            var result = await controller.GetMaterialesParaAlquilar(-5m, null);
+
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
             var problem = problemDetails.Errors.First().Value[0];
 
-            Assert.Equal("fromDate must be earlier than toDate", problem);
-        }  
- 
-    
-}
+            Assert.Equal("El precio máximo no puede ser negativo", problem);
+        }
+    }
 }
