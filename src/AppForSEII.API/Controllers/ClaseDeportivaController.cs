@@ -30,6 +30,9 @@ namespace AppForSEII.API.Controllers
                 .Include(c => c.TipoDeporte)
                 .AsQueryable();
 
+
+            query = query.Where(c => c.PlazasDisponibles > 0); 
+
             if (idTipoDeporte.HasValue)
             {
                 query = query.Where(c => c.TipoDeporteId == idTipoDeporte.Value);
