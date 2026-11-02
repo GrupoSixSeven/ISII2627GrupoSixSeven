@@ -26,37 +26,28 @@ namespace AppForSEII.API.Controllers
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetInscripcion(int id)
         {
-            if (_context.Inscripciones == null)
-            {
-                _logger.LogError("Error: La tabla Inscripciones no existe");
-                return NotFound();
-            }
-
             var inscripcion = await _context.Inscripciones
                 .Where(i => i.Id == id)
-                .Include(i => i.Cliente) 
-                .Include(i => i.CompeticionInscrita) 
-                    .ThenInclude(ci => ci.Competicion) 
-                        .ThenInclude(competicion => competicion!.TipoDeporte) 
+                    .Include(i => i.Cliente) 
+                    .Include(i => i.CompeticionInscrita) 
+                        .ThenInclude(ci => ci.Competicion) 
+                            .ThenInclude(competicion => competicion!.TipoDeporte) 
                 .Select(i => new InscripcionDetailDTO(
                     i.Id, 
-                    i.MetodoPago, 
-                    i.FechaInscripcion, 
-                    i.PrecioTotal,
-                    i.CompeticionInscrita
-                        .Select(ci => new CompeticionItemDTO(
-                            ci.Competicion!.Id, //EL ! SIRVE PARA DECIR AL PROGRAMA QUE NO ENTRA NULL 100%, AL HACER INCLUDE NUNCA LLEGARA NULL
-                            ci.Competicion.Nombre, 
-                            ci.Competicion.TipoDeporte!.Nombre,
-                            ci.Competicion.Fecha, 
-                            ci.Competicion.Precio, 
-                            ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
-                    "", /* i.DatosPago // descomentalo cuando necesites jm, quita el "" */
                     i.Cliente!.Name ?? "",
                     i.Cliente.Surname ?? "",
-                    i.Cliente.PhoneNumber ?? "",
                     i.Cliente.DNI ?? "",
-                    i.Cliente.Email ?? ""))
+                    i.Cliente.Email ?? "",
+                    i.Cliente.PhoneNumber ?? "",
+                    i.MetodoPago, 
+                    i.CompeticionInscrita.Select(ci => new CompeticionItemDTO(
+                        ci.Competicion!.Id, 
+                        ci.Competicion.Nombre, 
+                        ci.Competicion.TipoDeporte!.Nombre,
+                        ci.Competicion.Fecha, 
+                        ci.Competicion.Precio, 
+                        ci.ProblemasFisicos)).ToList<CompeticionItemDTO>(),
+                    i.FechaInscripcion))
                 .FirstOrDefaultAsync();
 
             if (inscripcion == null)
