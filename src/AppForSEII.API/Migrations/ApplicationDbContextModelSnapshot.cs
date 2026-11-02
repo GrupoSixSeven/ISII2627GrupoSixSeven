@@ -41,7 +41,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasKey("IdAlquiler");
 
-                    b.ToTable("Alquileres", (string)null);
+                    b.ToTable("Alquileres");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.ApplicationUser", b =>
@@ -169,7 +169,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasIndex("TipoDeporteId");
 
-                    b.ToTable("ClasesDeportivas", (string)null);
+                    b.ToTable("ClasesDeportivas");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.ClaseInscrita", b =>
@@ -194,7 +194,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasIndex("InscripcionId");
 
-                    b.ToTable("ClasesInscritas", (string)null);
+                    b.ToTable("ClasesInscritas");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.Competicion", b =>
@@ -229,7 +229,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasIndex("TipoDeporteId");
 
-                    b.ToTable("Competiciones", (string)null);
+                    b.ToTable("Competiciones");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.CompeticionInscripcion", b =>
@@ -247,7 +247,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasIndex("InscripcionId");
 
-                    b.ToTable("CompeticionesInscripciones", (string)null);
+                    b.ToTable("CompeticionesInscripciones");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.Inscripcion", b =>
@@ -294,7 +294,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasIndex("ClienteId");
 
-                    b.ToTable("Inscripciones", (string)null);
+                    b.ToTable("Inscripciones");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.Material", b =>
@@ -335,7 +335,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasIndex("TipoMaterialIdTipoMaterial");
 
-                    b.ToTable("Materiales", (string)null);
+                    b.ToTable("Materiales");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.MaterialAlquilado", b =>
@@ -360,7 +360,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasIndex("IdAlquiler");
 
-                    b.ToTable("MaterialesAlquilados", (string)null);
+                    b.ToTable("MaterialesAlquilados");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.Pista", b =>
@@ -394,31 +394,22 @@ namespace AppForSEII.API.Migrations
 
                     b.HasIndex("TipoDeporteId");
 
-                    b.ToTable("Pistas", (string)null);
+                    b.ToTable("Pistas");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.PistaReservada", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("Cantidad")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdPista")
                         .HasColumnType("int");
 
                     b.Property<int>("IdReserva")
                         .HasColumnType("int");
 
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
                     b.Property<string>("Observaciones")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PistaIdPista")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("decimal(18,2)");
@@ -426,13 +417,11 @@ namespace AppForSEII.API.Migrations
                     b.Property<int?>("ReservaId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
-
-                    b.HasIndex("PistaIdPista");
+                    b.HasKey("IdPista", "IdReserva");
 
                     b.HasIndex("ReservaId");
 
-                    b.ToTable("PistasReservadas", (string)null);
+                    b.ToTable("PistasReservadas");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.Reserva", b =>
@@ -466,7 +455,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reservas", (string)null);
+                    b.ToTable("Reservas");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.TipoDeporte", b =>
@@ -491,7 +480,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TiposDeportes", (string)null);
+                    b.ToTable("TiposDeportes");
                 });
 
             modelBuilder.Entity("AppForSEII.API.Models.TipoMaterial", b =>
@@ -509,7 +498,7 @@ namespace AppForSEII.API.Migrations
 
                     b.HasKey("IdTipoMaterial");
 
-                    b.ToTable("TiposMateriales", (string)null);
+                    b.ToTable("TiposMateriales");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -761,7 +750,9 @@ namespace AppForSEII.API.Migrations
                 {
                     b.HasOne("AppForSEII.API.Models.Pista", "Pista")
                         .WithMany("PistasReservadas")
-                        .HasForeignKey("PistaIdPista");
+                        .HasForeignKey("IdPista")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("AppForSEII.API.Models.Reserva", "Reserva")
                         .WithMany("PistasReservadas")
