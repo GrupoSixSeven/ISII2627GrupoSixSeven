@@ -86,7 +86,7 @@ namespace AppForSEII.UT.AlquilerController_test
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             var alquilerDTOActual = Assert.IsType<AlquilerDetailDTO>(okResult.Value);
-            
+            var eq = expectedAlquiler.Equals(alquilerDTOActual);
 
             Assert.Equal(expectedAlquiler, alquilerDTOActual);
 
