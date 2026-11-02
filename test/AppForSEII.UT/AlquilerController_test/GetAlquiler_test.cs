@@ -38,7 +38,7 @@ namespace AppForSEII.UT.AlquilerController_test
                 MetodoPago = MetodoPago.Tarjeta,
                 PrecioTotal = 5m,
                 MaterialesAlquilados = new List<MaterialAlquilado>()
-            };;
+            };
 
             alquiler.MaterialesAlquilados.Add(new MaterialAlquilado { IdMaterial = 1, Material = materiales[0], Alquiler = alquiler, Cantidad = 1, Precio = 5m, Descripcion = "Para el partido" });
 
