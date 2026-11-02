@@ -24,18 +24,17 @@ namespace AppForSEII.API.Controllers
         [Route("[action]")]
         [ProducesResponseType(typeof(IList<PistaParaAlquilarDTO>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ValidationProblemDetails), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<ActionResult> GetPistasParaAlquilar(string? tipoDeporte, DateTime? fecha)
         {
             DateTime fechaFiltro = fecha ?? DateTime.Today;
 
             if (fechaFiltro.Date < DateTime.Today)
             {
-                ModelState.AddModelError("Fecha", "¡Error! La fecha de consulta no puede ser anterior a la fecha actual.");
+                ModelState.AddModelError("Fecha", "La fecha no puede ser anterior a la actual");
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
-            var pistas = await _context.Pistas
+            IList<PistaParaAlquilarDTO> pistas = await _context.Pistas
                 .Include(p => p.TipoDeporte)
                 .Include(p => p.PistasReservadas)
                     .ThenInclude(pr => pr.Reserva)
@@ -53,11 +52,6 @@ namespace AppForSEII.API.Controllers
                     NombreTipoDeporte = p.TipoDeporte!.Nombre
                 })
                 .ToListAsync();
-
-            if (pistas == null || pistas.Count == 0)
-            {
-                return NotFound();
-            }
 
             return Ok(pistas);
         }
