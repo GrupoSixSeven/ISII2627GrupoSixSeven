@@ -13,15 +13,40 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
             Pistas = new List<ReservaItemDTO>();
         }
 
-        public ReservaForCreateDTO(string email, MetodoPago metodoPago, decimal precioTotal, IList<ReservaItemDTO> pistas, string datosPago, DateTime fechaReserva)
+        public ReservaForCreateDTO(string nombreUsuario, string apellidosUsuario, string dni, string email,
+            string telefono, MetodoPago metodoPago, decimal precioTotal, IList<ReservaItemDTO> pistas,
+            string datosPago, DateTime fechaReserva)
         {
+            if (string.IsNullOrWhiteSpace(nombreUsuario))
+                throw new ArgumentException("El nombre del usuario es obligatorio", nameof(nombreUsuario));
+            if (string.IsNullOrWhiteSpace(apellidosUsuario))
+                throw new ArgumentException("Los apellidos del usuario son obligatorios", nameof(apellidosUsuario));
+            if (string.IsNullOrWhiteSpace(dni))
+                throw new ArgumentException("El DNI del usuario es obligatorio", nameof(dni));
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentException("El email del usuario es obligatorio", nameof(email));
+            if (string.IsNullOrWhiteSpace(telefono))
+                throw new ArgumentException("El teléfono del usuario es obligatorio", nameof(telefono));
+
+            NombreUsuario = nombreUsuario;
+            ApellidosUsuario = apellidosUsuario;
+            Dni = dni;
             Email = email;
+            Telefono = telefono;
             MetodoPago = metodoPago;
             PrecioTotal = precioTotal;
             Pistas = pistas;
             DatosPago = datosPago;
             FechaReserva = fechaReserva;
         }
+
+        public string NombreUsuario { get; set; } = "";
+
+        public string ApellidosUsuario { get; set; } = "";
+
+        public string Dni { get; set; } = "";
+
+        public string Telefono { get; set; } = "";
 
         [Required(ErrorMessage = "El email es obligatorio")]
         public string Email { get; set; } = "";
@@ -51,6 +76,10 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         public override bool Equals(object? obj)
         {
             return obj is ReservaForCreateDTO dTO &&
+                   NombreUsuario == dTO.NombreUsuario &&
+                   ApellidosUsuario == dTO.ApellidosUsuario &&
+                   Dni == dTO.Dni &&
+                   Telefono == dTO.Telefono &&
                    Email == dTO.Email &&
                    MetodoPago == dTO.MetodoPago &&
                    PrecioTotal == dTO.PrecioTotal &&
@@ -63,6 +92,7 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         {
             var hash = new HashCode();
             hash.Add(Email);
+            hash.Add(Dni);
             hash.Add(FechaReserva);
             hash.Add(DatosPago);
             hash.Add(MetodoPago);
