@@ -117,7 +117,7 @@ namespace AppForSEII.API.Controllers
 
                 if ((competicion == null) || (competicion.NumberOfInscribedUsers + 1 > competicion.Plazas))
                 {
-                    ModelState.AddModelError("Competiciones", $"Error! La competición con id '{item.Id}' no tiene plazas disponibles[cite: 5].");
+                    ModelState.AddModelError("Competiciones", $"Error! La competición con id '{item.Id}' no tiene plazas disponibles");
                 }
                 else
                 {
