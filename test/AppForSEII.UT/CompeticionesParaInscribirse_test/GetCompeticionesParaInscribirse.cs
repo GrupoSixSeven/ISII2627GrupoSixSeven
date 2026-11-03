@@ -1,98 +1,105 @@
+using AppForSEII.API.Controllers;
+using AppForSEII.API.DTOs.CompeticionParaInscribirseDTO;
+using AppForSEII.API.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Moq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using AppForSEII.API.Models;
-
-namespace AppForSEII.API.DTOs.CompeticionDTOs
+using System.Threading.Tasks;
+using Xunit;
+ 
+namespace AppForSEII.UT.CompeticionesParaInscribirse_test
 {
-    public class InscripcionForCreateDTO
+    public class GetCompeticionesParaInscribirse_test : AppForSEII4SqliteUT
     {
-        public InscripcionForCreateDTO()
+        private static readonly DateTime _fechaTenis = new DateTime(2026, 12, 10, 10, 0, 0);
+        private static readonly DateTime _fechaPadel = new DateTime(2026, 12, 5, 17, 0, 0);
+        private static readonly DateTime _fechaSinPlazas = new DateTime(2026, 12, 1, 9, 0, 0);
+ 
+        public GetCompeticionesParaInscribirse_test()
         {
-            Competiciones = new List<CompeticionItemDTO>();
+            var tiposDeporte = new List<TipoDeporte>() {
+                new TipoDeporte { Id = 1, Nombre = "Tenis", NombreTipoDeporte = "Competiciones", Descripcion = "" },
+                new TipoDeporte { Id = 2, Nombre = "Pádel", NombreTipoDeporte = "Competiciones", Descripcion = "" }
+            };
+ 
+            var competiciones = new List<Competicion>() {
+                new Competicion { Id = 1, Nombre = "Torneo de tenis", TipoDeporte = tiposDeporte[0],
+                    Fecha = _fechaTenis, Lugar = "Ciudad Real", Precio = 15m, Plazas = 10 },
+                new Competicion { Id = 2, Nombre = "Liga de pádel", TipoDeporte = tiposDeporte[1],
+                    Fecha = _fechaPadel, Lugar = "Toledo", Precio = 20m, Plazas = 5 },
+                new Competicion { Id = 3, Nombre = "Open de tenis", TipoDeporte = tiposDeporte[0],
+                    Fecha = _fechaSinPlazas, Lugar = "Toledo", Precio = 25m, Plazas = 0 }
+            };
+ 
+            _context.AddRange(tiposDeporte);
+            _context.AddRange(competiciones);
+            _context.SaveChanges();
         }
-
-        public InscripcionForCreateDTO(string nombreUsuario, string apellidosUsuario, string dni, string correo,
-            string telefono, MetodoPago metodoPago, IList<CompeticionItemDTO> competiciones, string datosPago, DateTime fechaInscripcion)
+ 
+        public static IEnumerable<object?[]> TestCasesFor_GetCompeticionesParaInscribirse_OK()
         {
-            NombreUsuario = nombreUsuario ?? throw new ArgumentNullException(nameof(nombreUsuario));
-            ApellidosUsuario = apellidosUsuario ?? throw new ArgumentNullException(nameof(apellidosUsuario));
-            Dni = dni ?? throw new ArgumentNullException(nameof(dni));
-            Correo = correo ?? throw new ArgumentNullException(nameof(correo));
-            Telefono = telefono ?? throw new ArgumentNullException(nameof(telefono));
-            MetodoPago = metodoPago;
-            Competiciones = competiciones ?? throw new ArgumentNullException(nameof(competiciones));
-            DatosPago = datosPago ?? throw new ArgumentNullException(nameof(datosPago));
-            FechaInscripcion = fechaInscripcion;
-        }
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre es obligatorio")]
-        [StringLength(50, ErrorMessage = "El nombre no puede superar los 50 caracteres")]
-        public string NombreUsuario { get; set; } = string.Empty;
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Los apellidos son obligatorios")]
-        [StringLength(100, ErrorMessage = "Los apellidos no pueden superar los 100 caracteres")]
-        public string ApellidosUsuario { get; set; } = string.Empty;
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El DNI es obligatorio")]
-        [StringLength(9, MinimumLength = 9, ErrorMessage = "El DNI tiene que tener una longitud de 9 caracteres")]
-        public string Dni { get; set; } = string.Empty;
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El teléfono de contacto es obligatorio")]
-        [Phone(ErrorMessage = "El teléfono no es válido")]
-        public string Telefono { get; set; } = string.Empty;
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = "El email es obligatorio")]
-        [EmailAddress(ErrorMessage = "El email no es válido")]
-        [StringLength(50, ErrorMessage = "El email no puede superar los 50 caracteres")]
-        public string Correo { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "El método de pago es obligatorio")]
-        public MetodoPago MetodoPago { get; set; } = MetodoPago.Tarjeta;
-
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Los datos del pago son obligatorios")]
-        [StringLength(50, ErrorMessage = "Los datos del pago no pueden superar los 50 caracteres")]
-        public string DatosPago { get; set; } = string.Empty;
-
-        [Required(ErrorMessage = "La fecha de inscripción es obligatoria")]
-        public DateTime FechaInscripcion { get; set; } = DateTime.Now;
-
-        [Required(ErrorMessage = "Debe seleccionar al menos una competición")]
-        [MinLength(1, ErrorMessage = "Debe seleccionar al menos una competición")]
-        public IList<CompeticionItemDTO> Competiciones { get; set; } = new List<CompeticionItemDTO>();
-
-        public decimal PrecioTotal
-        {
-            get
+            var competicionPadel = new CompeticionesParaInscribirseDTO(2, "Liga de pádel", "Pádel", _fechaPadel, "Toledo", 20m);
+            var competicionTenis = new CompeticionesParaInscribirseDTO(1, "Torneo de tenis", "Tenis", _fechaTenis, "Ciudad Real", 15m);
+ 
+            var allTests = new List<object?[]>
             {
-                return Competiciones.Sum(c => c.Precio);
-            }
+                new object?[] { null, null, new List<CompeticionesParaInscribirseDTO>() { competicionPadel, competicionTenis } },
+                new object?[] { "Ciudad Real", null, new List<CompeticionesParaInscribirseDTO>() { competicionTenis } },
+                new object?[] { null, "Pádel", new List<CompeticionesParaInscribirseDTO>() { competicionPadel } },
+                new object?[] { "Toledo", "Pádel", new List<CompeticionesParaInscribirseDTO>() { competicionPadel } },
+            };
+ 
+            return allTests;
         }
-
-        protected bool CompareDate(DateTime date1, DateTime date2)
+ 
+        [Theory]
+        [Trait("Database", "WithoutFixture")]
+        [Trait("LevelTesting", "Unit Testing")]
+        [MemberData(nameof(TestCasesFor_GetCompeticionesParaInscribirse_OK))]
+        public async Task GetCompeticionesParaInscribirse_OK_test(string? lugar, string? tipoDeporte,
+            IList<CompeticionesParaInscribirseDTO> expectedCompeticiones)
         {
-            return Math.Abs((date1 - date2).TotalMinutes) < 1;
+            var mock = new Mock<ILogger<CompeticionController>>();
+            ILogger<CompeticionController> logger = mock.Object;
+            var controller = new CompeticionController(_context, logger);
+ 
+            var result = await controller.GetCompeticionesParaInscribirse(lugar, tipoDeporte);
+ 
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            var competicionesActual = Assert.IsAssignableFrom<IList<CompeticionesParaInscribirseDTO>>(okResult.Value);
+            Assert.Equal(expectedCompeticiones, competicionesActual);
         }
-
-        public override bool Equals(object? obj)
+ 
+        public static IEnumerable<object?[]> TestCasesFor_GetCompeticionesParaInscribirse_NotFound()
         {
-            return obj is InscripcionForCreateDTO dTO &&
-                   CompareDate(FechaInscripcion, dTO.FechaInscripcion) &&
-                   NombreUsuario == dTO.NombreUsuario &&
-                   ApellidosUsuario == dTO.ApellidosUsuario &&
-                   Dni == dTO.Dni &&
-                   Correo == dTO.Correo &&
-                   Telefono == dTO.Telefono &&
-                   DatosPago == dTO.DatosPago &&
-                   MetodoPago == dTO.MetodoPago &&
-                   Competiciones.SequenceEqual(dTO.Competiciones) &&
-                   PrecioTotal == dTO.PrecioTotal;
+            var allTests = new List<object?[]>
+            {
+                new object?[] { "Madrid", null },
+                new object?[] { null, "Fútbol" },
+                new object?[] { "Toledo", "Tenis" },
+            };
+ 
+            return allTests;
         }
-
-        public override int GetHashCode()
+ 
+        [Theory]
+        [Trait("Database", "WithoutFixture")]
+        [Trait("LevelTesting", "Unit Testing")]
+        [MemberData(nameof(TestCasesFor_GetCompeticionesParaInscribirse_NotFound))]
+        public async Task GetCompeticionesParaInscribirse_NotFound_test(string? lugar, string? tipoDeporte)
         {
-            return HashCode.Combine(FechaInscripcion, Dni, Correo, MetodoPago, DatosPago);
+            var mock = new Mock<ILogger<CompeticionController>>();
+            ILogger<CompeticionController> logger = mock.Object;
+            var controller = new CompeticionController(_context, logger);
+ 
+            var result = await controller.GetCompeticionesParaInscribirse(lugar, tipoDeporte);
+ 
+            var notFoundResult = Assert.IsType<NotFoundObjectResult>(result);
+            Assert.Equal("No hay competiciones con plazas disponibles que coincidan con los criterios.", notFoundResult.Value);
         }
     }
 }
+ 
