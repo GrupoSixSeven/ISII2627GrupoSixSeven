@@ -76,9 +76,9 @@ namespace AppForSEII.UT
             ILogger<ReservaController> logger = mock.Object;
             var controller = new ReservaController(_context, logger);
 
-            var expectedReserva = new ReservaDetailDTO(1, MetodoPago.Tarjeta, _fechaReserva, 10m,
-                new List<ReservaItemDTO>(), "",
-                "Elena", "Navarro Martínez", "666555444", "12345678A", "elena.navarro@uclm.es");
+            var expectedReserva = new ReservaDetailDTO(1,
+    "Elena", "Navarro Martínez", "12345678A", "elena.navarro@uclm.es", "666555444",
+    MetodoPago.Tarjeta, 10m, new List<ReservaItemDTO>(), "", _fechaReserva);
 
             expectedReserva.Pistas.Add(new ReservaItemDTO(1, "Pista de tenis 1", "Tenis", 4, 10m, "Necesito iluminación"));
 
