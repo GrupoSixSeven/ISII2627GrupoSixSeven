@@ -105,7 +105,9 @@ namespace AppForSEII.API.Controllers
                     p.NPersonas,
                     p.Precio,
                     p.Stock,
+                    // Solo cuentan las reservas del mismo día que la nueva reserva
                     NumberOfReservas = _context.Reservas
+                        .Where(r => r.FechaReserva.Date == reservaForCreate.FechaReserva.Date)
                         .SelectMany(r => r.PistasReservadas)
                         .Where(pr => pr.IdPista == p.IdPista)
                         .Sum(pr => pr.Cantidad)
@@ -176,11 +178,11 @@ namespace AppForSEII.API.Controllers
 
             var reservaDetail = new ReservaDetailDTO(
                 reserva.Id,
-                reservaForCreate.NombreUsuario,
-                reservaForCreate.ApellidosUsuario,
-                reservaForCreate.Dni,
-                reservaForCreate.Email,
-                reservaForCreate.Telefono,
+                user!.Name ?? "",
+                user.Surname ?? "",
+                user.DNI ?? "",
+                user.Email ?? "",
+                user.PhoneNumber ?? "",
                 reserva.MetodoPago,
                 reserva.PrecioTotal,
                 items,
