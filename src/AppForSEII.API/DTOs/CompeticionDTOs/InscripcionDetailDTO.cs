@@ -6,28 +6,29 @@ namespace AppForSEII.API.DTOs.CompeticionDTOs
 {
     public class InscripcionDetailDTO : InscripcionForCreateDTO
     {
-        public InscripcionDetailDTO(int idInscripcion, MetodoPago metodoPago, DateTime fechaInscripcion, decimal precioTotal, IList<CompeticionItemDTO> competiciones, string datosPago, string nombreUsuario, string apellidosUsuario, string telefono, string dni, string correo)
-            : base(metodoPago, precioTotal, competiciones, datosPago, fechaInscripcion)
+        public InscripcionDetailDTO(int idInscripcion, string nombreUsuario, string apellidosUsuario, string dni, 
+            string correo, string telefono, MetodoPago metodoPago, IList<CompeticionItemDTO> competiciones, 
+            string datosPago, DateTime fechaInscripcion)
+            : base(nombreUsuario,
+                   apellidosUsuario,
+                   dni,
+                   correo,
+                   telefono,
+                   metodoPago,
+                   competiciones,
+                   datosPago,
+                   fechaInscripcion)
         {
             IdInscripcion = idInscripcion;
-            NombreUsuario = nombreUsuario;
-            ApellidosUsuario = apellidosUsuario;
-            Telefono = telefono;
-            Dni = dni;
-            Correo = correo;
         }
 
         public int IdInscripcion { get; set; }
-        public string NombreUsuario { get; set; }
-        public string ApellidosUsuario { get; set; }
-        public string Telefono { get; set; }
-        public string Dni { get; set; }
-        public string Correo { get; set; }
 
         public override bool Equals(object? obj)
         {
             return obj is InscripcionDetailDTO dTO &&
                    base.Equals(obj) && 
+                   PrecioTotal == dTO.PrecioTotal &&
                    IdInscripcion == dTO.IdInscripcion;
         }
 
