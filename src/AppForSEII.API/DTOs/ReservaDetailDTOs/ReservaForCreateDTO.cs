@@ -17,28 +17,38 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
             string telefono, MetodoPago metodoPago, decimal precioTotal, IList<ReservaItemDTO> pistas,
             string datosPago, DateTime fechaReserva)
         {
-            NombreUsuario = nombreUsuario;
-            ApellidosUsuario = apellidosUsuario;
-            Dni = dni;
-            Email = email;
-            Telefono = telefono;
+            NombreUsuario = nombreUsuario ?? throw new ArgumentNullException(nameof(nombreUsuario));
+            ApellidosUsuario = apellidosUsuario ?? throw new ArgumentNullException(nameof(apellidosUsuario));
+            Dni = dni ?? throw new ArgumentNullException(nameof(dni));
+            Email = email ?? throw new ArgumentNullException(nameof(email));
+            Telefono = telefono ?? throw new ArgumentNullException(nameof(telefono));
             MetodoPago = metodoPago;
             PrecioTotal = precioTotal;
-            Pistas = pistas;
-            DatosPago = datosPago;
+            Pistas = pistas ?? throw new ArgumentNullException(nameof(pistas));
+            DatosPago = datosPago ?? throw new ArgumentNullException(nameof(datosPago));
             FechaReserva = fechaReserva;
         }
 
-        public string NombreUsuario { get; set; } = "";
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre es obligatorio")]
+        [StringLength(50, ErrorMessage = "El nombre no puede superar los 50 caracteres")]
+        public string NombreUsuario { get; set; } = string.Empty;
 
-        public string ApellidosUsuario { get; set; } = "";
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Los apellidos son obligatorios")]
+        [StringLength(100, ErrorMessage = "Los apellidos no pueden superar los 100 caracteres")]
+        public string ApellidosUsuario { get; set; } = string.Empty;
 
-        public string Dni { get; set; } = "";
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El DNI es obligatorio")]
+        [StringLength(9, MinimumLength = 9, ErrorMessage = "El DNI tiene que tener una longitud de 9 caracteres")]
+        public string Dni { get; set; } = string.Empty;
 
-        public string Telefono { get; set; } = "";
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El teléfono de contacto es obligatorio")]
+        [Phone(ErrorMessage = "El teléfono no es válido")]
+        public string Telefono { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "El email es obligatorio")]
-        public string Email { get; set; } = "";
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El email es obligatorio")]
+        [EmailAddress(ErrorMessage = "El email no es válido")]
+        [StringLength(50, ErrorMessage = "El email no puede superar los 50 caracteres")]
+        public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El método de pago es obligatorio")]
         public MetodoPago MetodoPago { get; set; } = MetodoPago.Tarjeta;
@@ -50,11 +60,11 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         [Required(ErrorMessage = "La fecha de reserva es obligatoria")]
         public DateTime FechaReserva { get; set; } = DateTime.Now;
 
-        [Required(ErrorMessage = "Los datos de pago son obligatorios")]
-        public string DatosPago { get; set; } = "";
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Los datos de pago son obligatorios")]
+        public string DatosPago { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Debe seleccionar al menos una pista")]
-        [MinLength(1, ErrorMessage = "Debe haber al menos 1 pista reservada")]
+        [MinLength(1, ErrorMessage = "Debe seleccionar al menos una pista")]
         public IList<ReservaItemDTO> Pistas { get; set; } = new List<ReservaItemDTO>();
 
         protected bool CompareDate(DateTime date1, DateTime date2)
@@ -65,30 +75,21 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         public override bool Equals(object? obj)
         {
             return obj is ReservaForCreateDTO dTO &&
+                   CompareDate(FechaReserva, dTO.FechaReserva) &&
                    NombreUsuario == dTO.NombreUsuario &&
                    ApellidosUsuario == dTO.ApellidosUsuario &&
                    Dni == dTO.Dni &&
-                   Telefono == dTO.Telefono &&
                    Email == dTO.Email &&
+                   Telefono == dTO.Telefono &&
                    MetodoPago == dTO.MetodoPago &&
-                   PrecioTotal == dTO.PrecioTotal &&
-                   CompareDate(FechaReserva, dTO.FechaReserva) &&
                    DatosPago == dTO.DatosPago &&
-                   Pistas.SequenceEqual(dTO.Pistas);
+                   Pistas.SequenceEqual(dTO.Pistas) &&
+                   PrecioTotal == dTO.PrecioTotal;
         }
 
         public override int GetHashCode()
         {
-            var hash = new HashCode();
-            hash.Add(Email);
-            hash.Add(Dni);
-            hash.Add(FechaReserva);
-            hash.Add(DatosPago);
-            hash.Add(MetodoPago);
-            hash.Add(PrecioTotal);
-            foreach (var pista in Pistas)
-                hash.Add(pista);
-            return hash.ToHashCode();
+            return HashCode.Combine(FechaReserva, Dni, Email, MetodoPago);
         }
     }
 }

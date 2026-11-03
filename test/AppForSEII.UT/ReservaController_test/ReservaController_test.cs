@@ -11,7 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace AppForSEII.UT
+namespace AppForSEII.UT.ReservaController_test
 {
     public class ReservaController_test : AppForSEII4SqliteUT
     {
