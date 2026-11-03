@@ -76,7 +76,6 @@ namespace AppForSEII.UT
             ILogger<ReservaController> logger = mock.Object;
             var controller = new ReservaController(_context, logger);
 
-            // La reserva no guarda DatosPago, por eso GetReserva lo devuelve vacío
             var expectedReserva = new ReservaDetailDTO(1, MetodoPago.Tarjeta, _fechaReserva, 10m,
                 new List<ReservaItemDTO>(), "",
                 "Elena", "Navarro Martínez", "666555444", "12345678A", "elena.navarro@uclm.es");
