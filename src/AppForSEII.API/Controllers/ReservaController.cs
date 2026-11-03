@@ -85,8 +85,7 @@ namespace AppForSEII.API.Controllers
             if (reservaForCreate.Pistas.GroupBy(p => p.IdPista).Any(g => g.Count() > 1))
                 ModelState.AddModelError("Pistas", "Error! Hay pistas repetidas en el carrito");
 
-            var user = await _context.ApplicationUsers
-                .FirstOrDefaultAsync(au => au.Email == reservaForCreate.Email);
+            var user = await _context.ApplicationUsers.FirstOrDefaultAsync(au => au.Email == reservaForCreate.Email);
             if (user == null)
                 ModelState.AddModelError("ReservaApplicationUser", "Error! No hay ningún usuario registrado con ese email");
 
@@ -94,25 +93,25 @@ namespace AppForSEII.API.Controllers
                 return BadRequest(new ValidationProblemDetails(ModelState));
 
             var pistaIds = reservaForCreate.Pistas.Select(p => p.IdPista).ToList<int>();
+            var fecha = reservaForCreate.FechaReserva.Date;
+            var fechaSiguiente = fecha.AddDays(1);
 
-            var pistas = await _context.Pistas
+            var pistas = (await _context.Pistas
                 .Where(p => pistaIds.Contains(p.IdPista))
-                .Select(p => new
-                {
-                    Id = p.IdPista,
+                .Select(p => new {
+                    p.IdPista,
                     p.NombrePista,
                     NombreTipoDeporte = p.TipoDeporte!.Nombre,
                     p.NPersonas,
                     p.Precio,
                     p.Stock,
-                    // Solo cuentan las reservas del mismo día que la nueva reserva
                     NumberOfReservas = _context.Reservas
-                        .Where(r => r.FechaReserva.Date == reservaForCreate.FechaReserva.Date)
+                        .Where(r => r.FechaReserva >= fecha && r.FechaReserva < fechaSiguiente)
                         .SelectMany(r => r.PistasReservadas)
                         .Where(pr => pr.IdPista == p.IdPista)
-                        .Sum(pr => pr.Cantidad)
+                        .Sum(pr => (int?)pr.Cantidad) ?? 0
                 })
-                .ToListAsync();
+                .ToListAsync());
 
             Reserva reserva = new Reserva
             {
@@ -123,46 +122,35 @@ namespace AppForSEII.API.Controllers
                 ClienteId = user!.Id
             };
 
-            var items = new List<ReservaItemDTO>();
-
             foreach (var item in reservaForCreate.Pistas)
             {
-                var pista = pistas.FirstOrDefault(p => p.Id == item.IdPista);
+                var pista = pistas.FirstOrDefault(p => p.IdPista == item.IdPista);
 
-                if (pista == null)
+                if ((pista == null) || (pista.NumberOfReservas + 1 > pista.Stock))
                 {
-                    ModelState.AddModelError("Pistas", $"Error! La pista con id '{item.IdPista}' no existe");
-                    continue;
+                    ModelState.AddModelError("Pistas", $"Error! La pista con id '{item.IdPista}' no está disponible para el {fecha.ToShortDateString()}");
                 }
-
-                if (pista.NumberOfReservas + 1 > pista.Stock)
+                else
                 {
-                    ModelState.AddModelError("Pistas", $"Error! La pista con id '{item.IdPista}' no tiene disponibilidad");
-                    continue;
+                    reserva.PistasReservadas.Add(new PistaReservada
+                    {
+                        IdPista = pista.IdPista,
+                        Cantidad = 1,
+                        Precio = pista.Precio,
+                        Observaciones = item.Observaciones
+                    });
+                    item.NombrePista = pista.NombrePista;
+                    item.TipoDeporte = pista.NombreTipoDeporte;
+                    item.NPersonas = pista.NPersonas;
+                    item.Precio = pista.Precio;
                 }
-
-                reserva.PistasReservadas.Add(new PistaReservada
-                {
-                    IdPista = pista.Id,
-                    Cantidad = 1,
-                    Precio = pista.Precio,
-                    Observaciones = item.Observaciones
-                });
-
-                items.Add(new ReservaItemDTO(
-                    pista.Id,
-                    pista.NombrePista,
-                    pista.NombreTipoDeporte,
-                    pista.NPersonas,
-                    pista.Precio,
-                    item.Observaciones));
             }
+            reserva.PrecioTotal = reserva.PistasReservadas.Sum(pr => pr.Precio * pr.Cantidad);
 
             if (ModelState.ErrorCount > 0)
+            {
                 return BadRequest(new ValidationProblemDetails(ModelState));
-
-            // El precio lo calcula el servidor, no se fía del que envía el cliente
-            reserva.PrecioTotal = reserva.PistasReservadas.Sum(pr => pr.Precio);
+            }
 
             _context.Add(reserva);
 
@@ -172,22 +160,16 @@ namespace AppForSEII.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al guardar la reserva");
-                return Conflict("Error! Se produjo un error al guardar su reserva, inténtelo de nuevo más tarde");
+                _logger.LogError(ex.Message);
+                ModelState.AddModelError("Reserva", $"Error! Se produjo un error al guardar su reserva, inténtelo de nuevo más tarde");
+                return Conflict("Error" + ex.Message);
             }
 
-            var reservaDetail = new ReservaDetailDTO(
-                reserva.Id,
-                user!.Name ?? "",
-                user.Surname ?? "",
-                user.DNI ?? "",
-                user.Email ?? "",
-                user.PhoneNumber ?? "",
-                reserva.MetodoPago,
-                reserva.PrecioTotal,
-                items,
-                reservaForCreate.DatosPago,
-                reserva.FechaReserva);
+            var reservaDetail = new ReservaDetailDTO(reserva.Id,
+                reservaForCreate.NombreUsuario, reservaForCreate.ApellidosUsuario,
+                reservaForCreate.Dni, reservaForCreate.Email, reservaForCreate.Telefono,
+                reserva.MetodoPago, reserva.PrecioTotal, reservaForCreate.Pistas,
+                reservaForCreate.DatosPago, reserva.FechaReserva);
 
             return CreatedAtAction("GetReserva", new { id = reserva.Id }, reservaDetail);
         }
