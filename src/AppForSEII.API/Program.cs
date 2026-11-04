@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
+using AppForSEII.API.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,6 +105,7 @@ if (app.Environment.IsDevelopment()) {
         //this facilitates to generate unique ids for the operations
         c.DisplayOperationId();
     });
+    
 }
 
 app.UseHttpsRedirection();
@@ -111,8 +113,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+builder.Logging.AddRabbitMQ(builder.Configuration.GetSection("RabbitMQ")); //”RabbiMQ” coincide con el nombre del bloque de propiedades en appsettings.json
 
 
 app.Run();
+
 
 
