@@ -81,9 +81,9 @@ public class RabbitMQLogger : ILogger, IDisposable
     {
         try
         {
-            _channel?.Close();
+            _channel?.CloseAsync();
             _channel?.Dispose();
-            _connection?.Close();
+            _connection?.CloseAsync();
             _connection?.Dispose();
         }
         catch (Exception ex)
