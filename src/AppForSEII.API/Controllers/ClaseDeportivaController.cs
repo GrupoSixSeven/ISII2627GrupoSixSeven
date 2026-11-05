@@ -84,7 +84,7 @@ namespace AppForSEII.API.Controllers
             if (inscripcionForCreate.ClasesInscritas.GroupBy(c => c.ClaseDeportivaId).Any(g => g.Count() > 1))
                 ModelState.AddModelError("ClasesInscritas", "Error! Hay clases repetidas en el carrito");
 
-            var user = await _context.ApplicationUsers.FirstOrDefaultAsync(au => au.Email == inscripcionForCreate.Email);
+            var user = await _context.ApplicationUsers.FirstOrDefaultAsync(au => au.Email == inscripcionForCreate.Correo);
             if (user == null)
                 ModelState.AddModelError("InscripcionApplicationUser", "Error! No hay ningún usuario registrado con ese email");
 
