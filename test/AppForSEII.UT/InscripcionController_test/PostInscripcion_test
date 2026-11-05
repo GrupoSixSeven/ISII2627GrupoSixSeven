@@ -15,9 +15,9 @@ namespace AppForSEII.UT.InscripcionController_test
 {
     public class PostInscripcion_test : AppForSEII4SqliteUT
     {
-        private const string _userName = "Alejandro.Gonzalez52@uclm.es";
-        private const string _name = "Alejandro";
-        private const string _surname = "González Sánchez";
+        private const string _userName = "elena.navarro@uclm.es";
+        private const string _name = "Elena";
+        private const string _surname = "Navarro Martínez";
         private const string _dni = "12345678A";
         private const string _phone = "666555444";
         private const string _datosPago = "1234-5678-9012-3456";
@@ -78,11 +78,14 @@ namespace AppForSEII.UT.InscripcionController_test
         [MemberData(nameof(TestCasesFor_CreateInscripcion))]
         public async Task CreateInscripcion_Error_test(InscripcionForCreateDTO inscripcionDTO, string errorExpected)
         {
+            // Arrange
             var mock = new Mock<ILogger<InscripcionController>>();
             var controller = new InscripcionController(_context, mock.Object);
 
+            // Act
             var result = await controller.CreateInscripcion(inscripcionDTO);
 
+            // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             var problemDetails = Assert.IsType<ValidationProblemDetails>(badRequestResult.Value);
             var errorActual = problemDetails.Errors.First().Value[0];
@@ -95,6 +98,7 @@ namespace AppForSEII.UT.InscripcionController_test
         [Trait("Database", "WithoutFixture")]
         public async Task CreateInscripcion_Success_test()
         {
+            // Arrange
             var mock = new Mock<ILogger<InscripcionController>>();
             var controller = new InscripcionController(_context, mock.Object);
 
@@ -106,8 +110,10 @@ namespace AppForSEII.UT.InscripcionController_test
                 new List<CompeticionItemDTO> { new CompeticionItemDTO(1, "Torneo de tenis", "Tenis", _fechaCompeticion, 15m, "Ok") },
                 _datosPago, DateTime.Today);
 
+            // Act
             var result = await controller.CreateInscripcion(inscripcionDTO);
 
+            // Assert
             var createdResult = Assert.IsType<CreatedAtActionResult>(result);
             var actualInscripcionDetailDTO = Assert.IsType<InscripcionDetailDTO>(createdResult.Value);
 
