@@ -1,0 +1,26 @@
+GET /api/Material/GetMaterialesParaAlquilar
+precioMaximo: 15.0
+idTipoMaterial: 1
+POST /api/Alquiler/CreateAlquiler
+{
+  "nombreUsuario": "Elena",
+  "apellidosUsuario": "Navarro Martínez",
+  "dni": "12345678A",
+  "telefono": "666555444",
+  "email": "elena.navarro@uclm.es",
+  "metodoPago": 0,
+  "fechaAlquiler": "2026-11-07T10:00:00",
+  "materiales": [
+    {
+      "idMaterial": 1,
+      "nombreMaterial": "",
+      "tipoMaterial": "",
+      "tipoDeporte": "",
+      "cantidad": 2,
+      "precio": 0,
+      "descripcion": "Balones para el partido del fin de semana"
+    }
+  ]
+}
+GET /api/Alquiler/GetAlquiler
+id: 1
