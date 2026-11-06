@@ -1,0 +1,32 @@
+GET /api/ClaseDeportiva/GetClasesDeportivas
+idTipoDeporte: 1
+monitor: Elena
+fecha: 2026-11-07
+
+POST /api/ClaseDeportiva/CreateInscripcion
+{
+  "nombreUsuario": "Elena",
+  "apellidosUsuario": "Navarro Martínez",
+  "dni": "12345678Z",
+  "telefono": "600123456",
+  "correo": "elena@uclm.es",
+  "metodoPago": 0,
+  "precioTotal": 0,
+  "datosPago": "1234-5678-9012-3456",
+  "fechaInscripcion": "2026-11-06T10:00:00",
+  "clasesInscritas": [
+    {
+      "claseDeportivaId": 1,
+      "descripcion": "",
+      "tipoDeporte": "",
+      "monitor": "",
+      "fechaHora": "2026-11-07T18:00:00",
+      "plazasReservadas": 2,
+      "precio": 0,
+      "observaciones": "Voy con una amiga"
+    }
+  ]
+}
+
+GET /api/InscripcionClase/GetInscripcion
+id: 1
