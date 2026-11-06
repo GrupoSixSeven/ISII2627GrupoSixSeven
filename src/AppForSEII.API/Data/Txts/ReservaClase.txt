@@ -1,0 +1,29 @@
+GET /api/Pistas/GetPistasParaAlquilar
+tipoDeporte: Tenis
+fecha: 2026-11-20
+
+POST /api/Reserva/CreateReserva
+{
+  "nombreUsuario": "Elena",
+  "apellidosUsuario": "Navarro Martínez",
+  "dni": "12345678Z",
+  "telefono": "600123456",
+  "email": "elena@uclm.es",
+  "metodoPago": 0,
+  "precioTotal": 0,
+  "datosPago": "1234-5678-9012-3456",
+  "fechaReserva": "2026-11-20T10:00:00",
+  "pistas": [
+    {
+      "idPista": 1,
+      "nombrePista": "",
+      "tipoDeporte": "",
+      "nPersonas": 0,
+      "precio": 0,
+      "observaciones": "Necesito iluminación"
+    }
+  ]
+}
+
+GET /api/Reserva/GetReserva
+id: 1
