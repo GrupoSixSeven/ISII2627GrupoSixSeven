@@ -12,21 +12,6 @@ namespace AppForSEII.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Alquileres",
-                columns: table => new
-                {
-                    IdAlquiler = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FechaAlquiler = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MetodoPago = table.Column<int>(type: "int", nullable: false),
-                    PrecioTotal = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Alquileres", x => x.IdAlquiler);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -68,24 +53,6 @@ namespace AppForSEII.API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reservas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NombreCliente = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Dni = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FechaReserva = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MetodoPago = table.Column<int>(type: "int", nullable: false),
-                    PrecioTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reservas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,6 +102,27 @@ namespace AppForSEII.API.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Alquileres",
+                columns: table => new
+                {
+                    IdAlquiler = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FechaAlquiler = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MetodoPago = table.Column<int>(type: "int", nullable: false),
+                    PrecioTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Alquileres", x => x.IdAlquiler);
+                    table.ForeignKey(
+                        name: "FK_Alquileres_AspNetUsers_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -228,14 +216,10 @@ namespace AppForSEII.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ApellidosUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Dni = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FechaInscripcion = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MetodoPago = table.Column<int>(type: "int", nullable: false),
-                    NombreUsuario = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PrecioTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Telefono = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DatosPago = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PrecioTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -243,6 +227,27 @@ namespace AppForSEII.API.Migrations
                     table.PrimaryKey("PK_Inscripciones", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Inscripciones_AspNetUsers_ClienteId",
+                        column: x => x.ClienteId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reservas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FechaReserva = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    MetodoPago = table.Column<int>(type: "int", nullable: false),
+                    PrecioTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    ClienteId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reservas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reservas_AspNetUsers_ClienteId",
                         column: x => x.ClienteId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
@@ -378,7 +383,7 @@ namespace AppForSEII.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CompeticionesInscripciones",
+                name: "CompeticionesInscritas",
                 columns: table => new
                 {
                     CompeticionId = table.Column<int>(type: "int", nullable: false),
@@ -387,15 +392,15 @@ namespace AppForSEII.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompeticionesInscripciones", x => new { x.CompeticionId, x.InscripcionId });
+                    table.PrimaryKey("PK_CompeticionesInscritas", x => new { x.CompeticionId, x.InscripcionId });
                     table.ForeignKey(
-                        name: "FK_CompeticionesInscripciones_Competiciones_CompeticionId",
+                        name: "FK_CompeticionesInscritas_Competiciones_CompeticionId",
                         column: x => x.CompeticionId,
                         principalTable: "Competiciones",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CompeticionesInscripciones_Inscripciones_InscripcionId",
+                        name: "FK_CompeticionesInscritas_Inscripciones_InscripcionId",
                         column: x => x.InscripcionId,
                         principalTable: "Inscripciones",
                         principalColumn: "Id",
@@ -406,24 +411,22 @@ namespace AppForSEII.API.Migrations
                 name: "PistasReservadas",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IdPista = table.Column<int>(type: "int", nullable: false),
+                    IdReserva = table.Column<int>(type: "int", nullable: false),
                     Cantidad = table.Column<int>(type: "int", nullable: false),
                     Observaciones = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Precio = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    IdPista = table.Column<int>(type: "int", nullable: false),
-                    PistaIdPista = table.Column<int>(type: "int", nullable: true),
-                    IdReserva = table.Column<int>(type: "int", nullable: false),
                     ReservaId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PistasReservadas", x => x.ID);
+                    table.PrimaryKey("PK_PistasReservadas", x => new { x.IdPista, x.IdReserva });
                     table.ForeignKey(
-                        name: "FK_PistasReservadas_Pistas_PistaIdPista",
-                        column: x => x.PistaIdPista,
+                        name: "FK_PistasReservadas_Pistas_IdPista",
+                        column: x => x.IdPista,
                         principalTable: "Pistas",
-                        principalColumn: "IdPista");
+                        principalColumn: "IdPista",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PistasReservadas_Reservas_ReservaId",
                         column: x => x.ReservaId,
@@ -457,6 +460,11 @@ namespace AppForSEII.API.Migrations
                         principalColumn: "IdMaterial",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Alquileres_ClienteId",
+                table: "Alquileres",
+                column: "ClienteId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -513,8 +521,8 @@ namespace AppForSEII.API.Migrations
                 column: "TipoDeporteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompeticionesInscripciones_InscripcionId",
-                table: "CompeticionesInscripciones",
+                name: "IX_CompeticionesInscritas_InscripcionId",
+                table: "CompeticionesInscritas",
                 column: "InscripcionId");
 
             migrationBuilder.CreateIndex(
@@ -543,14 +551,14 @@ namespace AppForSEII.API.Migrations
                 column: "TipoDeporteId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PistasReservadas_PistaIdPista",
-                table: "PistasReservadas",
-                column: "PistaIdPista");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PistasReservadas_ReservaId",
                 table: "PistasReservadas",
                 column: "ReservaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reservas_ClienteId",
+                table: "Reservas",
+                column: "ClienteId");
         }
 
         /// <inheritdoc />
@@ -575,7 +583,7 @@ namespace AppForSEII.API.Migrations
                 name: "ClasesInscritas");
 
             migrationBuilder.DropTable(
-                name: "CompeticionesInscripciones");
+                name: "CompeticionesInscritas");
 
             migrationBuilder.DropTable(
                 name: "MaterialesAlquilados");
@@ -608,13 +616,13 @@ namespace AppForSEII.API.Migrations
                 name: "Reservas");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "TiposMateriales");
 
             migrationBuilder.DropTable(
                 name: "TiposDeportes");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }
