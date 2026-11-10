@@ -9,8 +9,8 @@ public class RabbitMQLogger : ILogger, IDisposable
 {
     private readonly string _name;
     private readonly RabbitMQLoggerConfiguration _config;
-    private IConnection _connection;
-    private readonly IChannel _channel;
+    private IConnection? _connection;
+    private IChannel? _channel;
     private BasicProperties _properties;
 
     public RabbitMQLogger(string name, RabbitMQLoggerConfiguration config)
@@ -20,11 +20,22 @@ public class RabbitMQLogger : ILogger, IDisposable
         
         ValidateConfiguration(_config); 
 
-        _properties = new BasicProperties
+              _properties = new BasicProperties
         {
             Persistent = _config.Durable,
             ContentType = "application/json"
         };
+
+        try
+        {
+            InitializeAsync().GetAwaiter().GetResult();
+        }
+        catch (Exception ex)
+        {
+            // Si RabbitMQ no está levantado, la API sigue funcionando (sin enviar logs)
+            Console.Error.WriteLine($"No se pudo conectar a RabbitMQ: {ex.Message}");
+        }
+    }
     }
 
     private static void ValidateConfiguration(RabbitMQLoggerConfiguration config)
@@ -42,7 +53,24 @@ public class RabbitMQLogger : ILogger, IDisposable
         if (string.IsNullOrEmpty(config.ExchangeType))
             throw new ArgumentException("RabbitMQ ExchangeType is required", nameof(config));
     }
+        private async Task InitializeAsync()
+    {
+        var factory = new ConnectionFactory
+        {
+            HostName = _config.HostName,
+            Port = _config.Port,
+            UserName = _config.UserName,
+            Password = _config.Password
+        };
 
+        _connection = await factory.CreateConnectionAsync();
+        _channel = await _connection.CreateChannelAsync();
+
+        await _channel.ExchangeDeclareAsync(
+            exchange: _config.Exchange,
+            type: _config.ExchangeType,
+            durable: _config.Durable);
+    }
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull => default;
 
     public bool IsEnabled(LogLevel logLevel) => logLevel != LogLevel.None;
