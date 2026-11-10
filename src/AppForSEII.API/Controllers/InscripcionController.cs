@@ -53,10 +53,11 @@ namespace AppForSEII.API.Controllers
 
             if (inscripcion == null)
             {
-                _logger.LogError($"Error: La inscripción con id {id} no existe");
+                _logger.LogWarning("La inscripción con id {Id} no existe", id);
                 return NotFound();
             }
 
+            _logger.LogInformation("Inscripción {Id} consultada correctamente", id);
             return Ok(inscripcion);
         }
 
@@ -81,7 +82,11 @@ namespace AppForSEII.API.Controllers
                 ModelState.AddModelError("InscripcionApplicationUser", "Error! No hay ningún usuario registrado con ese email");
 
             if (ModelState.ErrorCount > 0)
+            {
+                var errores = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+                _logger.LogWarning("Inscripción rechazada para {Correo}: {Errores}", inscripcionForCreate.Correo, errores);
                 return BadRequest(new ValidationProblemDetails(ModelState));
+            }
 
             var competicionIds = inscripcionForCreate.Competiciones.Select(c => c.Id).ToList<int>();
 
@@ -137,6 +142,8 @@ namespace AppForSEII.API.Controllers
 
             if (ModelState.ErrorCount > 0)
             {
+                var errores = string.Join(" | ", ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage));
+                _logger.LogWarning("Inscripción rechazada para {Correo}: {Errores}", inscripcionForCreate.Correo, errores);
                 return BadRequest(new ValidationProblemDetails(ModelState));
             }
 
@@ -148,7 +155,7 @@ namespace AppForSEII.API.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex, "Error al guardar la inscripción de {Correo}", inscripcionForCreate.Correo);
                 ModelState.AddModelError("Inscripcion", $"Error! Se produjo un error al guardar su inscripción, inténtelo de nuevo más tarde");
                 return Conflict("Error" + ex.Message);
             }
@@ -157,6 +164,9 @@ namespace AppForSEII.API.Controllers
                 inscripcionForCreate.NombreUsuario, inscripcionForCreate.ApellidosUsuario,
                 inscripcionForCreate.Dni, inscripcionForCreate.Correo, inscripcionForCreate.Telefono,
                 inscripcion.MetodoPago, inscripcionForCreate.Competiciones, inscripcionForCreate.DatosPago, inscripcion.FechaInscripcion);
+
+            _logger.LogInformation("Inscripción {Id} creada para {Correo}: {NumCompeticiones} competiciones, total {Precio} €",
+                inscripcion.Id, inscripcionForCreate.Correo, inscripcion.CompeticionInscrita.Count, inscripcion.PrecioTotal);
 
             return CreatedAtAction("GetInscripcion", new { id = inscripcion.Id }, inscripcionDetail);
         }
