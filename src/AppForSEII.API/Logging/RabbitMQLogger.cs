@@ -32,11 +32,10 @@ public class RabbitMQLogger : ILogger, IDisposable
         }
         catch (Exception ex)
         {
-            // Si RabbitMQ no está levantado, la API sigue funcionando (sin enviar logs)
             Console.Error.WriteLine($"No se pudo conectar a RabbitMQ: {ex.Message}");
         }
     }
-    }
+    
 
     private static void ValidateConfiguration(RabbitMQLoggerConfiguration config)
     {
@@ -95,9 +94,21 @@ public class RabbitMQLogger : ILogger, IDisposable
                 EventId = eventId.Id,
                 EventName = eventId.Name,
                 Message = formatter(state, exception),
-                Exception = exception?.ToString()
+                                Exception = exception?.ToString()
             };
 
+            if (_channel == null)
+                return;
+
+            var json = JsonSerializer.Serialize(logEntry);
+            var body = Encoding.UTF8.GetBytes(json);
+
+            _channel.BasicPublishAsync(
+                exchange: _config.Exchange,
+                routingKey: "",
+                mandatory: false,
+                basicProperties: _properties,
+                body: body).GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {
