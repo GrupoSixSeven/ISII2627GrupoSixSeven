@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
+using AppForSEII.API.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
