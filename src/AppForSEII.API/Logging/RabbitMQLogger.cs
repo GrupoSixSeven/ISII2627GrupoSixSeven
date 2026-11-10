@@ -17,10 +17,10 @@ public class RabbitMQLogger : ILogger, IDisposable
     {
         _name = name ?? throw new ArgumentNullException(nameof(name));
         _config = config ?? throw new ArgumentNullException(nameof(config));
-        
-        ValidateConfiguration(_config); 
 
-              _properties = new BasicProperties
+        ValidateConfiguration(_config);
+
+        _properties = new BasicProperties
         {
             Persistent = _config.Durable,
             ContentType = "application/json"
@@ -35,7 +35,7 @@ public class RabbitMQLogger : ILogger, IDisposable
             Console.Error.WriteLine($"No se pudo conectar a RabbitMQ: {ex.Message}");
         }
     }
-    
+
 
     private static void ValidateConfiguration(RabbitMQLoggerConfiguration config)
     {
@@ -52,7 +52,7 @@ public class RabbitMQLogger : ILogger, IDisposable
         if (string.IsNullOrEmpty(config.ExchangeType))
             throw new ArgumentException("RabbitMQ ExchangeType is required", nameof(config));
     }
-        private async Task InitializeAsync()
+    private async Task InitializeAsync()
     {
         var factory = new ConnectionFactory
         {
@@ -94,7 +94,7 @@ public class RabbitMQLogger : ILogger, IDisposable
                 EventId = eventId.Id,
                 EventName = eventId.Name,
                 Message = formatter(state, exception),
-                                Exception = exception?.ToString()
+                Exception = exception?.ToString()
             };
 
             if (_channel == null)
