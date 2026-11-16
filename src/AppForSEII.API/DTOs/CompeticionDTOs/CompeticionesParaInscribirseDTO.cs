@@ -34,7 +34,7 @@ namespace AppForSEII.API.DTOs.CompeticionParaInscribirseDTO
         public string Lugar { get; set; } = "Lugar por defecto";
 
         [Required]
-        [Range(0, (double)decimal.MaxValue, ErrorMessage = "El precio no puede ser negativo")]
+        [Range(0, 100000, ErrorMessage = "El precio no puede ser negativo")]
         public decimal Precio { get; set; } = 0;
 
         public override bool Equals(object? obj)
