@@ -45,7 +45,7 @@ namespace AppForSEII.API.DTOs
 
         [Required]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
-        [Range(0, (double)decimal.MaxValue, ErrorMessage = "El precio unitario no puede ser negativo")]
+        [Range(0, 100000, ErrorMessage = "El precio unitario no puede ser negativo")]
         public decimal PrecioUnitario { get; set; } = 1m;
 
         [StringLength(50, ErrorMessage = "El tipo de deporte no puede tener más de 50 caracteres")]

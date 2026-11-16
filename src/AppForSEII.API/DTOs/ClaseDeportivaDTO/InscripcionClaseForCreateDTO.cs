@@ -55,7 +55,7 @@ namespace AppForSEII.API.DTOs.ClaseDeportivaDTO
         public MetodoPago MetodoPago { get; set; } = MetodoPago.Tarjeta;
 
         [Required]
-        [Range(0, (double)decimal.MaxValue)]
+        [Range(0, 100000)]
         public decimal PrecioTotal { get; set; } = 0;
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Los datos del pago son obligatorios")]

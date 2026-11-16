@@ -54,7 +54,7 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         public MetodoPago MetodoPago { get; set; } = MetodoPago.Tarjeta;
 
         [Required(ErrorMessage = "El precio total es obligatorio")]
-        [Range(0, (double)decimal.MaxValue)]
+        [Range(0, 100000, ErrorMessage = "El precio debe ser positivo, y no superior a 100000")]
         public decimal PrecioTotal { get; set; } = 0;
 
         [Required(ErrorMessage = "La fecha de reserva es obligatoria")]

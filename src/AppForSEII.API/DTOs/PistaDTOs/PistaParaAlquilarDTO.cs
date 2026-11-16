@@ -30,7 +30,7 @@ namespace AppForSEII.API.DTOs
 
         [Required]
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
-        [Range(0, (double)decimal.MaxValue, ErrorMessage = "El precio no puede ser negativo")]
+        [Range(0, 100000, ErrorMessage = "El precio no puede ser negativo")]
         public decimal Precio { get; set; } = 1;
 
         [Required]

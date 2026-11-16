@@ -26,7 +26,7 @@ namespace AppForSEII.API.DTOs.ReservaDetailDTOs
         public string TipoDeporte { get; set; }
         public int NPersonas { get; set; }
 
-        [Range(0, (double)decimal.MaxValue)]
+        [Range(0, 100000)]
         public decimal Precio { get; set; }
 
         [StringLength(500, ErrorMessage = "Las observaciones no pueden superar los 500 caracteres")]
